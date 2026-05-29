@@ -1,60 +1,251 @@
-<section class="seasonal-section" id="SeasonalCollections">
+<section class="seasonal-v2-section" id="SeasonalCollectionsV2">
   <div class="container">
 
-    <div class="section-header animate-on-scroll">
-      <span class="section-label">Explore</span>
+    <div class="section-header-v2 animate-on-scroll">
+      <span class="eyebrow">EXPLORE</span>
       <h2 class="section-title">{{ section.settings.title | default: 'Shop by Season' }}</h2>
+      <div class="accent-line"></div>
       {%- if section.settings.subtitle != blank -%}
-        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+          <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       {%- endif -%}
     </div>
 
-    <div class="seasonal-grid">
-      {%- for block in section.blocks -%}
-        <a
-          href="{{ block.settings.collection_url | default: '/collections/all' }}"
-          class="seasonal-card animate-on-scroll"
-          data-delay="{{ forloop.index0 | times: 120 }}"
-          {{ block.shopify_attributes }}
-        >
-          {%- if block.settings.image != blank -%}
-            <img
-              class="seasonal-card-img"
-              src="{{ block.settings.image | image_url: width: 600 }}"
-              srcset="{{ block.settings.image | image_url: width: 400 }} 400w,
-                      {{ block.settings.image | image_url: width: 600 }} 600w,
-                      {{ block.settings.image | image_url: width: 900 }} 900w"
-              sizes="(max-width: 768px) 100vw, 33vw"
-              alt="{{ block.settings.image.alt | default: block.settings.title }}"
-              width="600" height="800" loading="lazy"
-            >
-          {%- else -%}
-            {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'seasonal-card-img' -}}
-          {%- endif -%}
+    <div class="seasonal-editorial-grid">
+    {%- for block in section.blocks -%}
+      <div class="seasonal-card-wrapper card-size-{{ forloop.index }} animate-on-scroll" data-delay="{{ forloop.index0 | times: 150 }}">
+        
+        {%- if block.settings.mood_text != blank -%}
+          <span class="floating-mood-text">{{ block.settings.mood_text }}</span>
+        {%- endif -%}
 
-          <div class="seasonal-card-overlay">
-            <span class="seasonal-card-chip">Collection</span>
-            <h3 class="seasonal-card-name">{{ block.settings.title | default: 'Collection' }}</h3>
-            {%- if block.settings.description != blank -%}
+        <a href="{{ block.settings.collection_url | default: '/collections/all' }}" class="seasonal-card-v2" {{ block.shopify_attributes }}>
+            <div class="image-wrapper">
+              {%- if block.settings.image != blank -%}
+                <img
+                  class="seasonal-card-img"
+                  src="{{ block.settings.image | image_url: width: 800 }}"
+                  alt="{{ block.settings.title }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' -}}
+              {%- endif -%}
+              <div class="card-overlay-v2"></div>
+            </div>
+
+            <div class="card-content-v2">
+              <span class="collection-label">COLLECTION</span>
+              <h3 class="seasonal-card-name">{{ block.settings.title }}</h3>
               <p class="seasonal-card-desc">{{ block.settings.description }}</p>
-            {%- endif -%}
-            <span class="seasonal-card-cta">
-              Shop Now
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-              </svg>
-            </span>
-          </div>
+              <span class="luxury-cta">
+                SHOP NOW 
+                <svg width="18" height="10" viewBox="0 0 18 10" fill="none"><path d="M13 1L17 5M17 5L13 9M17 5H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
         </a>
-      {%- endfor -%}
+      </div>
+    {%- endfor -%}
     </div>
-
   </div>
 </section>
 
+{% style %}
+  /* ─── LUXURY EDITORIAL CSS ─── */
+  :root {
+    --gold-accent: #c5a059;
+    --cream-bg: #f9f7f2;
+    --dark-text: #1a1a1a;
+  }
+
+  .seasonal-v2-section {
+    background-color: var(--cream-bg);
+    padding: 100px 0;
+    overflow: hidden;
+  }
+
+  /* Header Styling */
+  .section-header-v2 {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .section-header-v2 .eyebrow {
+    font-family: 'Philosopher', sans-serif;
+    letter-spacing: 0.3em;
+    color: var(--gold-accent);
+    font-size: 12px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .section-header-v2 .section-title {
+    font-family: 'Philosopher', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    color: var(--dark-text);
+    margin: 0;
+  }
+  .section-header-v2 .accent-line {
+    width: 50px;
+    height: 1px;
+    background: var(--gold-accent);
+    margin: 20px auto;
+  }
+
+  /* Asymmetrical Grid */
+  .seasonal-editorial-grid {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .seasonal-card-wrapper {
+    position: relative;
+    flex: 1;
+  }
+
+  /* Card Heights (Editorial Symmetry) */
+  .card-size-1 { margin-top: 60px; } /* Winter */
+  .card-size-2 { flex: 1.4; }        /* Summer (Center - Featured) */
+  .card-size-3 { margin-top: 100px; } /* Monsoon */
+
+  /* Floating Mood Text */
+  .floating-mood-text {
+    position: absolute;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    left: -25px;
+    top: 50px;
+    font-family: 'Philosopher', sans-serif;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--dark-text);
+    opacity: 0.4;
+    z-index: 2;
+  }
+
+  /* The Card */
+  .seasonal-card-v2 {
+    display: block;
+    text-decoration: none;
+    position: relative;
+    background: #fff;
+    border-radius: 4px;
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+
+  .image-wrapper {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4.5;
+    border-radius: 4px;
+  }
+  
+  .card-size-2 .image-wrapper { aspect-ratio: 3/4; } /* Middle one slightly wider */
+
+  .seasonal-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s ease;
+  }
+
+  .card-overlay-v2 {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%);
+    opacity: 0.7;
+    transition: opacity 0.4s ease;
+  }
+
+  /* Content (Glassmorphism effect) */
+  .card-content-v2 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 30px;
+    color: #fff;
+    z-index: 3;
+  }
+
+  .collection-label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--gold-accent);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .seasonal-card-name {
+    font-family: 'Philosopher', sans-serif;
+    font-size: clamp(20px, 1.8vw, 28px);
+    margin-bottom: 12px;
+    color: #fff !important;
+  }
+
+  .seasonal-card-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 20px;
+    max-width: 250px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .luxury-cta {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+  }
+
+  /* Hover Effects */
+  .seasonal-card-v2:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+  }
+
+  .seasonal-card-v2:hover .seasonal-card-img {
+    transform: scale(1.1);
+  }
+
+  .seasonal-card-v2:hover .luxury-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .seasonal-card-v2:hover .card-overlay-v2 {
+    opacity: 0.9;
+  }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 991px) {
+    .seasonal-editorial-grid {
+      flex-direction: column;
+      gap: 60px;
+      padding: 0 20px;
+    }
+    .card-size-1, .card-size-2, .card-size-3 {
+      margin-top: 0;
+      width: 100%;
+    }
+    .floating-mood-text { display: none; }
+    .luxury-cta { opacity: 1; transform: none; }
+  }
+{% endstyle %}
+
 {% schema %}
 {
-  "name": "Seasonal Collections",
+  "name": "Seasonal Collections V2",
   "settings": [
     {
       "type": "text",
@@ -72,7 +263,7 @@
   "blocks": [
     {
       "type": "collection_card",
-      "name": "Collection Card",
+      "name": "Editorial Card",
       "settings": [
         {
           "type": "image_picker",
@@ -84,6 +275,12 @@
           "id": "title",
           "label": "Collection name",
           "default": "Winter Collection"
+        },
+        {
+          "type": "text",
+          "id": "mood_text",
+          "label": "Floating Mood Text",
+          "info": "e.g., WARM & SMOKY"
         },
         {
           "type": "textarea",
@@ -99,32 +296,13 @@
       ]
     }
   ],
-  "max_blocks": 6,
   "presets": [
     {
-      "name": "Seasonal Collections",
+      "name": "Seasonal Editorial V2",
       "blocks": [
-        {
-          "type": "collection_card",
-          "settings": {
-            "title": "Winter Collection",
-            "description": "Warm, rich scents crafted for cold evenings by the fire."
-          }
-        },
-        {
-          "type": "collection_card",
-          "settings": {
-            "title": "Summer Collection",
-            "description": "Fresh and vibrant fragrances for sun-drenched days."
-          }
-        },
-        {
-          "type": "collection_card",
-          "settings": {
-            "title": "Monsoon Collection",
-            "description": "Earthy petrichor and rain-kissed florals."
-          }
-        }
+        { "type": "collection_card", "settings": { "title": "Winter Collection", "mood_text": "WARM & SMOKY" } },
+        { "type": "collection_card", "settings": { "title": "Summer Collection", "mood_text": "FRESH CITRUS" } },
+        { "type": "collection_card", "settings": { "title": "Monsoon Collection", "mood_text": "RAIN INSPIRED" } }
       ]
     }
   ]

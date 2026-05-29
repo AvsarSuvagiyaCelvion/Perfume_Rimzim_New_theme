@@ -207,6 +207,34 @@
         "subtitle": "Real reviews from real perfume enthusiasts"
       }
     },
+    "trust_bar": {
+      "type": "trust-bar",
+      "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "s1": { "type": "faq_item", "settings": { "category": "Shipping", "question": "How long does delivery take?", "answer": "<p>Standard delivery takes 3–5 business days across India. Express next-day delivery is available on orders placed before 2 PM. International orders ship within 7–14 business days.</p>" } },
+        "s2": { "type": "faq_item", "settings": { "category": "Shipping", "question": "Is shipping free?", "answer": "<p>Yes! We offer free standard shipping on all orders above ₹999. Orders below this have a flat shipping fee of ₹99.</p>" } },
+        "s3": { "type": "faq_item", "settings": { "category": "Shipping", "question": "Do you ship internationally?", "answer": "<p>Yes, we ship to 30+ countries worldwide. International shipping rates and delivery times vary by destination. Import duties are the buyer's responsibility.</p>" } },
+        "r1": { "type": "faq_item", "settings": { "category": "Returns", "question": "What is your return policy?", "answer": "<p>We accept returns within 7 days of delivery for unopened, unused products in original packaging. Opened fragrances cannot be returned for hygiene reasons unless damaged or defective.</p>" } },
+        "r2": { "type": "faq_item", "settings": { "category": "Returns", "question": "How do I initiate a return or exchange?", "answer": "<p>Contact our support team with your order number. We will arrange a pickup and process your refund or exchange within 5–7 business days of receiving the item.</p>" } },
+        "r3": { "type": "faq_item", "settings": { "category": "Returns", "question": "What if I received a damaged product?", "answer": "<p>Contact us within 48 hours of delivery with a photo of the damaged item and your order number. We will send a replacement immediately at no extra cost.</p>" } },
+        "a1": { "type": "faq_item", "settings": { "category": "Authenticity", "question": "Are your fragrances 100% authentic?", "answer": "<p>Absolutely. Every fragrance is 100% genuine, sourced directly from authorised distributors and brand partners. We never stock grey-market or counterfeit products.</p>" } },
+        "a2": { "type": "faq_item", "settings": { "category": "Authenticity", "question": "How can I verify authenticity?", "answer": "<p>All products come with original packaging, batch codes, and manufacturer seals intact. You can verify the batch code on the brand's official website. Certificate of authenticity available on request.</p>" } },
+        "a3": { "type": "faq_item", "settings": { "category": "Authenticity", "question": "Where do your fragrances come from?", "answer": "<p>Our collection includes fragrances from France, UAE, India, and other fragrance capitals. Each product is sourced from verified brand distributors and luxury perfume houses.</p>" } },
+        "g1": { "type": "faq_item", "settings": { "category": "General", "question": "Do you offer gift wrapping?", "answer": "<p>Yes! Premium gift wrapping with a personalised message card is available at checkout. Perfect for birthdays, anniversaries, and special occasions.</p>" } },
+        "g2": { "type": "faq_item", "settings": { "category": "General", "question": "How should I store my perfume?", "answer": "<p>Store in a cool, dry place away from direct sunlight and heat. Avoid bathrooms as humidity can alter the scent. The original box provides the best protection.</p>" } },
+        "g3": { "type": "faq_item", "settings": { "category": "General", "question": "Can I get a sample before buying?", "answer": "<p>A sample discovery kit is coming soon! In the meantime, our fragrance notes and reviews can help you choose. Reach out for personalised recommendations.</p>" } }
+      },
+      "block_order": ["s1","s2","s3","r1","r2","r3","a1","a2","a3","g1","g2","g3"],
+      "settings": {
+        "eyebrow": "Support",
+        "title": "Frequently Asked Questions",
+        "subtitle": "Everything you need to know about our fragrances and service",
+        "contact_text": "Still have questions? Our fragrance experts are here to help."
+      }
+    },
     "newsletter": {
       "type": "newsletter",
       "settings": {
@@ -221,10 +249,12 @@
   },
   "order": [
     "hero",
+    "trust_bar",
     "seasonal_collections",
     "new_arrivals",
     "vibe_slider",
     "testimonials",
+    "faq",
     "newsletter"
   ]
 }

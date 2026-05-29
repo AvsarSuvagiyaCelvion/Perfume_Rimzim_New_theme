@@ -69,70 +69,52 @@
         </div>
       </div>
 
-      {%- comment -%} ── Quick Links ── {%- endcomment -%}
+      {%- comment -%} ── Col 2: Shop By Category (main menu) ── {%- endcomment -%}
       <div class="footer-col">
-        <h3 class="footer-col-title">Quick Links</h3>
+        <h3 class="footer-col-title">Shop By Category</h3>
         <ul class="footer-links">
-          {%- for link in linklists[section.settings.quick_links_menu].links -%}
+          {%- for link in linklists[section.settings.category_menu].links -%}
             <li><a href="{{ link.url }}">{{ link.title }}</a></li>
           {%- else -%}
-            <li><a href="/">Home</a></li>
-            <li><a href="/collections">All Collections</a></li>
+            <li><a href="/collections/all">All Fragrances</a></li>
             <li><a href="/collections/new-arrivals">New Arrivals</a></li>
-            <li><a href="/blogs/journal">Our Journal</a></li>
-            <li><a href="/pages/about">About Us</a></li>
-            <li><a href="/pages/store-locator">Store Locator</a></li>
+            <li><a href="/collections/best-sellers">Best Sellers</a></li>
+            <li><a href="/collections/gift-sets">Gift Sets</a></li>
           {%- endfor -%}
         </ul>
       </div>
 
-      {%- comment -%} ── Customer Support ── {%- endcomment -%}
+      {%- comment -%} ── Col 3: My Account ── {%- endcomment -%}
       <div class="footer-col">
-        <h3 class="footer-col-title">Customer Support</h3>
+        <h3 class="footer-col-title">My Account</h3>
         <ul class="footer-links">
-          {%- for link in linklists[section.settings.support_links_menu].links -%}
+          {%- if customer -%}
+            <li><a href="{{ routes.account_url }}">My Account</a></li>
+            <li><a href="{{ routes.account_orders_url }}">My Orders</a></li>
+            <li><a href="{{ routes.account_addresses_url }}">My Addresses</a></li>
+            <li><a href="{{ routes.account_logout_url }}">Logout</a></li>
+          {%- else -%}
+            <li><a href="{{ routes.account_login_url }}">Login</a></li>
+            <li><a href="{{ routes.account_register_url }}">Register</a></li>
+          {%- endif -%}
+          <li><a href="/pages/wishlist">My Wishlist</a></li>
+          <li><a href="/cart">My Cart</a></li>
+          <li><a href="/pages/contact">Track My Order</a></li>
+        </ul>
+      </div>
+
+      {%- comment -%} ── Col 4: Our Policies ── {%- endcomment -%}
+      <div class="footer-col">
+        <h3 class="footer-col-title">Our Policies</h3>
+        <ul class="footer-links">
+          {%- for link in linklists[section.settings.policies_menu].links -%}
             <li><a href="{{ link.url }}">{{ link.title }}</a></li>
           {%- else -%}
-            <li><a href="/pages/contact">Contact Us</a></li>
-            <li><a href="/pages/faq">FAQs</a></li>
-            <li><a href="/pages/shipping-returns">Shipping &amp; Returns</a></li>
-            <li><a href="/pages/track-order">Track Your Order</a></li>
-            <li><a href="/pages/size-guide">Fragrance Guide</a></li>
-            <li><a href="/pages/gift-wrapping">Gift Wrapping</a></li>
+            <li><a href="{{ shop.privacy_policy.url }}">Privacy Policy</a></li>
+            <li><a href="{{ shop.refund_policy.url }}">Refund Policy</a></li>
+            <li><a href="{{ shop.terms_of_service.url }}">Terms of Service</a></li>
+            <li><a href="{{ shop.shipping_policy.url }}">Shipping Policy</a></li>
           {%- endfor -%}
-        </ul>
-      </div>
-
-      {%- comment -%} ── Contact Info ── {%- endcomment -%}
-      <div class="footer-col">
-        <h3 class="footer-col-title">Get in Touch</h3>
-        <ul class="footer-links">
-          {%- if section.settings.contact_email != blank -%}
-            <li>
-              <a href="mailto:{{ section.settings.contact_email }}">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
-                </svg>
-                {{ section.settings.contact_email }}
-              </a>
-            </li>
-          {%- endif -%}
-          {%- if section.settings.contact_phone != blank -%}
-            <li>
-              <a href="tel:{{ section.settings.contact_phone | remove: ' ' }}">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14" height="14">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
-                </svg>
-                {{ section.settings.contact_phone }}
-              </a>
-            </li>
-          {%- endif -%}
-          {%- if section.settings.contact_hours != blank -%}
-            <li>
-              <span style="color:rgba(255,255,255,0.30); font-size:0.75rem; letter-spacing:1px;">{{ section.settings.contact_hours }}</span>
-            </li>
-          {%- endif -%}
-          <li><a href="/pages/contact">Send a Message →</a></li>
         </ul>
       </div>
 
@@ -192,34 +174,16 @@
     },
     {
       "type": "link_list",
-      "id": "quick_links_menu",
-      "label": "Quick links menu",
-      "default": "footer"
+      "id": "category_menu",
+      "label": "Shop By Category menu",
+      "default": "main-menu",
+      "info": "Select your main navigation menu to show categories"
     },
     {
       "type": "link_list",
-      "id": "support_links_menu",
-      "label": "Support links menu"
-    },
-    {
-      "type": "header",
-      "content": "Contact"
-    },
-    {
-      "type": "text",
-      "id": "contact_email",
-      "label": "Email address"
-    },
-    {
-      "type": "text",
-      "id": "contact_phone",
-      "label": "Phone number"
-    },
-    {
-      "type": "text",
-      "id": "contact_hours",
-      "label": "Business hours",
-      "default": "Mon – Sat: 9am – 6pm"
+      "id": "policies_menu",
+      "label": "Our Policies menu",
+      "info": "Create a menu in Navigation named 'Policies' and link your policy pages"
     },
     {
       "type": "header",
