@@ -1,0 +1,296 @@
+{%- liquid
+  assign featured_col = collections[section.settings.collection]
+  if featured_col == empty or featured_col.products_count == 0
+    assign featured_col = collections.all
+  endif
+  assign product_limit = section.settings.product_limit | default: 8
+-%}
+
+<section class="new-arrivals-section" id="NewArrivals">
+  <div class="container">
+
+    <div class="section-header animate-on-scroll">
+      <span class="section-label">New In</span>
+      <h2 class="section-title">{{ section.settings.title | default: 'New Arrivals' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="products-grid">
+      {%- for product in featured_col.products limit: product_limit -%}
+        {%- liquid
+          assign thirty_days = 2592000
+          assign now_ts     = 'now' | date: '%s' | plus: 0
+          assign cutoff_ts  = now_ts | minus: thirty_days
+          assign created_ts = product.created_at | date: '%s' | plus: 0
+          assign is_new     = false
+          if created_ts > cutoff_ts
+            assign is_new = true
+          endif
+
+          assign first_variant = product.selected_or_first_available_variant
+
+          comment
+            Detect a colour/size option for swatches.
+            colour_index = position (0-based) of the Color/Colour option, or -1.
+            size_index   = position of Size/Volume option, or -1.
+          endcomment
+          assign colour_index = -1
+          assign size_index   = -1
+          for opt in product.options
+            assign opt_down = opt | downcase
+            if opt_down == 'color' or opt_down == 'colour'
+              assign colour_index = forloop.index0
+            endif
+            if opt_down == 'size' or opt_down == 'volume' or opt_down == 'ml'
+              assign size_index = forloop.index0
+            endif
+          endfor
+        -%}
+
+        <div class="product-card animate-on-scroll" data-delay="{{ forloop.index0 | times: 80 }}">
+
+          {%- comment -%} ── Media ── {%- endcomment -%}
+          <div class="product-card-media">
+
+            <a href="{{ product.url }}" class="product-card-img-link" tabindex="-1" aria-hidden="true">
+              {%- if product.featured_image != blank -%}
+                <img
+                  class="product-card-img"
+                  src="{{ product.featured_image | image_url: width: 480 }}"
+                  srcset="{{ product.featured_image | image_url: width: 320 }} 320w,
+                          {{ product.featured_image | image_url: width: 480 }} 480w,
+                          {{ product.featured_image | image_url: width: 640 }} 640w"
+                  sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 25vw"
+                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  width="480" height="640" loading="lazy"
+                >
+                {%- if product.images.size > 1 -%}
+                  <img
+                    class="product-card-img product-card-img--hover"
+                    src="{{ product.images[1] | image_url: width: 480 }}"
+                    alt="{{ product.images[1].alt | default: product.title | escape }}"
+                    width="480" height="640" loading="lazy"
+                    aria-hidden="true"
+                  >
+                {%- endif -%}
+              {%- else -%}
+                {{- 'product-' | append: forloop.index | placeholder_svg_tag: 'product-card-img' -}}
+              {%- endif -%}
+            </a>
+
+            {%- comment -%} Badges {%- endcomment -%}
+            {%- if product.compare_at_price > product.price -%}
+              <span class="product-card-badge badge-sale">Sale</span>
+            {%- elsif is_new -%}
+              <span class="product-card-badge badge-new">New</span>
+            {%- endif -%}
+
+            {%- comment -%} Wishlist {%- endcomment -%}
+            <button class="product-card-wishlist" aria-label="Add {{ product.title | escape }} to wishlist">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+              </svg>
+            </button>
+
+            {%- comment -%} Quick Add overlay {%- endcomment -%}
+            <div class="product-quick-add">
+              {%- if product.available -%}
+                <button
+                  type="button"
+                  class="product-quick-add-btn"
+                  data-variant-id="{{ first_variant.id }}"
+                  data-has-variants="{{ product.variants.size | minus: 1 | at_least: 0 }}"
+                  data-product-url="{{ product.url }}"
+                  aria-label="Quick add {{ product.title | escape }}"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                  </svg>
+                  Quick Add
+                </button>
+              {%- else -%}
+                <span class="product-quick-add-soldout">Sold Out</span>
+              {%- endif -%}
+            </div>
+
+          </div>{%- comment -%}/.product-card-media{%- endcomment -%}
+
+          {%- comment -%} ── Info ── {%- endcomment -%}
+          <div class="product-card-body">
+
+            {%- comment -%} Vendor {%- endcomment -%}
+            {%- if product.vendor != blank -%}
+              <p class="product-card-vendor">{{ product.vendor }}</p>
+            {%- endif -%}
+
+            <h3 class="product-card-title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+
+            {%- comment -%} Price {%- endcomment -%}
+            <p class="product-card-price">
+              {%- if product.compare_at_price > product.price -%}
+                <s class="product-price-compare">{{ product.compare_at_price | money }}</s>
+              {%- endif -%}
+              {%- if product.price_varies -%}<span class="product-price-from">from </span>{%- endif -%}
+              <span class="product-price-current {%- if product.compare_at_price > product.price %} price-sale{%- endif -%}">
+                {{- product.price | money -}}
+              </span>
+            </p>
+
+            {%- comment -%}
+              Swatches: colour circles when Color/Colour option detected,
+              otherwise size pills for Size/Volume options.
+            {%- endcomment -%}
+
+            {%- if colour_index >= 0 -%}
+              {%- comment -%} Colour swatches — deduplicate by collecting seen values {%- endcomment -%}
+              {%- assign seen_colours = '' -%}
+              {%- assign swatch_count = 0 -%}
+              {%- assign extra_count  = 0 -%}
+              {%- for variant in product.variants -%}
+                {%- assign cv = variant.options[colour_index] -%}
+                {%- assign cv_key = cv | downcase | strip -%}
+                {%- if seen_colours contains cv_key -%}
+                  {%- continue -%}
+                {%- endif -%}
+                {%- assign seen_colours = seen_colours | append: cv_key | append: '|' -%}
+                {%- if swatch_count < 4 -%}
+                  {%- assign swatch_count = swatch_count | plus: 1 -%}
+                {%- else -%}
+                  {%- assign extra_count = extra_count | plus: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- assign seen_colours = '' -%}
+              {%- assign rendered = 0 -%}
+              <div class="product-swatches" aria-label="Available colours">
+                {%- for variant in product.variants -%}
+                  {%- assign cv = variant.options[colour_index] -%}
+                  {%- assign cv_key = cv | downcase | strip -%}
+                  {%- if seen_colours contains cv_key -%}{%- continue -%}{%- endif -%}
+                  {%- assign seen_colours = seen_colours | append: cv_key | append: '|' -%}
+                  {%- if rendered < 4 -%}
+                    <a
+                      href="{{ product.url }}?variant={{ variant.id }}"
+                      class="product-swatch product-swatch--colour"
+                      title="{{ cv }}"
+                      aria-label="{{ cv }}"
+                      style="background-color: {{ cv | downcase }};"
+                    ></a>
+                    {%- assign rendered = rendered | plus: 1 -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- if extra_count > 0 -%}
+                  <span class="product-swatch-extra">+{{ extra_count }}</span>
+                {%- endif -%}
+              </div>
+
+            {%- elsif size_index >= 0 -%}
+              {%- comment -%} Size / Volume pills {%- endcomment -%}
+              {%- assign seen_sizes = '' -%}
+              {%- assign size_rendered = 0 -%}
+              <div class="product-swatches product-swatches--sizes" aria-label="Available sizes">
+                {%- for variant in product.variants -%}
+                  {%- assign sv = variant.options[size_index] -%}
+                  {%- assign sv_key = sv | downcase | strip -%}
+                  {%- if seen_sizes contains sv_key -%}{%- continue -%}{%- endif -%}
+                  {%- assign seen_sizes = seen_sizes | append: sv_key | append: '|' -%}
+                  {%- if size_rendered < 4 -%}
+                    <a
+                      href="{{ product.url }}?variant={{ variant.id }}"
+                      class="product-swatch product-swatch--size {%- unless variant.available %} swatch-unavailable{%- endunless -%}"
+                      title="{{ sv }}"
+                    >{{ sv }}</a>
+                    {%- assign size_rendered = size_rendered | plus: 1 -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+          </div>{%- comment -%}/.product-card-body{%- endcomment -%}
+        </div>
+
+      {%- else -%}
+        {%- comment -%} Placeholder cards when no products exist {%- endcomment -%}
+        {%- for i in (1..8) -%}
+          <div class="product-card animate-on-scroll" data-delay="{{ forloop.index0 | times: 80 }}">
+            <div class="product-card-media">
+              {{- 'product-' | append: forloop.index | placeholder_svg_tag: 'product-card-img' -}}
+              <div class="product-quick-add">
+                <button type="button" class="product-quick-add-btn">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <p class="product-card-vendor">Lumière</p>
+              <h3 class="product-card-title">Sample Fragrance {{ i }}</h3>
+              <p class="product-card-price"><span class="product-price-current">$89.00</span></p>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_view_all -%}
+      <div class="section-cta animate-on-scroll">
+        <a href="{{ featured_col.url | default: '/collections/all' }}" class="btn btn-outline-gold">
+          View All
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="15" height="15">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "New Arrivals",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "The latest additions to our curated fragrance library"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to display"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All' button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Arrivals"
+    }
+  ]
+}
+{% endschema %}

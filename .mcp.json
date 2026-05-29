@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "shopify-dev-mcp": {
+      "command": "npx",
+      "args": ["-y", "@shopify/dev-mcp@latest"],
+      "env": {
+        "POLARIS_UNIFIED": "true",
+        "LIQUID": "true"
+      }
+    },
+    "_comment_admin": "Uncomment below to add Admin API operations. Replace placeholders. Requires a custom app access token (shpat_...). Tokens valid ~24h if using OAuth client; longer if static.",
+    "_shopify-admin": {
+      "command": "npx",
+      "args": [
+        "shopify-mcp",
+        "--accessToken", "shpat_REPLACE_ME",
+        "--domain", "REPLACE_STORE.myshopify.com"
+      ]
+    },
+    "_comment_figma": "Uncomment to integrate with the client's Figma. Requires FIGMA_ACCESS_TOKEN env var.",
+    "_figma": {
+      "command": "npx",
+      "args": ["-y", "figma-developer-mcp", "--figma-api-key=REPLACE_ME"]
+    }
+  }
+}

@@ -1,0 +1,50 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: [] # Could depend on playwright job once preview URL is published
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@latest
+
+      - name: Run Lighthouse CI
+        env:
+          STAGING_URL: ${{ secrets.STAGING_URL }}
+        run: |
+          lhci autorun \
+            --config=./tests/lighthouse/lighthouserc.json \
+            --upload.target=temporary-public-storage
+
+      - name: Comment Lighthouse scores
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            try {
+              const report = JSON.parse(fs.readFileSync('.lighthouseci/manifest.json', 'utf8'));
+              const summary = report.map(r => {
+                const s = r.summary;
+                return `**${r.url}**\n- Performance: ${Math.round(s.performance * 100)}\n- Accessibility: ${Math.round(s.accessibility * 100)}\n- Best Practices: ${Math.round(s['best-practices'] * 100)}\n- SEO: ${Math.round(s.seo * 100)}`;
+              }).join('\n\n');
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## 🔬 Lighthouse Results\n\n${summary}`
+              });
+            } catch (e) {
+              console.log('No Lighthouse report to summarize');
+            }

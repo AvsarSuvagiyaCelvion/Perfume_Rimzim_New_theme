@@ -1,0 +1,35 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "$STAGING_URL/",
+        "$STAGING_URL/collections/all",
+        "$STAGING_URL/products/sample"
+      ],
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "cpuSlowdownMultiplier": 4
+        }
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance":    ["error", { "minScore": 0.80 }],
+        "categories:accessibility":  ["error", { "minScore": 0.95 }],
+        "categories:best-practices": ["error", { "minScore": 0.90 }],
+        "categories:seo":            ["error", { "minScore": 1.00 }],
+        "largest-contentful-paint":  ["error", { "maxNumericValue": 2500 }],
+        "interactive":               ["warn",  { "maxNumericValue": 3500 }],
+        "cumulative-layout-shift":   ["error", { "maxNumericValue": 0.1 }],
+        "total-blocking-time":       ["error", { "maxNumericValue": 300 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}

@@ -1,0 +1,145 @@
+<section class="vibe-section" id="VibeSlider">
+  <div class="container">
+
+    <div class="section-header animate-on-scroll">
+      <span class="section-label">Discover</span>
+      <h2 class="section-title">{{ section.settings.title | default: 'Choose Your Vibe' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="vibe-slider-outer">
+      <div class="vibe-slider-clip">
+        <div class="vibe-track">
+          {%- for block in section.blocks -%}
+            <a
+              href="{{ block.settings.collection_url | default: '/collections/all' }}"
+              class="vibe-card"
+              aria-label="{{ block.settings.name }} collection"
+              {{ block.shopify_attributes }}
+            >
+              <div
+                class="vibe-card-frame"
+                style="background: {{ block.settings.bg_color | default: '#E8DDD0' }};"
+              >
+                {%- if block.settings.image != blank -%}
+                  <img
+                    class="vibe-card-img"
+                    src="{{ block.settings.image | image_url: width: 300 }}"
+                    srcset="{{ block.settings.image | image_url: width: 200 }} 200w,
+                            {{ block.settings.image | image_url: width: 300 }} 300w"
+                    sizes="200px"
+                    alt="{{ block.settings.image.alt | default: block.settings.name }}"
+                    width="200" height="267" loading="lazy"
+                  >
+                {%- else -%}
+                  {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'vibe-card-img' -}}
+                {%- endif -%}
+
+                <div class="vibe-card-overlay">
+                  <span class="vibe-card-name">{{ block.settings.name | default: 'Vibe' }}</span>
+                </div>
+              </div>
+            </a>
+          {%- else -%}
+            {%- assign default_vibes = 'Fresh,Fruity,Floral,Oud,Spicy,Woody,Musky' | split: ',' -%}
+            {%- assign default_colors = '#D4ECD4,#FFE5CC,#F5D5E8,#C8A882,#E8C4A0,#C4A882,#E8DDD0' | split: ',' -%}
+            {%- for vibe in default_vibes -%}
+              <a href="/collections/{{ vibe | downcase }}" class="vibe-card" aria-label="{{ vibe }} collection">
+                <div class="vibe-card-frame" style="background: {{ default_colors[forloop.index0] }};">
+                  {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'vibe-card-img' -}}
+                  <div class="vibe-card-overlay">
+                    <span class="vibe-card-name">{{ vibe }}</span>
+                  </div>
+                </div>
+              </a>
+            {%- endfor -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- comment -%} Slider Controls {%- endcomment -%}
+      <div class="slider-controls" aria-label="Slider controls">
+        <button class="slider-btn prev" aria-label="Previous slide">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+          </svg>
+        </button>
+
+        
+        <button class="slider-btn next" aria-label="Next slide">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vibe Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Choose Your Vibe"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Find the fragrance family that speaks to your soul"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "vibe_card",
+      "name": "Vibe Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Vibe name",
+          "default": "Fresh"
+        },
+        {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Collection URL"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background colour (when no image)",
+          "default": "#E8DDD0"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Vibe Slider",
+      "blocks": [
+        { "type": "vibe_card", "settings": { "name": "Fresh",  "bg_color": "#D4ECD4" } },
+        { "type": "vibe_card", "settings": { "name": "Fruity", "bg_color": "#FFE5CC" } },
+        { "type": "vibe_card", "settings": { "name": "Floral", "bg_color": "#F5D5E8" } },
+        { "type": "vibe_card", "settings": { "name": "Oud",    "bg_color": "#C8A882" } },
+        { "type": "vibe_card", "settings": { "name": "Spicy",  "bg_color": "#E8C4A0" } },
+        { "type": "vibe_card", "settings": { "name": "Woody",  "bg_color": "#C4A882" } },
+        { "type": "vibe_card", "settings": { "name": "Musky",  "bg_color": "#E8DDD0" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

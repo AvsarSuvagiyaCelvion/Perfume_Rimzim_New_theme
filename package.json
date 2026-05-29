@@ -1,0 +1,29 @@
+{
+  "name": "shopify-theme-template",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Shopify theme — bootstrapped from the agency template",
+  "scripts": {
+    "dev": "shopify theme dev",
+    "check": "shopify theme check",
+    "check:fix": "shopify theme check --auto-correct",
+    "push:staging": "shopify theme push --unpublished --json",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:lighthouse": "lhci autorun --config=./tests/lighthouse/lighthouserc.json",
+    "format": "prettier --write '**/*.{liquid,json,css,js,md}' --plugin=@shopify/prettier-plugin-liquid",
+    "format:check": "prettier --check '**/*.{liquid,json,css,js,md}' --plugin=@shopify/prettier-plugin-liquid",
+    "prepare": "husky || true"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@lhci/cli": "^0.14.0",
+    "@shopify/prettier-plugin-liquid": "^1.6.0",
+    "prettier": "^3.3.0",
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0"
+  },
+  "lint-staged": {
+    "*.{liquid,json,css,js}": "prettier --write --plugin=@shopify/prettier-plugin-liquid"
+  }
+}

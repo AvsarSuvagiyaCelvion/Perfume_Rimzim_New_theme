@@ -1,0 +1,55 @@
+{
+  "$comment": "Claude Code hooks. These fire deterministically — they cannot be bypassed by prompt phrasing.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/block-live-push.sh",
+            "description": "Block 'shopify theme push --live' unless user explicitly confirmed in this turn"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/block-destructive.sh",
+            "description": "Block destructive commands (theme delete, force push, rm -rf, productDelete mutations)"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/block-settings-data.sh",
+            "description": "Block direct edits to config/settings_data.json (merchant content)"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/format-on-save.sh",
+            "description": "Auto-format Liquid/JSON files after edits"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-stop-check.sh",
+            "description": "Run theme check + secret scan before declaring a task complete"
+          }
+        ]
+      }
+    ]
+  }
+}

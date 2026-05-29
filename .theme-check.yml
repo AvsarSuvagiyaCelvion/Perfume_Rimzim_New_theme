@@ -1,0 +1,82 @@
+# Shopify theme-check config — tuned for OS 2.0 projects
+# https://shopify.dev/themes/tools/theme-check/configuration
+
+extends: theme-check:recommended
+
+include_categories:
+  - liquid
+  - json
+  - html
+  - css
+  - schema
+  - performance
+  - accessibility
+  - translation
+  - documentation
+
+# Project-specific overrides
+LiquidTag:
+  enabled: true
+  severity: error
+
+ParserBlockingScript:
+  enabled: true
+  severity: error
+
+ImgLazyLoading:
+  enabled: true
+  severity: error
+
+ImgWidthAndHeight:
+  enabled: true
+  severity: error
+
+DeprecatedFilter:
+  enabled: true
+  severity: error
+
+UndefinedObject:
+  enabled: true
+  severity: error
+  exclude_snippets: true
+
+# We prefer {% render %} — make {% include %} an error
+DeprecatedTags:
+  enabled: true
+  severity: error
+
+# Translation enforcement — every user-facing string must be translatable
+MissingTranslation:
+  enabled: true
+  severity: error
+
+UnusedAssign:
+  enabled: true
+  severity: warning
+
+UnusedSnippet:
+  enabled: true
+  severity: warning
+
+UnreachableCode:
+  enabled: true
+  severity: warning
+
+# Schema validation
+ValidSchemaName:
+  enabled: true
+  severity: error
+
+ValidJSON:
+  enabled: true
+  severity: error
+
+# Disable noisy checks if needed
+# RemoteAsset:
+#   enabled: false  # uncomment if you self-host third-party assets intentionally
+
+ignore:
+  - 'node_modules/**'
+  - '.shopify/**'
+  - 'tmp/**'
+  - 'tests/**'

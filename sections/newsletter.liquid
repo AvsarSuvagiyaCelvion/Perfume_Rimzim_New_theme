@@ -1,0 +1,102 @@
+<section class="newsletter-section" id="Newsletter">
+  <div class="container">
+    <div class="newsletter-inner animate-on-scroll">
+
+      <span class="newsletter-label">Stay Connected</span>
+
+      <h2 class="newsletter-title">
+        {{ section.settings.title | default: 'Subscribe Our Newsletter' }}
+      </h2>
+
+      <p class="newsletter-desc">
+        {{ section.settings.description | default: 'Get exclusive access to new arrivals, limited editions, and special offers delivered straight to your inbox.' }}
+      </p>
+
+      {%- form 'customer', class: 'newsletter-form', id: 'NewsletterForm' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+
+        <label for="NewsletterEmail" class="visually-hidden">
+          {{ 'Email address' }}
+        </label>
+        <input
+          type="email"
+          id="NewsletterEmail"
+          name="contact[email]"
+          class="newsletter-input"
+          placeholder="{{ section.settings.placeholder | default: 'Your email address' }}"
+          autocomplete="email"
+          required
+          aria-required="true"
+        >
+
+        <button type="submit" class="newsletter-btn">
+          {{ section.settings.button_text | default: 'Subscribe' }}
+        </button>
+      {%- endform -%}
+
+      <p class="newsletter-privacy">
+        {{ section.settings.privacy_text | default: 'We respect your privacy. Unsubscribe at any time.' }}
+        {%- if section.settings.privacy_url != blank -%}
+          &nbsp;<a href="{{ section.settings.privacy_url }}">Privacy Policy</a>
+        {%- endif -%}
+      </p>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Subscribe Our Newsletter"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Get exclusive access to new arrivals, limited editions, and special offers delivered straight to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Input placeholder",
+      "default": "Your email address"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "privacy_text",
+      "label": "Privacy note",
+      "default": "We respect your privacy. Unsubscribe at any time."
+    },
+    {
+      "type": "url",
+      "id": "privacy_url",
+      "label": "Privacy policy URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}

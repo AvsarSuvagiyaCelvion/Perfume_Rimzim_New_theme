@@ -1,0 +1,39 @@
+name: Theme Check
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [develop]
+
+jobs:
+  theme-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest @shopify/theme@latest
+
+      - name: Run theme check
+        run: shopify theme check --fail-level error
+
+      - name: Secret scan
+        run: |
+          if git diff origin/${{ github.base_ref || 'main' }}...HEAD --unified=0 -- . \
+             | grep -E '^\+' | grep -qE '(shpat_[A-Za-z0-9]{32,}|shpss_[A-Za-z0-9]{32,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36})'; then
+            echo "::error::Possible secrets detected in this PR's diff"
+            exit 1
+          fi
+
+      - name: Block settings_data.json edits
+        run: |
+          if git diff --name-only origin/${{ github.base_ref || 'main' }}...HEAD | grep -q '^config/settings_data\.json$'; then
+            echo "::error::config/settings_data.json was modified — this file is merchant-owned"
+            exit 1
+          fi

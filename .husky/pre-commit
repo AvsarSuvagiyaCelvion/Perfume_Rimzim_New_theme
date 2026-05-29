@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+# Pre-commit hook — runs theme check and lint-staged
+# These run before EVERY commit, no exceptions
+
+echo "🔍 Running theme check..."
+shopify theme check --fail-level=error || {
+  echo "❌ Theme check found errors. Fix them before committing."
+  exit 1
+}
+
+echo "💅 Formatting staged files..."
+npx lint-staged || {
+  echo "❌ Lint-staged failed."
+  exit 1
+}
+
+echo "🔐 Scanning for secrets..."
+if git diff --cached -U0 | grep -E "(shpat_[A-Za-z0-9]{32,}|shpss_[A-Za-z0-9]{32,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36})" >/dev/null 2>&1; then
+  echo "❌ Possible secrets detected in staged changes. Remove them before committing."
+  exit 1
+fi
+
+echo "🚫 Checking for settings_data.json edits..."
+if git diff --cached --name-only | grep -q "^config/settings_data\.json$"; then
+  echo "❌ config/settings_data.json is in the commit. This file is merchant-owned and should not be edited."
+  exit 1
+fi
+
+echo "✓ Pre-commit checks passed"

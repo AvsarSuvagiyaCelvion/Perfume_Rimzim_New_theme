@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# Commit message hook — enforce Conventional Commits
+
+commit_regex='^(feat|fix|docs|style|refactor|perf|test|chore|ci|build|revert)(\(.+\))?: .{1,}'
+
+if ! grep -qE "$commit_regex" "$1"; then
+  echo "❌ Commit message must follow Conventional Commits format:"
+  echo "   <type>(<scope>): <description>"
+  echo ""
+  echo "   Types: feat, fix, docs, style, refactor, perf, test, chore, ci, build, revert"
+  echo ""
+  echo "   Examples:"
+  echo "     feat(sections): add tabbed PDP info layout"
+  echo "     fix(cart): correct quantity stepper aria-labels"
+  echo "     refactor(snippets): split mega product-card"
+  exit 1
+fi

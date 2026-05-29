@@ -1,0 +1,230 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "New Collection",
+        "heading_before": "Discover Your",
+        "heading_italic": "Signature",
+        "heading_after": "Scent",
+        "description": "Luxury fragrances crafted for every mood and season. Elevate your presence with our exclusive perfume collections.",
+        "button_text": "Shop Now",
+        "button_url": "/collections/all",
+        "secondary_button_text": "Explore All",
+        "secondary_button_url": "/collections",
+        "stat1_value": "500+",
+        "stat1_label": "Fragrances",
+        "stat2_value": "50K+",
+        "stat2_label": "Happy Clients",
+        "stat3_value": "15+",
+        "stat3_label": "Collections",
+        "hero_image": "shopify://shop_images/pexels-filmasper-52021537-7703038.jpg",
+        "badge_title": "Premium Quality",
+        "badge_subtitle": "100% Authentic"
+      }
+    },
+    "seasonal_collections": {
+      "type": "seasonal-collections",
+      "blocks": {
+        "winter": {
+          "type": "collection_card",
+          "settings": {
+            "image": "shopify://shop_images/pexels-rethaferguson-3059609.jpg",
+            "title": "Winter Collection",
+            "description": "Warm, rich scents crafted for cold evenings by the fire.",
+            "collection_url": "/collections/winter"
+          }
+        },
+        "summer": {
+          "type": "collection_card",
+          "settings": {
+            "image": "shopify://shop_images/pexels-laurachouette-21008923.jpg",
+            "title": "Summer Collection",
+            "description": "Fresh and vibrant fragrances for long, sun-drenched days.",
+            "collection_url": "/collections/summer"
+          }
+        },
+        "monsoon": {
+          "type": "collection_card",
+          "settings": {
+            "image": "shopify://shop_images/pexels-alesiakozik-7796225.jpg",
+            "title": "Monsoon Collection",
+            "description": "Earthy petrichor and rain-kissed florals for stormy days.",
+            "collection_url": "/collections/monsoon"
+          }
+        }
+      },
+      "block_order": [
+        "winter",
+        "summer",
+        "monsoon"
+      ],
+      "settings": {
+        "title": "Shop by Season",
+        "subtitle": "Every season calls for a different scent"
+      }
+    },
+    "new_arrivals": {
+      "type": "new-arrivals",
+      "settings": {
+        "title": "New Arrivals",
+        "subtitle": "The latest additions to our curated fragrance library",
+        "collection": "new-arrivals",
+        "product_limit": 8,
+        "show_view_all": true
+      }
+    },
+    "vibe_slider": {
+      "type": "vibe-slider",
+      "blocks": {
+        "fresh": {
+          "type": "vibe_card",
+          "settings": {
+            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090145.jpg",
+            "name": "Fresh",
+            "collection_url": "/collections/fresh",
+            "bg_color": "#d4ecd4"
+          }
+        },
+        "fruity": {
+          "type": "vibe_card",
+          "settings": {
+            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090145_2_4a268d31-461d-49ad-9a74-6360d99b4afe.jpg",
+            "name": "Fruity",
+            "collection_url": "/collections/fruity",
+            "bg_color": "#ffe5cc"
+          }
+        },
+        "floral": {
+          "type": "vibe_card",
+          "settings": {
+            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090145_3.jpg",
+            "name": "Floral",
+            "collection_url": "/collections/floral",
+            "bg_color": "#f5d5e8"
+          }
+        },
+        "oud": {
+          "type": "vibe_card",
+          "settings": {
+            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090146_2.jpg",
+            "name": "Oud",
+            "collection_url": "/collections/oud",
+            "bg_color": "#c8a882"
+          }
+        },
+        "spicy": {
+          "type": "vibe_card",
+          "settings": {
+            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090137.jpg",
+            "name": "Spicy",
+            "collection_url": "/collections/spicy",
+            "bg_color": "#e8c4a0"
+          }
+        },
+        "woody": {
+          "type": "vibe_card",
+          "settings": {
+            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090145_2.jpg",
+            "name": "Woody",
+            "collection_url": "/collections/woody",
+            "bg_color": "#c4a882"
+          }
+        },
+        "vibe_card_8LQNaV": {
+          "type": "vibe_card",
+          "settings": {
+            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090146_2.jpg",
+            "name": "Musky",
+            "collection_url": "shopify://collections/musky",
+            "bg_color": "#e8ddd0"
+          }
+        }
+      },
+      "block_order": [
+        "fresh",
+        "fruity",
+        "floral",
+        "oud",
+        "spicy",
+        "woody",
+        "vibe_card_8LQNaV"
+      ],
+      "settings": {
+        "title": "Choose Your Vibe",
+        "subtitle": "Find the fragrance family that speaks to your soul"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "review1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Absolutely breathtaking fragrance. The longevity is incredible — I received compliments all evening. This has become my signature scent.",
+            "name": "Sophia Laurent",
+            "tag": "Verified Purchase",
+            "avatar": "shopify://shop_images/pexels-alesiakozik-7796225.jpg"
+          }
+        },
+        "review2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "The packaging alone is worth every penny. The perfume itself is divine — delicate, sophisticated, and truly unique. Beautiful experience.",
+            "name": "Emma Rosewood",
+            "tag": "Loyal Customer"
+          }
+        },
+        "review3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "Best online perfume shopping experience I have ever had. Fast delivery, beautiful presentation, and an extraordinary scent that lasts all day.",
+            "name": "James Hartley",
+            "tag": "Verified Purchase",
+            "avatar": "shopify://shop_images/convert_size_2K_202605090045.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "review1",
+        "review2",
+        "review3"
+      ],
+      "settings": {
+        "title": "Our Customers Love Us",
+        "subtitle": "Real reviews from real perfume enthusiasts"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "title": "Subscribe Our Newsletter",
+        "description": "Get exclusive access to new arrivals, limited editions, and special offers delivered straight to your inbox.",
+        "placeholder": "Your email address",
+        "button_text": "Subscribe",
+        "privacy_text": "We respect your privacy. Unsubscribe at any time.",
+        "privacy_url": ""
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "seasonal_collections",
+    "new_arrivals",
+    "vibe_slider",
+    "testimonials",
+    "newsletter"
+  ]
+}

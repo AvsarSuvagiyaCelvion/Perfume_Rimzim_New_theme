@@ -1,0 +1,132 @@
+<section class="seasonal-section" id="SeasonalCollections">
+  <div class="container">
+
+    <div class="section-header animate-on-scroll">
+      <span class="section-label">Explore</span>
+      <h2 class="section-title">{{ section.settings.title | default: 'Shop by Season' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="seasonal-grid">
+      {%- for block in section.blocks -%}
+        <a
+          href="{{ block.settings.collection_url | default: '/collections/all' }}"
+          class="seasonal-card animate-on-scroll"
+          data-delay="{{ forloop.index0 | times: 120 }}"
+          {{ block.shopify_attributes }}
+        >
+          {%- if block.settings.image != blank -%}
+            <img
+              class="seasonal-card-img"
+              src="{{ block.settings.image | image_url: width: 600 }}"
+              srcset="{{ block.settings.image | image_url: width: 400 }} 400w,
+                      {{ block.settings.image | image_url: width: 600 }} 600w,
+                      {{ block.settings.image | image_url: width: 900 }} 900w"
+              sizes="(max-width: 768px) 100vw, 33vw"
+              alt="{{ block.settings.image.alt | default: block.settings.title }}"
+              width="600" height="800" loading="lazy"
+            >
+          {%- else -%}
+            {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'seasonal-card-img' -}}
+          {%- endif -%}
+
+          <div class="seasonal-card-overlay">
+            <span class="seasonal-card-chip">Collection</span>
+            <h3 class="seasonal-card-name">{{ block.settings.title | default: 'Collection' }}</h3>
+            {%- if block.settings.description != blank -%}
+              <p class="seasonal-card-desc">{{ block.settings.description }}</p>
+            {%- endif -%}
+            <span class="seasonal-card-cta">
+              Shop Now
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+              </svg>
+            </span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Seasonal Collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Shop by Season"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Every season calls for a different scent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_card",
+      "name": "Collection Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Collection name",
+          "default": "Winter Collection"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short description",
+          "default": "Warm, rich scents crafted for cold evenings."
+        },
+        {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Seasonal Collections",
+      "blocks": [
+        {
+          "type": "collection_card",
+          "settings": {
+            "title": "Winter Collection",
+            "description": "Warm, rich scents crafted for cold evenings by the fire."
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "title": "Summer Collection",
+            "description": "Fresh and vibrant fragrances for sun-drenched days."
+          }
+        },
+        {
+          "type": "collection_card",
+          "settings": {
+            "title": "Monsoon Collection",
+            "description": "Earthy petrichor and rain-kissed florals."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
