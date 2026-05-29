@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "collection_header": {
+      "type": "collection-header",
+      "settings": {
+        "label": "Collection",
+        "fallback_desc": "Explore our curated selection of luxury fragrances."
+      }
+    },
+    "collection_products": {
+      "type": "main-collection",
+      "settings": {
+        "products_per_page": 12
+      }
+    }
+  },
+  "order": ["collection_header", "collection_products"]
+}

@@ -1,0 +1,134 @@
+<section class="list-collections-section" id="ListCollections">
+  <div class="container">
+
+    {%- comment -%} ── Page Header ── {%- endcomment -%}
+    <div class="list-collections-header">
+      <nav class="col-breadcrumb t-reveal t-reveal--left" style="--td:0ms" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Collections</span>
+      </nav>
+
+      <span class="section-label" style="--td:80ms">Shop</span>
+
+      <h1 class="list-collections-title t-split-title" data-anim="split">
+        {{ section.settings.title | default: 'All Collections' }}
+      </h1>
+
+      {%- if section.settings.subtitle != blank -%}
+        <p class="section-subtitle" style="--td:450ms">
+          {{ section.settings.subtitle }}
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── Collections Grid ── {%- endcomment -%}
+    {%- assign all_collections = collections -%}
+    {%- assign excluded = section.settings.exclude_handle | downcase | strip -%}
+
+    <div class="list-collections-grid">
+      {%- for col in all_collections -%}
+        {%- if excluded != blank and col.handle == excluded -%}
+          {%- continue -%}
+        {%- endif -%}
+        {%- if col.products_count == 0 and section.settings.hide_empty -%}
+          {%- continue -%}
+        {%- endif -%}
+
+        <a
+          href="{{ col.url }}"
+          class="col-card animate-on-scroll"
+          data-delay="{{ forloop.index0 | times: 80 }}"
+          aria-label="{{ col.title }}"
+        >
+          {%- comment -%} Image {%- endcomment -%}
+          <div class="col-card-media">
+            {%- if col.image != blank -%}
+              <img
+                class="col-card-img"
+                src="{{ col.image | image_url: width: 600 }}"
+                srcset="{{ col.image | image_url: width: 400 }} 400w,
+                        {{ col.image | image_url: width: 600 }} 600w,
+                        {{ col.image | image_url: width: 900 }} 900w"
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                alt="{{ col.image.alt | default: col.title }}"
+                width="600" height="720" loading="lazy"
+              >
+            {%- elsif col.products.first.featured_image != blank -%}
+              {%- comment -%} Fallback: first product image {%- endcomment -%}
+              <img
+                class="col-card-img"
+                src="{{ col.products.first.featured_image | image_url: width: 600 }}"
+                alt="{{ col.title }}"
+                width="600" height="720" loading="lazy"
+              >
+            {%- else -%}
+              {{- 'collection-1' | placeholder_svg_tag: 'col-card-img' -}}
+            {%- endif -%}
+
+            {%- comment -%} Overlay content {%- endcomment -%}
+            <div class="col-card-overlay">
+              <div class="col-card-body">
+                <p class="col-card-count">
+                  {{ col.products_count }}
+                  {{ col.products_count | pluralize: 'product', 'products' }}
+                </p>
+                <h2 class="col-card-title">{{ col.title }}</h2>
+                {%- if col.description != blank -%}
+                  <p class="col-card-desc">{{ col.description | strip_html | truncate: 80 }}</p>
+                {%- endif -%}
+                <span class="col-card-cta">
+                  Shop Now
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+      {%- else -%}
+        <p class="list-collections-empty">No collections found.</p>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Page title",
+      "default": "All Collections"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Explore our complete range of luxury fragrances, crafted for every mood and season."
+    },
+    {
+      "type": "text",
+      "id": "exclude_handle",
+      "label": "Exclude collection by handle",
+      "info": "Enter the handle of one collection to hide (e.g. 'frontpage')"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_empty",
+      "label": "Hide empty collections",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections List"
+    }
+  ]
+}
+{% endschema %}

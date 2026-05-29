@@ -1,0 +1,264 @@
+{%- liquid
+  assign sort_by      = collection.sort_by | default: collection.default_sort_by
+  assign per_page     = section.settings.products_per_page | default: 12
+-%}
+
+{%- paginate collection.products by per_page -%}
+
+<section class="main-collection-section" id="MainCollection">
+  <div class="container">
+
+    {%- comment -%} ── Toolbar: count + sort ── {%- endcomment -%}
+    <div class="collection-toolbar">
+      <p class="collection-count">
+        <span>{{ collection.products_count }}</span>
+        {{ collection.products_count | pluralize: 'product', 'products' }}
+      </p>
+
+      <div class="collection-sort">
+        <label for="CollectionSort" class="collection-sort-label">Sort by</label>
+        <div class="collection-sort-select-wrap">
+          <select
+            id="CollectionSort"
+            class="collection-sort-select"
+            name="sort_by"
+            aria-label="Sort products"
+          >
+            {%- for option in collection.sort_options -%}
+              <option
+                value="{{ option.value }}"
+                {%- if option.value == sort_by %} selected{%- endif -%}
+              >{{ option.name }}</option>
+            {%- endfor -%}
+          </select>
+          <svg class="collection-sort-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    {%- comment -%} ── Product Grid ── {%- endcomment -%}
+    {%- if collection.products.size > 0 -%}
+      <div class="products-grid" id="CollectionGrid">
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign thirty_days = 2592000
+            assign now_ts     = 'now' | date: '%s' | plus: 0
+            assign cutoff_ts  = now_ts | minus: thirty_days
+            assign created_ts = product.created_at | date: '%s' | plus: 0
+            assign is_new     = false
+            if created_ts > cutoff_ts
+              assign is_new = true
+            endif
+            assign first_variant = product.selected_or_first_available_variant
+            assign colour_index = -1
+            assign size_index   = -1
+            for opt in product.options
+              assign opt_down = opt | downcase
+              if opt_down == 'color' or opt_down == 'colour'
+                assign colour_index = forloop.index0
+              endif
+              if opt_down == 'size' or opt_down == 'volume' or opt_down == 'ml'
+                assign size_index = forloop.index0
+              endif
+            endfor
+          -%}
+
+          <div class="product-card animate-on-scroll" data-delay="{{ forloop.index0 | times: 60 }}">
+
+            {%- comment -%} ── Media ── {%- endcomment -%}
+            <div class="product-card-media">
+              <a href="{{ product.url }}" class="product-card-img-link" tabindex="-1" aria-hidden="true">
+                {%- if product.featured_image != blank -%}
+                  <img
+                    class="product-card-img"
+                    src="{{ product.featured_image | image_url: width: 480 }}"
+                    srcset="{{ product.featured_image | image_url: width: 320 }} 320w,
+                            {{ product.featured_image | image_url: width: 480 }} 480w,
+                            {{ product.featured_image | image_url: width: 640 }} 640w"
+                    sizes="(max-width: 480px) 50vw, (max-width: 768px) 33vw, 25vw"
+                    alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                    width="480" height="640" loading="lazy"
+                  >
+                  {%- if product.images.size > 1 -%}
+                    <img
+                      class="product-card-img product-card-img--hover"
+                      src="{{ product.images[1] | image_url: width: 480 }}"
+                      alt="{{ product.images[1].alt | default: product.title | escape }}"
+                      width="480" height="640" loading="lazy"
+                      aria-hidden="true"
+                    >
+                  {%- endif -%}
+                {%- else -%}
+                  {{- 'product-1' | placeholder_svg_tag: 'product-card-img' -}}
+                {%- endif -%}
+              </a>
+
+              {%- if product.compare_at_price > product.price -%}
+                <span class="product-card-badge badge-sale">Sale</span>
+              {%- elsif is_new -%}
+                <span class="product-card-badge badge-new">New</span>
+              {%- endif -%}
+
+              <button class="product-card-wishlist" aria-label="Add {{ product.title | escape }} to wishlist">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                </svg>
+              </button>
+
+              <div class="product-quick-add">
+                {%- if product.available -%}
+                  <button
+                    type="button"
+                    class="product-quick-add-btn"
+                    data-variant-id="{{ first_variant.id }}"
+                    data-has-variants="{{ product.variants.size | minus: 1 | at_least: 0 }}"
+                    data-product-url="{{ product.url }}"
+                    aria-label="Quick add {{ product.title | escape }}"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                    </svg>
+                    Quick Add
+                  </button>
+                {%- else -%}
+                  <span class="product-quick-add-soldout">Sold Out</span>
+                {%- endif -%}
+              </div>
+            </div>
+
+            {%- comment -%} ── Info ── {%- endcomment -%}
+            <div class="product-card-body">
+              {%- if product.vendor != blank -%}
+                <p class="product-card-vendor">{{ product.vendor }}</p>
+              {%- endif -%}
+              <h3 class="product-card-title">
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h3>
+              <p class="product-card-price">
+                {%- if product.compare_at_price > product.price -%}
+                  <s class="product-price-compare">{{ product.compare_at_price | money }}</s>
+                {%- endif -%}
+                {%- if product.price_varies -%}<span class="product-price-from">from </span>{%- endif -%}
+                <span class="product-price-current {%- if product.compare_at_price > product.price %} price-sale{%- endif -%}">
+                  {{- product.price | money -}}
+                </span>
+              </p>
+
+              {%- if colour_index >= 0 -%}
+                {%- assign seen_c = '' -%}
+                {%- assign rc = 0 -%}
+                <div class="product-swatches" aria-label="Available colours">
+                  {%- for variant in product.variants -%}
+                    {%- assign cv = variant.options[colour_index] -%}
+                    {%- assign ck = cv | downcase | strip -%}
+                    {%- if seen_c contains ck -%}{%- continue -%}{%- endif -%}
+                    {%- assign seen_c = seen_c | append: ck | append: '|' -%}
+                    {%- if rc < 4 -%}
+                      <a href="{{ product.url }}?variant={{ variant.id }}" class="product-swatch product-swatch--colour" title="{{ cv }}" aria-label="{{ cv }}" style="background-color:{{ cv | downcase }};"></a>
+                      {%- assign rc = rc | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- elsif size_index >= 0 -%}
+                {%- assign seen_s = '' -%}
+                {%- assign rs = 0 -%}
+                <div class="product-swatches product-swatches--sizes" aria-label="Available sizes">
+                  {%- for variant in product.variants -%}
+                    {%- assign sv = variant.options[size_index] -%}
+                    {%- assign sk = sv | downcase | strip -%}
+                    {%- if seen_s contains sk -%}{%- continue -%}{%- endif -%}
+                    {%- assign seen_s = seen_s | append: sk | append: '|' -%}
+                    {%- if rs < 4 -%}
+                      <a href="{{ product.url }}?variant={{ variant.id }}" class="product-swatch product-swatch--size {%- unless variant.available %} swatch-unavailable{%- endunless -%}" title="{{ sv }}">{{ sv }}</a>
+                      {%- assign rs = rs | plus: 1 -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
+            </div>
+
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} ── Pagination ── {%- endcomment -%}
+      {%- if paginate.pages > 1 -%}
+        <nav class="collection-pagination" aria-label="Pagination">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="pagination-btn pagination-prev" aria-label="Previous page">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="18" height="18">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+              </svg>
+            </a>
+          {%- endif -%}
+
+          <div class="pagination-pages">
+            {%- for part in paginate.parts -%}
+              {%- if part.is_link -%}
+                <a href="{{ part.url }}" class="pagination-page">{{ part.title }}</a>
+              {%- elsif part.title == paginate.current_page -%}
+                <span class="pagination-page is-current" aria-current="page">{{ part.title }}</span>
+              {%- else -%}
+                <span class="pagination-ellipsis">{{ part.title }}</span>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="pagination-btn pagination-next" aria-label="Next page">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="18" height="18">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+              </svg>
+            </a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+
+    {%- else -%}
+      {%- comment -%} Empty collection {%- endcomment -%}
+      <div class="collection-empty">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" width="64" height="64" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/>
+        </svg>
+        <h2>No products found</h2>
+        <p>This collection doesn't have any products yet.</p>
+        <a href="{{ routes.collections_url }}" class="btn btn-primary">Browse all collections</a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{%- endpaginate -%}
+
+<script>
+  (function () {
+    var sel = document.getElementById('CollectionSort');
+    if (!sel) return;
+    sel.addEventListener('change', function () {
+      var url = new URL(window.location.href);
+      url.searchParams.set('sort_by', sel.value);
+      url.searchParams.delete('page');
+      window.location.href = url.toString();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 12
+    }
+  ]
+}
+{% endschema %}

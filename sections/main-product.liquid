@@ -1,0 +1,329 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign product_form_id = 'ProductForm-' | append: section.id
+-%}
+
+{%- comment -%} Embed variant data for JS {%- endcomment -%}
+<script id="ProductJSON" type="application/json">
+  {{ product | json }}
+</script>
+<script id="MoneyFormat" type="application/json">
+  {{ shop.money_format | json }}
+</script>
+
+<section class="pdp-section" id="ProductSection" data-section-id="{{ section.id }}">
+  <div class="container">
+
+    {%- comment -%} ── Breadcrumb ── {%- endcomment -%}
+    <nav class="pdp-breadcrumb t-reveal t-reveal--left" style="--td:0ms" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">›</span>
+      {%- if collection -%}
+        <a href="{{ collection.url }}">{{ collection.title }}</a>
+        <span aria-hidden="true">›</span>
+      {%- else -%}
+        <a href="{{ routes.collections_url }}">Collections</a>
+        <span aria-hidden="true">›</span>
+      {%- endif -%}
+      <span aria-current="page">{{ product.title }}</span>
+    </nav>
+
+    <div class="pdp-layout">
+
+      {%- comment -%} ══════════ GALLERY ══════════ {%- endcomment -%}
+      <div class="pdp-gallery">
+
+        {%- comment -%} Main image {%- endcomment -%}
+        <div class="pdp-gallery-main" id="PdpGalleryMain">
+          {%- if product.featured_image != blank -%}
+            <img
+              id="PdpMainImage"
+              class="pdp-main-img"
+              src="{{ product.featured_image | image_url: width: 900 }}"
+              srcset="{{ product.featured_image | image_url: width: 600 }} 600w,
+                      {{ product.featured_image | image_url: width: 900 }} 900w,
+                      {{ product.featured_image | image_url: width: 1200 }} 1200w"
+              sizes="(max-width: 768px) 100vw, 55vw"
+              alt="{{ product.featured_image.alt | default: product.title | escape }}"
+              width="900" height="1200"
+              loading="eager"
+            >
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'pdp-main-img' }}
+          {%- endif -%}
+
+          {%- if product.compare_at_price > product.price -%}
+            <span class="pdp-gallery-badge">Sale</span>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Thumbnails {%- endcomment -%}
+        {%- if product.images.size > 1 -%}
+          <div class="pdp-thumbs" id="PdpThumbs" role="list" aria-label="Product images">
+            {%- for image in product.images -%}
+              <button
+                type="button"
+                class="pdp-thumb {% if forloop.first %}active{% endif %}"
+                data-full-src="{{ image | image_url: width: 900 }}"
+                data-srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w"
+                aria-label="View image {{ forloop.index }}"
+                role="listitem"
+              >
+                <img
+                  src="{{ image | image_url: width: 120 }}"
+                  alt="{{ image.alt | default: product.title | escape }}"
+                  width="120" height="120" loading="lazy"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+      </div>{%- comment -%}/.pdp-gallery{%- endcomment -%}
+
+      {%- comment -%} ══════════ PRODUCT INFO ══════════ {%- endcomment -%}
+      <div class="pdp-info" id="PdpInfo">
+
+        {%- comment -%} Vendor {%- endcomment -%}
+        {%- if product.vendor != blank -%}
+          <p class="pdp-vendor t-reveal t-reveal--left" style="--td:80ms">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Title {%- endcomment -%}
+        <h1 class="pdp-title t-reveal" style="--td:160ms">{{ product.title }}</h1>
+
+        {%- comment -%} Price {%- endcomment -%}
+        <div class="pdp-price t-reveal" style="--td:260ms" id="PdpPrice">
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            <s class="pdp-price-compare">{{ current_variant.compare_at_price | money }}</s>
+            <span class="pdp-price-current pdp-price-sale">{{ current_variant.price | money }}</span>
+          {%- else -%}
+            <span class="pdp-price-current">{{ current_variant.price | money }}</span>
+          {%- endif -%}
+          {%- if product.price_varies -%}
+            <span class="pdp-price-from">From</span>
+          {%- endif -%}
+        </div>
+
+        <div class="pdp-divider t-reveal" style="--td:320ms"></div>
+
+        {%- comment -%} ── Product Form ── {%- endcomment -%}
+        {%- form 'product', product, id: product_form_id, class: 'pdp-form' -%}
+
+          {%- comment -%} Variant Options {%- endcomment -%}
+          {%- for option in product.options_with_values -%}
+            {%- liquid
+              assign option_name_down = option.name | downcase
+              assign is_colour = false
+              assign is_size   = false
+              if option_name_down == 'color' or option_name_down == 'colour'
+                assign is_colour = true
+              endif
+              if option_name_down == 'size' or option_name_down == 'volume' or option_name_down == 'ml'
+                assign is_size = true
+              endif
+            -%}
+
+            <div class="pdp-option t-reveal" style="--td:{{ 380 | plus: forloop.index0 | times: 80 }}ms" data-option-index="{{ forloop.index0 }}">
+              <div class="pdp-option-header">
+                <span class="pdp-option-name">{{ option.name }}</span>
+                <span class="pdp-option-value" id="PdpOptionVal-{{ forloop.index }}">{{ option.selected_value }}</span>
+              </div>
+
+              <div class="pdp-option-values" role="radiogroup" aria-label="{{ option.name }}">
+                {%- for value in option.values -%}
+                  {%- assign is_selected = false -%}
+                  {%- if option.selected_value == value -%}
+                    {%- assign is_selected = true -%}
+                  {%- endif -%}
+
+                  <button
+                    type="button"
+                    class="pdp-option-btn {% if is_colour %}pdp-option-btn--colour{% endif %} {% if is_selected %}active{% endif %}"
+                    data-option-pos="{{ forloop.parentloop.index }}"
+                    data-option-val="{{ value | escape }}"
+                    aria-pressed="{{ is_selected }}"
+                    {%- if is_colour -%}
+                      style="background-color: {{ value | downcase }};"
+                      title="{{ value }}"
+                    {%- endif -%}
+                  >
+                    {%- unless is_colour -%}{{ value }}{%- endunless -%}
+                  </button>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endfor -%}
+
+          {%- comment -%} Hidden variant ID input {%- endcomment -%}
+          <input type="hidden" name="id" id="PdpVariantId" value="{{ current_variant.id }}">
+
+          {%- comment -%} Quantity {%- endcomment -%}
+          <div class="pdp-quantity t-reveal" style="--td:560ms">
+            <span class="pdp-option-name">Quantity</span>
+            <div class="pdp-qty-wrap">
+              <button type="button" class="pdp-qty-btn pdp-qty-minus" aria-label="Decrease quantity">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" width="14" height="14" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6"/>
+                </svg>
+              </button>
+              <input
+                type="number"
+                name="quantity"
+                id="PdpQty"
+                class="pdp-qty-input"
+                value="1"
+                min="1"
+                aria-label="Quantity"
+              >
+              <button type="button" class="pdp-qty-btn pdp-qty-plus" aria-label="Increase quantity">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" width="14" height="14" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {%- comment -%} Add to Cart {%- endcomment -%}
+          <div class="pdp-actions t-reveal t-reveal--scale" style="--td:660ms">
+            <button
+              type="submit"
+              name="add"
+              id="PdpATC"
+              class="btn btn-primary pdp-atc-btn"
+              {%- unless current_variant.available %} disabled{%- endunless -%}
+            >
+              {%- if current_variant.available -%}
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/>
+                </svg>
+                Add to Cart
+              {%- else -%}
+                Sold Out
+              {%- endif -%}
+            </button>
+
+            <a href="{{ product.url }}" class="btn btn-outline pdp-view-btn">View Full Details</a>
+          </div>
+
+        {%- endform -%}
+
+        {%- comment -%} ── Availability notice ── {%- endcomment -%}
+        <p class="pdp-availability t-reveal" style="--td:720ms" id="PdpAvailability">
+          {%- if current_variant.available -%}
+            <span class="pdp-in-stock">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              In Stock
+            </span>
+          {%- else -%}
+            <span class="pdp-out-stock">Currently Unavailable</span>
+          {%- endif -%}
+        </p>
+
+        {%- comment -%} ── Trust Badges ── {%- endcomment -%}
+        <div class="pdp-trust t-reveal" style="--td:800ms">
+          <div class="pdp-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/>
+            </svg>
+            <span>Free Delivery over $50</span>
+          </div>
+          <div class="pdp-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+            </svg>
+            <span>30-Day Easy Returns</span>
+          </div>
+          <div class="pdp-trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="18" height="18" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+            </svg>
+            <span>100% Authentic</span>
+          </div>
+        </div>
+
+        {%- comment -%} ── Accordion ── {%- endcomment -%}
+        <div class="pdp-accordion t-reveal" style="--td:880ms">
+
+          {%- comment -%} Description {%- endcomment -%}
+          {%- if product.description != blank -%}
+            <div class="pdp-accordion-item">
+              <button type="button" class="pdp-accordion-trigger" aria-expanded="true">
+                <span>Description</span>
+                <svg class="pdp-accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                </svg>
+              </button>
+              <div class="pdp-accordion-body">
+                <div class="pdp-description rte">
+                  {{ product.description }}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Fragrance Notes (metafield, graceful fallback) {%- endcomment -%}
+          {%- if product.metafields.custom.fragrance_notes != blank -%}
+            <div class="pdp-accordion-item">
+              <button type="button" class="pdp-accordion-trigger" aria-expanded="false">
+                <span>Fragrance Notes</span>
+                <svg class="pdp-accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                </svg>
+              </button>
+              <div class="pdp-accordion-body" hidden>
+                {{ product.metafields.custom.fragrance_notes }}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- comment -%} Shipping & Returns {%- endcomment -%}
+          <div class="pdp-accordion-item">
+            <button type="button" class="pdp-accordion-trigger" aria-expanded="false">
+              <span>Shipping &amp; Returns</span>
+              <svg class="pdp-accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+              </svg>
+            </button>
+            <div class="pdp-accordion-body" hidden>
+              <p>{{ section.settings.shipping_text | default: 'Free standard delivery on orders over $50. Express delivery available at checkout. Easy 30-day returns on all orders. See our full returns policy for details.' }}</p>
+            </div>
+          </div>
+
+          {%- comment -%} Ingredients {%- endcomment -%}
+          {%- if product.metafields.custom.ingredients != blank -%}
+            <div class="pdp-accordion-item">
+              <button type="button" class="pdp-accordion-trigger" aria-expanded="false">
+                <span>Ingredients</span>
+                <svg class="pdp-accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                </svg>
+              </button>
+              <div class="pdp-accordion-body" hidden>
+                {{ product.metafields.custom.ingredients }}
+              </div>
+            </div>
+          {%- endif -%}
+
+        </div>{%- comment -%}/.pdp-accordion{%- endcomment -%}
+
+      </div>{%- comment -%}/.pdp-info{%- endcomment -%}
+    </div>{%- comment -%}/.pdp-layout{%- endcomment -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "shipping_text",
+      "label": "Shipping & Returns text",
+      "default": "Free standard delivery on orders over $50. Express delivery available at checkout. Easy 30-day returns on all orders."
+    }
+  ]
+}
+{% endschema %}

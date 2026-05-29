@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "list_collections": {
+      "type": "list-collections",
+      "settings": {
+        "title": "All Collections",
+        "subtitle": "Explore our complete range of luxury fragrances, crafted for every mood and season.",
+        "hide_empty": true
+      }
+    }
+  },
+  "order": ["list_collections"]
+}

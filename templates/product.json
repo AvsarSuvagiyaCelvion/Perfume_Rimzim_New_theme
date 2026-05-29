@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "shipping_text": "Free standard delivery on orders over $50. Express delivery available at checkout. Easy 30-day returns on all orders."
+      }
+    }
+  },
+  "order": ["main"]
+}

@@ -1,0 +1,80 @@
+{%- assign col = collection -%}
+
+<section class="col-header-section" id="CollectionHeader">
+  {%- comment -%} Optional background image from collection image {%- endcomment -%}
+  {%- if col.image != blank -%}
+    <div class="col-header-bg" aria-hidden="true">
+      <img
+        src="{{ col.image | image_url: width: 1400 }}"
+        srcset="{{ col.image | image_url: width: 800 }} 800w,
+                {{ col.image | image_url: width: 1200 }} 1200w,
+                {{ col.image | image_url: width: 1400 }} 1400w"
+        sizes="100vw"
+        alt=""
+        width="1400" height="500" loading="eager"
+      >
+      <div class="col-header-bg-overlay"></div>
+    </div>
+  {%- endif -%}
+
+  <div class="container col-header-inner {% if col.image != blank %}has-bg{% endif %}">
+
+    {%- comment -%} Breadcrumb {%- endcomment -%}
+    <nav class="col-breadcrumb t-reveal t-reveal--left" style="--td:0ms" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">›</span>
+      <a href="{{ routes.collections_url }}">Collections</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">{{ col.title }}</span>
+    </nav>
+
+    {%- comment -%} Label {%- endcomment -%}
+    <span class="section-label t-reveal t-reveal--left" style="--td:80ms">
+      {{ section.settings.label | default: 'Collection' }}
+    </span>
+
+    {%- comment -%} Title — each word rises individually via JS word-split {%- endcomment -%}
+    <h1 class="col-header-title t-split-title" data-anim="split">
+      {{ col.title }}
+    </h1>
+
+    {%- comment -%} Description {%- endcomment -%}
+    {%- if col.description != blank or section.settings.fallback_desc != blank -%}
+      <p class="col-header-desc t-reveal" style="--td:600ms">
+        {{ col.description | default: section.settings.fallback_desc }}
+      </p>
+    {%- endif -%}
+
+    {%- comment -%} Product count {%- endcomment -%}
+    <p class="col-header-count t-reveal" style="--td:750ms">
+      <span>{{ col.products_count }}</span>
+      {{ col.products_count | pluralize: 'product', 'products' }}
+    </p>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Eyebrow label",
+      "default": "Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "fallback_desc",
+      "label": "Fallback description (if collection has none)",
+      "default": "Explore our curated selection of luxury fragrances."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Header"
+    }
+  ]
+}
+{% endschema %}

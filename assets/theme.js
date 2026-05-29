@@ -150,7 +150,7 @@
   }
 
   /* --------------------------------------------------------
-     Scroll Animations (IntersectionObserver)
+     Scroll Animations (IntersectionObserver) — legacy elements
   -------------------------------------------------------- */
   function initScrollAnimations() {
     var elements = document.querySelectorAll('.animate-on-scroll');
@@ -165,14 +165,116 @@
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         var delay = parseInt(entry.target.dataset.delay || '0', 10);
-        setTimeout(function () {
-          entry.target.classList.add('animated');
-        }, delay);
+        setTimeout(function () { entry.target.classList.add('animated'); }, delay);
         observer.unobserve(entry.target);
       });
     }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
 
     elements.forEach(function (el) { observer.observe(el); });
+  }
+
+  /* --------------------------------------------------------
+     Text Animations
+     — Word-split scroll reveal for all .section-title elements
+     — Slide-left reveal for all .section-label elements
+     — Slide-up reveal for all .section-subtitle elements
+     — Same treatment for .col-header-title on collection pages
+  -------------------------------------------------------- */
+  function initTextAnimations() {
+    /* Skip if user prefers reduced motion */
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+
+    /* ── 1. Word-split ── */
+    var splitTitles = document.querySelectorAll(
+      '.section-title, .col-header-title, [data-anim="split"]'
+    );
+
+    splitTitles.forEach(function (el) {
+      el.classList.add('t-split-title');
+
+      /* Bail if already split (e.g. page cached) */
+      if (el.querySelector('.t-split-word')) return;
+
+      /* Gather raw text, preserving child HTML (e.g. <em>) */
+      var nodes      = Array.from(el.childNodes);
+      var baseDelay  = 80; /* ms between words */
+      var wordIndex  = 0;
+      var fragment   = document.createDocumentFragment();
+
+      nodes.forEach(function (node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          /* Split text nodes into individual word spans */
+          var words = node.textContent.split(/(\s+)/);
+          words.forEach(function (chunk) {
+            if (/^\s+$/.test(chunk)) {
+              /* Preserve whitespace as-is */
+              fragment.appendChild(document.createTextNode(chunk));
+            } else if (chunk.length) {
+              var span = document.createElement('span');
+              span.className = 't-split-word';
+              span.style.setProperty('--td', (wordIndex * baseDelay) + 'ms');
+              span.textContent = chunk;
+              fragment.appendChild(span);
+              wordIndex++;
+            }
+          });
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          /* Wrap element children (em, strong, etc.) as a unit */
+          var wrapper = document.createElement('span');
+          wrapper.className = 't-split-word';
+          wrapper.style.setProperty('--td', (wordIndex * baseDelay) + 'ms');
+          wrapper.appendChild(node.cloneNode(true));
+          fragment.appendChild(wrapper);
+          wordIndex++;
+        }
+      });
+
+      el.innerHTML = '';
+      el.appendChild(fragment);
+    });
+
+    /* ── 2. Label slide-left ── */
+    document.querySelectorAll('.section-label').forEach(function (el) {
+      el.classList.add('t-label-reveal');
+    });
+
+    /* ── 3. Subtitle fade-up ── */
+    document.querySelectorAll('.section-subtitle').forEach(function (el) {
+      el.classList.add('t-subtitle-reveal');
+      /* Fire after the last word of the sibling title */
+      var header = el.closest('.section-header');
+      if (header) {
+        var title = header.querySelector('.t-split-title');
+        var wordCount = title ? title.querySelectorAll('.t-split-word').length : 0;
+        el.style.setProperty('--td', (wordCount * 80 + 100) + 'ms');
+      }
+    });
+
+    /* ── 4. IntersectionObserver to trigger all of the above ── */
+    var textObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+
+        if (el.classList.contains('t-split-title')) {
+          el.classList.add('t-split-title--active');
+        }
+        if (el.classList.contains('t-label-reveal')) {
+          el.classList.add('t-label-reveal--active');
+        }
+        if (el.classList.contains('t-subtitle-reveal')) {
+          el.classList.add('t-subtitle-reveal--active');
+        }
+        textObserver.unobserve(el);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll(
+      '.t-split-title, .t-label-reveal, .t-subtitle-reveal'
+    ).forEach(function (el) {
+      textObserver.observe(el);
+    });
   }
 
   /* --------------------------------------------------------
@@ -264,7 +366,12 @@
     track.addEventListener('mouseleave', startAuto);
 
     measure();
-    window.addEventListener('resize', measure);
+    /* Debounce resize so CSS breakpoint changes have time to apply */
+    var resizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(measure, 120);
+    });
     startAuto();
   }
 
@@ -275,22 +382,51 @@
   -------------------------------------------------------- */
   function initAddToCart() {
     document.addEventListener('click', function (e) {
+      /* ── New Arrivals: simple Add to Cart button ── */
+      var atcBtn = e.target.closest('.product-card-atc');
+      if (atcBtn && !atcBtn.disabled) {
+        var variantId = atcBtn.dataset.variantId;
+        if (!variantId) return;
+        var original = atcBtn.textContent.trim();
+        atcBtn.disabled = true;
+        atcBtn.textContent = 'Adding…';
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify({ id: parseInt(variantId, 10), quantity: 1 })
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (data) {
+            if (data.id) {
+              atcBtn.textContent = 'Added ✓';
+              refreshCartCount();
+              setTimeout(function () {
+                atcBtn.textContent = original;
+                atcBtn.disabled = false;
+              }, 2000);
+            } else { throw data; }
+          })
+          .catch(function () {
+            atcBtn.textContent = original;
+            atcBtn.disabled = false;
+          });
+        return;
+      }
+
+      /* ── Collection page: Quick Add overlay button ── */
       var btn = e.target.closest('.product-quick-add-btn');
       if (!btn || btn.disabled) return;
 
       var variantId   = btn.dataset.variantId;
       var hasVariants = parseInt(btn.dataset.hasVariants || '0', 10);
       var productUrl  = btn.dataset.productUrl;
-
       if (!variantId) return;
 
-      /* Multi-variant: send to product page so customer can choose */
       if (hasVariants > 0) {
         window.location.href = productUrl || '/products/' + variantId;
         return;
       }
 
-      /* Single-variant: AJAX add */
       var originalHtml = btn.innerHTML;
       btn.disabled = true;
       btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Adding…';
@@ -311,9 +447,7 @@
               btn.style.background = '';
               btn.disabled = false;
             }, 2200);
-          } else {
-            throw data;
-          }
+          } else { throw data; }
         })
         .catch(function () {
           btn.innerHTML = originalHtml;
@@ -377,17 +511,212 @@
   }
 
   /* --------------------------------------------------------
+     Scroll to Top
+  -------------------------------------------------------- */
+  function initScrollToTop() {
+    var btn = document.getElementById('ScrollToTop');
+    if (!btn) return;
+
+    var threshold = 400;
+
+    function onScroll() {
+      if (window.scrollY > threshold) {
+        btn.classList.add('is-visible');
+      } else {
+        btn.classList.remove('is-visible');
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); /* run once on load in case page is already scrolled */
+
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* --------------------------------------------------------
      Boot
   -------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', function () {
     initHeaderScroll();
     initMobileMenu();
     initDropdowns();
-    initScrollAnimations();
+    initTextAnimations();   /* word-split + scroll reveals */
+    initScrollAnimations(); /* legacy .animate-on-scroll */
     initVibeSlider();
     initAddToCart();
     initNewsletterForm();
     refreshCartCount();
+    initScrollToTop();
+  });
+
+})();
+
+/* ============================================================
+   PDP — auto-init on DOMContentLoaded
+   ============================================================ */
+(function () {
+  'use strict';
+
+  /* --------------------------------------------------------
+     Gallery thumbnails
+  -------------------------------------------------------- */
+  function initPdpGallery() {
+    var thumbs   = document.querySelectorAll('.pdp-thumb');
+    var mainImg  = document.getElementById('PdpMainImage');
+    if (!thumbs.length || !mainImg) return;
+
+    thumbs.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        thumbs.forEach(function (t) { t.classList.remove('active'); });
+        btn.classList.add('active');
+        mainImg.src     = btn.dataset.fullSrc;
+        mainImg.srcset  = btn.dataset.srcset || '';
+      });
+    });
+  }
+
+  /* --------------------------------------------------------
+     Variant option buttons → update hidden input + price
+  -------------------------------------------------------- */
+  function initPdpVariants() {
+    var section = document.getElementById('ProductSection');
+    if (!section) return;
+
+    var productDataEl = document.getElementById('ProductJSON');
+    var moneyFmtEl    = document.getElementById('MoneyFormat');
+    if (!productDataEl) return;
+
+    var product   = JSON.parse(productDataEl.textContent);
+    var moneyFmt  = moneyFmtEl ? JSON.parse(moneyFmtEl.textContent) : '{{amount}}';
+    var variants  = product.variants;
+
+    /* Track selected options */
+    var selected = {};
+    section.querySelectorAll('.pdp-option').forEach(function (optEl) {
+      var idx = parseInt(optEl.dataset.optionIndex, 10);
+      var active = optEl.querySelector('.pdp-option-btn.active');
+      if (active) selected[idx] = active.dataset.optionVal;
+    });
+
+    section.querySelectorAll('.pdp-option-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var optEl = btn.closest('.pdp-option');
+        var idx   = parseInt(optEl.dataset.optionIndex, 10);
+
+        /* Update active state */
+        optEl.querySelectorAll('.pdp-option-btn').forEach(function (b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-pressed', 'true');
+        selected[idx] = btn.dataset.optionVal;
+
+        /* Update label */
+        var label = optEl.querySelector('.pdp-option-value');
+        if (label) label.textContent = btn.dataset.optionVal;
+
+        /* Find matching variant */
+        var match = variants.find(function (v) {
+          return Object.keys(selected).every(function (i) {
+            return v['option' + (parseInt(i, 10) + 1)] === selected[i];
+          });
+        });
+
+        if (!match) return;
+
+        /* Update hidden variant ID */
+        var idInput = document.getElementById('PdpVariantId');
+        if (idInput) idInput.value = match.id;
+
+        /* Update price */
+        updatePrice(match, moneyFmt);
+
+        /* Update ATC button */
+        var atcBtn = document.getElementById('PdpATC');
+        if (atcBtn) {
+          atcBtn.disabled = !match.available;
+          atcBtn.querySelector('span') && (atcBtn.querySelector('span').textContent = match.available ? 'Add to Cart' : 'Sold Out');
+        }
+
+        /* Update availability */
+        var avail = document.getElementById('PdpAvailability');
+        if (avail) {
+          avail.innerHTML = match.available
+            ? '<span class="pdp-in-stock"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> In Stock</span>'
+            : '<span class="pdp-out-stock">Currently Unavailable</span>';
+        }
+      });
+    });
+  }
+
+  function formatMoney(cents, fmt) {
+    var amount = (cents / 100).toFixed(2);
+    return fmt.replace('{{amount}}', amount)
+              .replace('{{amount_no_decimals}}', Math.round(cents / 100))
+              .replace('{{amount_with_comma_separator}}', amount.replace('.', ','));
+  }
+
+  function updatePrice(variant, fmt) {
+    var wrap = document.getElementById('PdpPrice');
+    if (!wrap) return;
+    var html = '';
+    if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+      html += '<s class="pdp-price-compare">' + formatMoney(variant.compare_at_price, fmt) + '</s>';
+      html += '<span class="pdp-price-current pdp-price-sale">' + formatMoney(variant.price, fmt) + '</span>';
+    } else {
+      html += '<span class="pdp-price-current">' + formatMoney(variant.price, fmt) + '</span>';
+    }
+    wrap.innerHTML = html;
+  }
+
+  /* --------------------------------------------------------
+     Quantity stepper
+  -------------------------------------------------------- */
+  function initPdpQty() {
+    var input   = document.getElementById('PdpQty');
+    var minusBtn = document.querySelector('.pdp-qty-minus');
+    var plusBtn  = document.querySelector('.pdp-qty-plus');
+    if (!input) return;
+
+    if (minusBtn) {
+      minusBtn.addEventListener('click', function () {
+        var v = parseInt(input.value, 10) || 1;
+        if (v > 1) input.value = v - 1;
+      });
+    }
+    if (plusBtn) {
+      plusBtn.addEventListener('click', function () {
+        var v = parseInt(input.value, 10) || 1;
+        input.value = v + 1;
+      });
+    }
+  }
+
+  /* --------------------------------------------------------
+     Accordion
+  -------------------------------------------------------- */
+  function initPdpAccordion() {
+    document.querySelectorAll('.pdp-accordion-trigger').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var body     = btn.nextElementSibling;
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!expanded));
+        body.hidden = expanded;
+      });
+    });
+  }
+
+  /* --------------------------------------------------------
+     Boot PDP functions
+  -------------------------------------------------------- */
+  document.addEventListener('DOMContentLoaded', function () {
+    initPdpGallery();
+    initPdpVariants();
+    initPdpQty();
+    initPdpAccordion();
   });
 
 })();
