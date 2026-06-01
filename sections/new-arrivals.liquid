@@ -20,14 +20,6 @@
     <div class="products-grid">
       {%- for product in featured_col.products limit: product_limit -%}
         {%- liquid
-          assign thirty_days = 2592000
-          assign now_ts     = 'now' | date: '%s' | plus: 0
-          assign cutoff_ts  = now_ts | minus: thirty_days
-          assign created_ts = product.created_at | date: '%s' | plus: 0
-          assign is_new     = false
-          if created_ts > cutoff_ts
-            assign is_new = true
-          endif
           assign first_variant = product.selected_or_first_available_variant
           assign colour_index = -1
           assign size_index   = -1

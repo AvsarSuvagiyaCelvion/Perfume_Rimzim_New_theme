@@ -25,6 +25,7 @@
                   class="seasonal-card-img"
                   src="{{ block.settings.image | image_url: width: 800 }}"
                   alt="{{ block.settings.title }}"
+                  width="800" height="1067"
                   loading="lazy"
                 >
               {%- else -%}
@@ -179,7 +180,7 @@
 
   .seasonal-card-name {
     font-family: 'Philosopher', sans-serif;
-    font-size: clamp(20px, 1.8vw, 28px);
+    font-size: clamp(18px, 2.8vw, 28px);
     margin-bottom: 12px;
     color: #fff !important;
   }
@@ -256,10 +257,10 @@
       margin-top: 0;
       width: 100%;
     }
-    /* Same height for every card */
+    /* Same height for every card — portrait keeps full image visible */
     .seasonal-editorial-grid .image-wrapper,
     .card-size-2 .image-wrapper {
-      aspect-ratio: 4/3;
+      aspect-ratio: 3/4;
     }
     .floating-mood-text { display: none; }
     .luxury-cta { opacity: 1; transform: none; }

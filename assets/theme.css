@@ -856,8 +856,8 @@ svg {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   gap: 5px;
   cursor: pointer;
 }
@@ -1016,12 +1016,11 @@ svg {
 /* ── Hero section shell ── */
 .hero-section {
   position: relative;
-  min-height: calc(100svh - var(--header-h));
+  min-height: 600px;
   display: flex;
   align-items: center;
   overflow: hidden;
   background: var(--color-bg-cream);
-  /* fallback when no image */
 }
 
 /* ── Full-bleed background image ── */
@@ -1079,8 +1078,8 @@ svg {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  padding: var(--space-120) 0 var(--space-80);
-  min-height: calc(100svh - var(--header-h));
+  padding: var(--space-64) 0 var(--space-48);
+  min-height: 600px;
   gap: var(--space-48);
 }
 
@@ -1416,7 +1415,7 @@ svg {
 /* ============================================================
    NEW ARRIVALS
    ============================================================ */
-. {
+.new-arrivals-section {
   padding: var(--space-80) 0;
   background: var(--color-bg-cream);
 }
@@ -1481,6 +1480,7 @@ svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   transition: opacity var(--duration-slow) var(--ease-out),
     transform var(--duration-slow) var(--ease-out);
 }
@@ -1760,6 +1760,18 @@ svg {
 .main-collection-section .product-card-price,
 .new-arrivals-section .product-card-price {
   justify-content: center;
+}
+
+/* ── New Arrivals: Quick Add always visible at bottom of image ──
+   No hover required — works on touch devices too. */
+.new-arrivals-section .product-quick-add {
+  transform: translateY(0);
+  transition: none;
+}
+/* Wishlist button always visible to match */
+.new-arrivals-section .product-card-wishlist {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Body slides up 6 px — feels like the card opens toward you */
@@ -2389,12 +2401,12 @@ svg {
 
 .newsletter-privacy {
   font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.30);
+  color: var(--color-text-muted);
   margin-top: var(--space-16);
 }
 
 .newsletter-privacy a {
-  color: rgba(255, 255, 255, 0.50);
+  color: var(--color-text-light);
   text-decoration: underline;
 }
 
@@ -2630,6 +2642,7 @@ a.pagination-page:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   transition: transform var(--duration-slow) var(--ease-out);
 }
 
@@ -3356,20 +3369,20 @@ a.pagination-page:hover {
    ============================================================ */
 .wishlist-count {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 4px;
-  border-radius: var(--radius-full);
+  top: 5px;
+  right: 5px;
+  width: 16px;
+  height: 16px;
   background: var(--color-primary);
   color: #fff;
-  font-size: 10px;
+  font-size: 0.6rem;
   font-weight: 700;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
+  pointer-events: none;
 }
 
 /* ============================================================
@@ -3920,7 +3933,8 @@ video {
 }
 
 /* ── Responsive ── */
-@media (max-width: 768px) {
+/* Stack at ≤900px so the fixed 360px sidebar doesn't squeeze items on tablets */
+@media (max-width: 900px) {
   .cart-layout {
     grid-template-columns: 1fr;
     gap: var(--space-32);
@@ -3929,7 +3943,9 @@ video {
   .cart-summary {
     position: static;
   }
+}
 
+@media (max-width: 768px) {
   .cart-item {
     grid-template-columns: 80px 1fr auto;
     gap: var(--space-12);
@@ -3938,6 +3954,19 @@ video {
   .cart-item-img {
     width: 80px;
     height: 107px;
+  }
+}
+
+/* Narrow phones: shrink image column so title text has room */
+@media (max-width: 480px) {
+  .cart-item {
+    grid-template-columns: 64px 1fr auto;
+    gap: var(--space-8);
+  }
+
+  .cart-item-img {
+    width: 64px;
+    height: 85px;
   }
 }
 
@@ -3953,6 +3982,12 @@ video {
     max-width: 520px;
   }
 
+  .hero-section { min-height: 520px; }
+  .hero-inner {
+    min-height: 520px;
+    padding: var(--space-48) 0 var(--space-40);
+  }
+
   .products-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -3961,6 +3996,16 @@ video {
     grid-template-columns: 1fr 1fr;
     gap: var(--space-40);
   }
+  /* Brand column spans full width — description & social don't get squeezed */
+  .footer-brand {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-brand-desc { max-width: 520px; }
+  .footer-social { justify-content: center; }
 }
 
 /* ============================================================
@@ -3996,21 +4041,19 @@ video {
     height: 36px;
   }
 
-  /* Hide search + wishlist on mobile to give breathing room;
-     keep cart + hamburger visible */
-  .header-icon-btn.search-btn,
-  .header-icon-btn.wishlist-btn {
+  /* Hide search on mobile — keep wishlist, cart and hamburger visible */
+  .header-icon-btn.search-btn {
     display: none;
   }
 
   .header-icon-btn {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
   }
 
   .header-icon-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
   }
 
   .header-actions {
@@ -4040,14 +4083,15 @@ video {
   }
 
   /* ── Hero ── */
+  .hero-section { min-height: 500px; }
   .hero-inner {
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
     text-align: center;
-    padding: var(--space-64) 0 var(--space-48);
-    gap: var(--space-24);
-    min-height: calc(100svh - var(--header-h));
+    padding: var(--space-32) 0 var(--space-40);
+    gap: var(--space-16);
+    min-height: 500px;
   }
 
   .hero-content {
@@ -4076,9 +4120,10 @@ video {
     animation: none;
   }
 
-  /* Use the mobile focal point variable on small screens */
+  /* Mobile: cover fills the hero area, overlay gradient hides harsh crops */
   .hero-bg-img {
-    object-position: var(--hero-img-pos-mobile, var(--hero-img-pos, center center));
+    object-fit: cover;
+    object-position: center center;
   }
 
   .hero-section--has-bg .hero-overlay {
@@ -4087,6 +4132,8 @@ video {
         rgba(10, 8, 5, 0.55) 55%,
         rgba(10, 8, 5, 0.15) 100%);
   }
+
+  
 
   /* ── Seasonal collections ── */
   .seasonal-grid {
@@ -4177,6 +4224,20 @@ video {
     gap: var(--space-32);
     padding-top: var(--space-48);
   }
+  /* Brand spans full width on mobile */
+  .footer-brand {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .footer-brand-desc { max-width: 100%; }
+  .footer-social { justify-content: center; }
+  /* Nav columns centred */
+  .footer-col { text-align: center; }
+  .footer-col-title { text-align: center; }
+  .footer-links { align-items: center; }
 
   .footer-bottom {
     flex-direction: column;
@@ -4186,6 +4247,7 @@ video {
   .footer-legal {
     flex-wrap: wrap;
     justify-content: center;
+    gap: var(--space-12);
   }
 
   /* ── Collection page ── */
@@ -4228,7 +4290,14 @@ video {
     letter-spacing: 1.5px;
   }
 
-  /* Hero */
+  /* Hero — tighter on small phones */
+  .hero-section { min-height: 460px; }
+  .hero-inner {
+    min-height: 460px;
+    padding: var(--space-24) 0 var(--space-32);
+    gap: var(--space-12);
+  }
+
   .hero-title {
     font-size: clamp(1.85rem, 7.5vw, 2.6rem);
   }
@@ -4300,16 +4369,18 @@ video {
     font-size: clamp(1.5rem, 6vw, 2rem);
   }
 
-  /* Footer */
+  /* Footer — single column, everything centred */
   .footer-body {
     grid-template-columns: 1fr;
     gap: var(--space-24);
     padding-top: var(--space-40);
   }
-
-  .footer-brand-desc {
-    max-width: 100%;
+  .footer-brand {
+    grid-column: auto;
   }
+  .footer-brand-desc { max-width: 100%; }
+  .footer-col { text-align: center; }
+  .footer-links { align-items: center; }
 
   /* Collections list */
   .list-collections-grid {
@@ -4324,7 +4395,7 @@ video {
   }
 
   .col-card {
-    aspect-ratio: 16/9;
+    aspect-ratio: 3/4;
   }
 
   /* Newsletter */
@@ -4868,5 +4939,317 @@ video {
   .pdp-thumb {
     width: 60px;
     height: 60px;
+  }
+}
+
+/* ============================================================
+   INTERACTION POLISH
+   ─ Hover effects are already elegant on pointer/desktop devices.
+   ─ This block handles two orthogonal concerns:
+       1. Focus-visible ring for keyboard and assistive tech (all devices)
+       2. Touch devices: surface hover-only content + tactile :active states
+   ============================================================ */
+
+/* ── Remove native tap flash; we supply our own active states ── */
+a,
+button,
+[role="button"],
+.product-card,
+.seasonal-card,
+.col-card,
+.vibe-card,
+.vibe-card-frame,
+.slider-btn,
+.header-icon-btn,
+.footer-social-link,
+.pagination-btn,
+.pagination-page {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── Focus-visible ring — keyboard navigation & screen readers ── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.btn:focus-visible,
+.header-icon-btn:focus-visible,
+.slider-btn:focus-visible,
+.footer-social-link:focus-visible,
+.scroll-to-top:focus-visible {
+  outline-offset: 4px;
+  border-radius: var(--radius-full);
+}
+
+/* ── Touch / hover-none devices ──────────────────────────────
+   On hover-capable pointers (desktop mouse / trackpad) NONE of
+   the rules below apply — all existing :hover effects stay intact.
+   On touch screens: all hover-gated content becomes always-visible
+   and :active states deliver the tactile press feedback. */
+@media (hover: none) {
+
+  /* ── Product cards ───────────────────────────────── */
+
+  /* Wishlist pill: always visible — float above image */
+  .product-card-wishlist {
+    opacity: 1 !important;
+    transform: none !important;
+    background: rgba(255, 255, 255, 0.93) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14) !important;
+  }
+
+  /* Quick-add bar: always anchored to bottom of image */
+  .product-quick-add {
+    transform: none !important;
+  }
+
+  /* No scale / lift — conflicts with momentum scrolling */
+  .product-card:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
+    z-index: 1 !important;
+  }
+
+  /* Dark overlay pseudo-element has no meaning without hover */
+  .product-card::after {
+    display: none !important;
+  }
+
+  /* Image swap: keep primary image always on top */
+  .product-card:hover .product-card-img:not(.product-card-img--hover) {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .product-card:hover .product-card-img--hover {
+    opacity: 0 !important;
+  }
+
+  /* Body slide is a desktop-only reveal; skip on touch */
+  .product-card:hover .product-card-body {
+    transform: none !important;
+  }
+
+  /* Press: scale down slightly for tactile feedback */
+  .product-card:active {
+    transform: scale(0.983) !important;
+    transition: transform 90ms ease !important;
+  }
+
+  .product-quick-add-btn:active {
+    background: var(--color-primary) !important;
+    transition-duration: 80ms !important;
+  }
+
+  .product-card-wishlist:active {
+    transform: scale(0.86) !important;
+    background: var(--color-primary) !important;
+    color: #fff !important;
+    transition: all 80ms ease !important;
+  }
+
+  .product-card-atc:active {
+    transform: scale(0.97) !important;
+    transition-duration: 80ms !important;
+  }
+
+  /* ── Seasonal cards ───────────────────────────────── */
+
+  .seasonal-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Show a 2-line description snippet — content hidden behind hover
+     is content mobile users will never see */
+  .seasonal-card-desc {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    max-height: 3rem !important;
+    overflow: hidden !important;
+    margin-bottom: var(--space-12) !important;
+  }
+
+  .seasonal-card:active {
+    transform: scale(0.983) !important;
+    transition: transform 90ms ease !important;
+  }
+
+  /* ── Collection list cards ───────────────────────── */
+
+  .col-card:hover {
+    transform: none !important;
+    box-shadow: var(--shadow-sm) !important;
+  }
+
+  .col-card-desc {
+    max-height: 3rem !important;
+    overflow: hidden !important;
+  }
+
+  .col-card:active {
+    transform: scale(0.983) !important;
+    transition: transform 90ms ease !important;
+  }
+
+  /* ── Vibe slider cards ───────────────────────────── */
+
+  .vibe-card:hover .vibe-card-frame {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .vibe-card:active .vibe-card-frame {
+    transform: scale(0.96) !important;
+    transition: transform 90ms ease !important;
+  }
+
+  /* ── Buttons ─────────────────────────────────────── */
+
+  .btn:active,
+  .newsletter-btn:active {
+    transform: scale(0.96) !important;
+    transition: transform 80ms ease !important;
+  }
+
+  .slider-btn:active {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #fff !important;
+    transform: scale(0.93) !important;
+    transition: all 80ms ease !important;
+  }
+
+  .header-icon-btn:active {
+    background: var(--color-bg-alt) !important;
+    transform: scale(0.90) !important;
+    transition: all 80ms ease !important;
+  }
+
+  .pagination-btn:active,
+  a.pagination-page:active {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #fff !important;
+    transform: scale(0.93) !important;
+    transition: all 80ms ease !important;
+  }
+
+  .scroll-to-top:active {
+    transform: scale(0.90) !important;
+    background: var(--color-primary-dark) !important;
+    transition: all 80ms ease !important;
+  }
+
+  /* ── Footer ──────────────────────────────────────── */
+
+  .footer-social-link:active {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #fff !important;
+    transform: scale(0.90) !important;
+    transition: all 80ms ease !important;
+  }
+
+  /* ── Mobile nav ──────────────────────────────────── */
+
+  .mobile-nav .mobile-nav-link:active {
+    color: var(--color-primary) !important;
+    padding-left: var(--space-8) !important;
+  }
+
+  .mobile-nav-submenu-link:active {
+    background: var(--color-primary-subtle) !important;
+    color: var(--color-primary) !important;
+  }
+
+  .mobile-nav-accordion-toggle:active {
+    color: var(--color-primary) !important;
+  }
+
+  /* ── Header icon buttons ─────────────────────────── */
+
+  .wishlist-count,
+  .cart-count {
+    pointer-events: none;
+  }
+
+  /* ── PDP actions ─────────────────────────────────── */
+
+  .pdp-option-btn:active {
+    border-color: var(--color-primary) !important;
+    background: var(--color-primary-subtle) !important;
+    transform: scale(0.96) !important;
+    transition: all 80ms ease !important;
+  }
+
+  .pdp-wishlist-btn:active {
+    transform: scale(0.90) !important;
+    transition: all 80ms ease !important;
+  }
+
+  .pdp-qty-btn:active {
+    background: var(--color-primary) !important;
+    color: #fff !important;
+    transition: all 80ms ease !important;
+  }
+
+  .pdp-thumb:active {
+    transform: scale(0.94) !important;
+    transition: transform 80ms ease !important;
+  }
+
+  .pdp-accordion-trigger:active {
+    color: var(--color-primary) !important;
+  }
+
+  /* ── Variant modal ───────────────────────────────── */
+
+  .variant-option-btn:active {
+    border-color: var(--color-primary) !important;
+    background: var(--color-primary-subtle) !important;
+    transform: scale(0.95) !important;
+    transition: all 80ms ease !important;
+  }
+
+  .variant-modal-close:active {
+    background: var(--color-bg-alt) !important;
+    transform: scale(0.90) !important;
+  }
+
+  /* ── Cart page ───────────────────────────────────── */
+
+  .cart-qty-btn:active {
+    background: var(--color-primary) !important;
+    color: #fff !important;
+    transition: all 80ms ease !important;
+  }
+
+  .cart-item-remove:active {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    transform: scale(0.88) !important;
+    transition: all 80ms ease !important;
+  }
+
+  /* ── Slider dots ─────────────────────────────────── */
+
+  .slider-dot:active {
+    transform: scale(1.4) !important;
+    transition: transform 80ms ease !important;
+  }
+
+  /* ── Collection sort ─────────────────────────────── */
+
+  .collection-sort-select:active {
+    border-color: var(--color-primary) !important;
   }
 }

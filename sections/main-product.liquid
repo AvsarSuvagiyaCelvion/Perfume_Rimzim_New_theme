@@ -115,12 +115,8 @@
             {%- liquid
               assign option_name_down = option.name | downcase
               assign is_colour = false
-              assign is_size   = false
               if option_name_down == 'color' or option_name_down == 'colour'
                 assign is_colour = true
-              endif
-              if option_name_down == 'size' or option_name_down == 'volume' or option_name_down == 'ml'
-                assign is_size = true
               endif
             -%}
 

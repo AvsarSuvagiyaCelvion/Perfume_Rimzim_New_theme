@@ -951,6 +951,18 @@
   function getWishlist() { try { return JSON.parse(localStorage.getItem(WISHLIST_KEY)) || []; } catch (e) { return []; } }
   function saveWishlist(list) { localStorage.setItem(WISHLIST_KEY, JSON.stringify(list)); }
 
+  /* Cache loaded product data so removal re-renders instantly without new network requests */
+  var _productCache = {};
+
+  /* Inline badge updater — updateWishlistBadge() lives in the main IIFE and is out of scope here */
+  function syncWishlistBadge() {
+    var count = getWishlist().length;
+    document.querySelectorAll('.wishlist-count').forEach(function (badge) {
+      badge.textContent    = count;
+      badge.style.display  = count > 0 ? 'flex' : 'none';
+    });
+  }
+
   function showToastWL(title, msg) {
     var container = document.querySelector('.toast-container');
     if (!container) { container = document.createElement('div'); container.className = 'toast-container'; document.body.appendChild(container); }
@@ -969,6 +981,9 @@
     var container = document.getElementById('WishlistProducts');
     var meta      = document.getElementById('WishlistMeta');
     if (!container) return;
+
+    /* Populate cache so removal can re-render without new fetches */
+    products.forEach(function (p) { if (p && p.handle) _productCache[p.handle] = p; });
 
     if (!products.length) {
       if (meta) meta.textContent = '';
@@ -1015,9 +1030,22 @@
         var handle = removeBtn.dataset.handle;
         var list = getWishlist().filter(function (h) { return h !== handle; });
         saveWishlist(list);
+        syncWishlistBadge();
+
+        /* Animate the card out */
         var card = container.querySelector('.wishlist-card[data-handle="' + handle + '"]');
-        if (card) card.style.animation = 'toastOut 0.3s ease forwards';
-        setTimeout(function () { initWishlistPage(); }, 350);
+        if (card) {
+          card.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+          card.style.opacity    = '0';
+          card.style.transform  = 'scale(0.92)';
+        }
+
+        /* Re-render immediately from cache — no network requests needed */
+        setTimeout(function () {
+          var remaining = list.map(function (h) { return _productCache[h]; }).filter(Boolean);
+          renderProducts(remaining);
+        }, 270);
+
         showToastWL('Removed from wishlist', '');
         return;
       }
