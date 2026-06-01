@@ -1,0 +1,457 @@
+<section class="about-page">
+
+  {%- comment -%} ── Hero ── {%- endcomment -%}
+  <div class="about-hero">
+    <div class="container">
+      <span class="about-eyebrow">{{ section.settings.eyebrow | default: 'OUR STORY' }}</span>
+      <h1 class="about-title">{{ section.settings.title | default: 'Crafted With Passion' }}</h1>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="about-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.hero_image != blank -%}
+      <div class="about-hero-img-wrap">
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 1400 }}"
+          alt="{{ section.settings.hero_image.alt | default: shop.name }}"
+          width="1400" height="600"
+          loading="eager"
+          class="about-hero-img"
+        >
+        <div class="about-hero-overlay"></div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} ── Mission ── {%- endcomment -%}
+  <div class="about-mission">
+    <div class="container">
+      <div class="about-mission-inner">
+        <div class="about-mission-text">
+          <span class="section-label">{{ section.settings.mission_label | default: 'Who We Are' }}</span>
+          <h2 class="section-title">{{ section.settings.mission_title | default: 'A Journey Through Scent' }}</h2>
+          <div class="about-mission-body">
+            {{ section.settings.mission_body | default: '<p>Born from a passion for fine fragrance, Rimzim is dedicated to crafting luxury perfumes that tell a story. Each bottle holds a carefully composed blend — inspired by nature, emotion, and timeless elegance.</p><p>We believe a fragrance is more than a scent. It is a signature, a memory, a statement. Our mission is to help you find yours.</p>' }}
+          </div>
+        </div>
+        {%- if section.settings.mission_image != blank -%}
+          <div class="about-mission-img-wrap">
+            <img
+              src="{{ section.settings.mission_image | image_url: width: 700 }}"
+              alt="{{ section.settings.mission_image.alt | default: 'Our story' }}"
+              width="700" height="840"
+              loading="lazy"
+              class="about-mission-img"
+            >
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ── Values ── {%- endcomment -%}
+  <div class="about-values">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">{{ section.settings.values_label | default: 'What We Stand For' }}</span>
+        <h2 class="section-title">{{ section.settings.values_title | default: 'Our Values' }}</h2>
+      </div>
+      <div class="about-values-grid">
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign icon_key  = 'value_' | append: i | append: '_icon'
+            assign title_key = 'value_' | append: i | append: '_title'
+            assign body_key  = 'value_' | append: i | append: '_body'
+            assign icon  = section.settings[icon_key]
+            assign vtitle = section.settings[title_key]
+            assign vbody = section.settings[body_key]
+          -%}
+          {%- if vtitle != blank -%}
+            <div class="about-value-card">
+              <div class="about-value-icon">{{ icon | default: '✦' }}</div>
+              <h3 class="about-value-title">{{ vtitle }}</h3>
+              {%- if vbody != blank -%}
+                <p class="about-value-body">{{ vbody }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ── CTA ── {%- endcomment -%}
+  <div class="about-cta">
+    <div class="container">
+      <h2 class="about-cta-title">{{ section.settings.cta_title | default: 'Find Your Signature Scent' }}</h2>
+      <p class="about-cta-sub">{{ section.settings.cta_sub | default: 'Explore our full collection of luxury fragrances.' }}</p>
+      <a href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}" class="btn btn-primary">
+        {{ section.settings.cta_label | default: 'Shop Now' }}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="15" height="15" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+</section>
+
+{% style %}
+
+.about-page { background: var(--color-bg); }
+
+/* ── Hero ── */
+.about-hero {
+  position: relative;
+  background: var(--color-dark);
+  padding: 100px 0 80px;
+  text-align: center;
+  overflow: hidden;
+}
+.about-hero-img-wrap {
+  position: absolute;
+  inset: 0;
+}
+.about-hero-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.about-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10,8,5,0.72) 0%, rgba(10,8,5,0.55) 100%);
+}
+.about-eyebrow {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+.about-title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 16px;
+  line-height: 1.1;
+}
+.about-subtitle {
+  position: relative;
+  z-index: 1;
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.65);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+/* ── Mission ── */
+.about-mission {
+  padding: 96px 0;
+}
+.about-mission-inner {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 80px;
+  align-items: center;
+}
+.about-mission-text .section-label { margin-bottom: 12px; }
+.about-mission-text .section-title { margin-bottom: 24px; text-align: left; }
+.about-mission-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--color-text-light);
+  margin-bottom: 16px;
+}
+.about-mission-body p:last-child { margin-bottom: 0; }
+.about-mission-img-wrap {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  aspect-ratio: 5/6;
+}
+.about-mission-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Values ── */
+.about-values {
+  padding: 80px 0 96px;
+  background: var(--color-bg-cream);
+}
+.about-values .section-header { margin-bottom: 56px; }
+.about-values-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+.about-value-card {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-base), box-shadow var(--duration-base);
+}
+.about-value-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+.about-value-icon {
+  font-size: 2rem;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+  line-height: 1;
+}
+.about-value-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 12px;
+}
+.about-value-body {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--color-text-light);
+  margin: 0;
+}
+
+/* ── CTA ── */
+.about-cta {
+  padding: 96px 0;
+  background: var(--color-dark);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.about-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(201,169,110,0.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+.about-cta-title {
+  position: relative;
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 16px;
+}
+.about-cta-sub {
+  position: relative;
+  font-size: 1rem;
+  color: rgba(255,255,255,0.55);
+  margin: 0 0 36px;
+}
+.about-cta .btn { position: relative; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .about-mission-inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .about-mission-img-wrap { max-width: 500px; }
+  .about-values-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .about-hero { padding: 80px 0 60px; }
+  .about-mission { padding: 64px 0; }
+  .about-values { padding: 56px 0 64px; }
+  .about-cta { padding: 64px 0; }
+  .about-values-grid { grid-template-columns: 1fr; gap: 16px; }
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "About Page",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "OUR STORY"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Hero title",
+      "default": "Crafted With Passion"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Hero subtitle",
+      "default": "Fine fragrances for every mood and moment"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero background image"
+    },
+    {
+      "type": "header",
+      "content": "Mission Section"
+    },
+    {
+      "type": "text",
+      "id": "mission_label",
+      "label": "Label",
+      "default": "Who We Are"
+    },
+    {
+      "type": "text",
+      "id": "mission_title",
+      "label": "Title",
+      "default": "A Journey Through Scent"
+    },
+    {
+      "type": "richtext",
+      "id": "mission_body",
+      "label": "Body text"
+    },
+    {
+      "type": "image_picker",
+      "id": "mission_image",
+      "label": "Side image"
+    },
+    {
+      "type": "header",
+      "content": "Values"
+    },
+    {
+      "type": "text",
+      "id": "values_label",
+      "label": "Label",
+      "default": "What We Stand For"
+    },
+    {
+      "type": "text",
+      "id": "values_title",
+      "label": "Title",
+      "default": "Our Values"
+    },
+    {
+      "type": "text",
+      "id": "value_1_icon",
+      "label": "Value 1 icon (emoji or symbol)",
+      "default": "✦"
+    },
+    {
+      "type": "text",
+      "id": "value_1_title",
+      "label": "Value 1 title",
+      "default": "Authenticity"
+    },
+    {
+      "type": "text",
+      "id": "value_1_body",
+      "label": "Value 1 description",
+      "default": "Every fragrance is genuinely crafted with the finest ingredients."
+    },
+    {
+      "type": "text",
+      "id": "value_2_icon",
+      "label": "Value 2 icon",
+      "default": "◈"
+    },
+    {
+      "type": "text",
+      "id": "value_2_title",
+      "label": "Value 2 title",
+      "default": "Quality"
+    },
+    {
+      "type": "text",
+      "id": "value_2_body",
+      "label": "Value 2 description",
+      "default": "Premium raw materials sourced from around the world."
+    },
+    {
+      "type": "text",
+      "id": "value_3_icon",
+      "label": "Value 3 icon",
+      "default": "❋"
+    },
+    {
+      "type": "text",
+      "id": "value_3_title",
+      "label": "Value 3 title",
+      "default": "Sustainability"
+    },
+    {
+      "type": "text",
+      "id": "value_3_body",
+      "label": "Value 3 description",
+      "default": "Responsible sourcing and eco-conscious packaging."
+    },
+    {
+      "type": "text",
+      "id": "value_4_icon",
+      "label": "Value 4 icon",
+      "default": "◇"
+    },
+    {
+      "type": "text",
+      "id": "value_4_title",
+      "label": "Value 4 title",
+      "default": "Elegance"
+    },
+    {
+      "type": "text",
+      "id": "value_4_body",
+      "label": "Value 4 description",
+      "default": "Timeless design that reflects the luxury inside every bottle."
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "CTA heading",
+      "default": "Find Your Signature Scent"
+    },
+    {
+      "type": "text",
+      "id": "cta_sub",
+      "label": "CTA subtext",
+      "default": "Explore our full collection of luxury fragrances."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Page"
+    }
+  ]
+}
+{% endschema %}

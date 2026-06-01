@@ -24,7 +24,7 @@
           {{ section.settings.about_text | default: 'We craft luxury fragrances that tell stories. Each bottle is a masterpiece — a blend of rare ingredients and passionate artistry for those who seek the extraordinary.' }}
         </p>
 
-        <div class="footer-social" aria-label="Social media links">
+        <div class="footer-social" role="list" aria-label="Social media links">
 
           {%- if section.settings.instagram_url != blank -%}
             <a href="{{ section.settings.instagram_url }}" class="footer-social-link" aria-label="Instagram" target="_blank" rel="noopener">

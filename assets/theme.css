@@ -204,13 +204,14 @@ svg {
 
 .btn-primary {
   background: var(--color-primary);
-  color: var(--color-white);
+  color: var(--color-dark);
   border-color: var(--color-primary);
 }
 
 .btn-primary:hover {
   background: var(--color-primary-dark);
   border-color: var(--color-primary-dark);
+  color: var(--color-dark);
   box-shadow: var(--shadow-gold);
 }
 
@@ -582,7 +583,7 @@ svg {
 
 .header-inner {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   height: var(--header-h);
   gap: var(--space-24);
@@ -600,8 +601,11 @@ svg {
 }
 
 .header-logo img {
-  height: 44px;
+  height: 56px;
   width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  display: block;
 }
 
 .logo-text {
@@ -628,6 +632,7 @@ svg {
 .header-nav {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-32);
 }
 
@@ -808,6 +813,8 @@ svg {
   display: flex;
   align-items: center;
   gap: 2px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .header-icon-btn {
@@ -941,7 +948,7 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
+  width: 44px;
   height: 40px;
   flex-shrink: 0;
   color: var(--color-text);
@@ -1536,11 +1543,11 @@ svg {
 /* Wishlist */
 .product-card-wishlist {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   z-index: 2;
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   background: #fff;
   border-radius: 50%;
   display: flex;
@@ -2903,6 +2910,8 @@ a.pagination-page:hover {
 
 .footer-copy a {
   color: rgba(255, 255, 255, 0.70);
+  text-decoration: underline;
+  text-underline-offset: 3px;
   transition: color var(--duration-fast);
 }
 
@@ -3852,8 +3861,8 @@ video {
   border: none;
   cursor: pointer;
   color: var(--color-text-muted);
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3985,6 +3994,35 @@ video {
 }
 
 /* ============================================================
+   RESPONSIVE — Wide Tablet / Small Desktop  769px – 1100px
+   Header needs tighter gaps so logo + 5-item nav + icons all fit.
+   ============================================================ */
+@media (min-width: 769px) and (max-width: 1100px) {
+  /* Tighten header spacing so icons are never clipped */
+  .header-inner {
+    gap: var(--space-16);
+  }
+
+  .header-nav {
+    gap: var(--space-16);
+  }
+
+  .header-nav .nav-link {
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+  }
+
+  .header-logo img {
+    max-width: 150px;
+  }
+
+  .logo-text {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+  }
+}
+
+/* ============================================================
    RESPONSIVE — Tablet  ≤ 1100px
    ============================================================ */
 @media (max-width: 1100px) {
@@ -4052,7 +4090,8 @@ video {
   }
 
   .header-logo img {
-    height: 36px;
+    height: 44px;
+    max-width: 160px;
   }
 
   /* Hide search on mobile — keep wishlist, cart and hamburger visible */
@@ -5277,4 +5316,258 @@ button,
   .collection-sort-select:active {
     border-color: var(--color-primary) !important;
   }
+}
+
+/* ============================================================
+   SPEED · ACCESSIBILITY · MOBILE UX
+   ============================================================ */
+
+/* ── 1. touch-action: manipulation
+   Removes the 300ms tap delay on older iOS/Android without
+   breaking scroll or pinch-zoom gestures. ── */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+label,
+select,
+.slider-btn,
+.pagination-btn,
+.pagination-page,
+.product-card-wishlist,
+.product-quick-add-btn,
+.header-icon-btn,
+.footer-social-link,
+.scroll-to-top,
+.slider-dot {
+  touch-action: manipulation;
+}
+
+/* ── 2. Prevent iOS Safari auto-zoom on form focus
+   iOS zooms in when input font-size < 16px.
+   Override only on small screens. ── */
+@media (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* ── 3. content-visibility: auto on known below-fold sections
+   Browser skips layout + paint until section is near viewport.
+   contain-intrinsic-size reserves approximate space to avoid CLS. ── */
+.testimonials-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
+}
+
+.newsletter-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 360px;
+}
+
+/* ── 4. Forced-colors (Windows High Contrast) accessibility ── */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid ButtonText;
+    outline-offset: 3px;
+  }
+
+  .btn-primary,
+  .btn-outline,
+  .btn-outline-gold {
+    border: 2px solid ButtonText;
+  }
+
+  .product-card-wishlist,
+  .header-icon-btn {
+    forced-color-adjust: none;
+  }
+}
+
+/* ============================================================
+   SITE-WIDE ANIMATION SYSTEM
+   Premium, luxury-feel animations for every page.
+   All use only transform + opacity for 60fps performance.
+   Respects prefers-reduced-motion.
+   ============================================================ */
+
+/* ── Page fade-in on load ── */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+body {
+  animation: pageFadeIn 0.55s ease-out both;
+}
+
+/* ── Scroll progress bar ── */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--color-primary), #F0D090, var(--color-primary));
+  background-size: 200% auto;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(201, 169, 110, 0.55);
+  transition: width 0.08s linear;
+}
+
+/* ── Cursor glow (desktop pointer) ── */
+.cursor-glow {
+  position: fixed;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 169, 110, 0.055) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9997;
+  transform: translate(-50%, -50%);
+  transition: left 0.18s ease, top 0.18s ease;
+  mix-blend-mode: normal;
+}
+
+/* ── Scroll-entrance animation classes (applied by JS) ── */
+.sa {
+  opacity: 0;
+  transition-property: opacity, transform, filter;
+  transition-timing-function: var(--ease-out);
+  transition-duration: var(--sa-dur, 0.72s);
+  transition-delay: var(--sa-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.sa-up     { transform: translateY(40px); }
+.sa-down   { transform: translateY(-30px); }
+.sa-left   { transform: translateX(-44px); }
+.sa-right  { transform: translateX(44px); }
+.sa-scale  { transform: scale(0.9); filter: blur(3px); }
+.sa-blur   { filter: blur(6px); }
+
+.sa.sa-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ── Button ripple ── */
+.btn {
+  overflow: hidden;
+}
+
+.btn-ripple {
+  position: absolute;
+  width: 0;
+  height: 0;
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: btnRipple 0.55s ease-out forwards;
+}
+
+@keyframes btnRipple {
+  to {
+    width: 260px;
+    height: 260px;
+    opacity: 0;
+  }
+}
+
+/* ── Ambient floating orbs (JS injects into dark sections) ── */
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: orbFloat var(--orb-dur, 9s) ease-in-out infinite;
+  animation-delay: var(--orb-delay, 0s);
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0)    scale(1);    }
+  33%       { transform: translateY(-22px) scale(1.06); }
+  66%       { transform: translateY(12px)  scale(0.97); }
+}
+
+/* ── Hero parallax clip (prevents orb overflow) ── */
+.hero-bg {
+  will-change: transform;
+}
+
+/* ── Image reveal with clip-path ── */
+@keyframes imgReveal {
+  from { clip-path: inset(100% 0 0 0 round 4px); opacity: 0.4; }
+  to   { clip-path: inset(0% 0 0 0 round 4px);   opacity: 1;   }
+}
+
+.sa-img-reveal {
+  animation: imgReveal 0.9s var(--ease-out) both;
+  animation-delay: var(--sa-delay, 0ms);
+  animation-play-state: paused;
+}
+
+.sa-img-reveal.sa-in {
+  animation-play-state: running;
+  opacity: 1;
+}
+
+/* ── Shimmer on gold decorative borders ── */
+@keyframes borderShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.hero-eyebrow::before,
+.seasonal-card-cta,
+.col-card-cta {
+  background-size: 200% auto;
+}
+
+/* ── Stat number counter — slot in the existing .hero-stat-value ── */
+.hero-stat-value {
+  transition: color 0.3s;
+}
+
+/* ── Magnetic button: JS adds inline transform, CSS resets on leave ── */
+.btn-magnetic {
+  transition: transform 0.35s var(--ease-out),
+              background var(--duration-base),
+              color var(--duration-base),
+              border-color var(--duration-base),
+              box-shadow var(--duration-base) !important;
+}
+
+/* ── Section dividers with animated gradient ── */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-primary-light) 30%,
+    var(--color-primary) 50%,
+    var(--color-primary-light) 70%,
+    transparent 100%
+  );
+  background-size: 200% auto;
+  animation: borderShimmer 3s linear infinite;
+  margin: 0;
+  border: none;
+}
+
+/* ── Reduced motion: disable everything new ── */
+@media (prefers-reduced-motion: reduce) {
+  body                { animation: none; }
+  .sa                 { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
+  .ambient-orb        { animation: none; }
+  .scroll-progress-bar { display: none; }
+  .cursor-glow        { display: none; }
+  .btn-ripple         { display: none; }
+  .sa-img-reveal      { animation: none; opacity: 1 !important; clip-path: none !important; }
+  .section-divider    { animation: none; }
 }

@@ -18,16 +18,16 @@
           <h2 class="contact-form-heading">Send Us a Message</h2>
           <p class="contact-form-sub">We'll get back to you within 24 hours.</p>
 
-          {%- if form.posted_successfully? -%}
-            <div class="contact-success" role="alert">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              Thank you! Your message has been sent. We'll be in touch soon.
-            </div>
-          {%- endif -%}
-
           {%- form 'contact', id: 'ContactForm', class: 'contact-form' -%}
+
+            {%- if form.posted_successfully? -%}
+              <div class="contact-success" role="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="20" height="20" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Thank you! Your message has been sent. We'll be in touch soon.
+              </div>
+            {%- endif -%}
 
             {%- if form.errors -%}
               <div class="contact-errors" role="alert">

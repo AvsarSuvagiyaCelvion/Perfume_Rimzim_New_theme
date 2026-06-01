@@ -5,14 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+  {%- comment -%} Favicon — image is set via Theme Settings > Favicon {%- endcomment -%}
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="{{ settings.favicon | image_url: width: 32, height: 32, crop: 'center' }}">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="{{ settings.favicon | image_url: width: 192, height: 192, crop: 'center' }}">
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="{{ settings.favicon | image_url: width: 180, height: 180, crop: 'center' }}">
+  {%- endif -%}
+
   <title>
-    {{ page_title }}
-    {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless %}
+    {%- if template.name == 'index' -%}
+      {{- page_title | default: shop.name -}}
+      {%- unless page_title contains shop.name %} — Luxury Fragrances{%- endunless -%}
+    {%- else -%}
+      {{- page_title -}}
+      {%- unless page_title contains shop.name %} | {{ shop.name }}{%- endunless -%}
+    {%- endif -%}
   </title>
 
-  {%- if page_description -%}
-    <meta name="description" content="{{ page_description | escape }}">
+  {%- assign meta_desc = page_description -%}
+  {%- if meta_desc == blank and template.name == 'index' -%}
+    {%- assign meta_desc = shop.name | append: ' — Discover luxury fragrances crafted for every mood and occasion. Shop new arrivals, seasonal collections and signature scents.' -%}
   {%- endif -%}
+  {%- if meta_desc != blank -%}
+    <meta name="description" content="{{ meta_desc | truncate: 155 | escape }}">
+  {%- endif -%}
+
+  {%- comment -%} Open Graph — improves social sharing previews on WhatsApp, Instagram, etc. {%- endcomment -%}
+  <meta property="og:site_name" content="{{ shop.name }}">
+  <meta property="og:title" content="{{ page_title | default: shop.name | escape }}">
+  <meta property="og:description" content="{{ meta_desc | truncate: 155 | escape }}">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:type" content="{%- if template.name == 'product' -%}product{%- else -%}website{%- endif -%}">
+  {%- if page_image -%}
+    <meta property="og:image" content="{{ page_image | image_url: width: 1200 }}">
+    <meta property="og:image:width" content="1200">
+  {%- endif -%}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#FAFAF8">
 
   <link rel="canonical" href="{{ canonical_url }}">
 
@@ -20,8 +52,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  {%- comment -%} Single consolidated font request with display=swap so text renders immediately with fallback font {%- endcomment -%}
-  <link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+  {%- comment -%}
+    Non-render-blocking font load — preload fetches the stylesheet immediately
+    but doesn't block the first paint. onload swaps it in once downloaded.
+    noscript fallback ensures fonts load with JS disabled.
+    Variants reduced vs. original: removed Philosopher italic-700, Playfair italic-600, Lato-300 + italics.
+  {%- endcomment -%}
+  {%- assign gfonts_url = 'https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lato:wght@400;700&display=swap' -%}
+  <link rel="preload" href="{{ gfonts_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ gfonts_url }}"></noscript>
 
   {%- comment -%} LCP hero image preload — homepage only, only when a hero image is set {%- endcomment -%}
   {%- if template.name == 'index' -%}

@@ -754,6 +754,7 @@
     function openSearch() {
       drawer.classList.add('is-open');
       backdrop.classList.add('is-visible');
+      drawer.removeAttribute('inert');
       drawer.setAttribute('aria-hidden', 'false');
       toggle.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
@@ -763,6 +764,7 @@
     function closeSearch() {
       drawer.classList.remove('is-open');
       backdrop.classList.remove('is-visible');
+      drawer.setAttribute('inert', '');
       drawer.setAttribute('aria-hidden', 'true');
       toggle.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
@@ -1356,5 +1358,319 @@
       initPdpAccordion();
     });
   }
+
+})();
+
+/* ============================================================
+   LUMIÈRE — Site-wide Animation Engine
+   Runs after DOMContentLoaded on every page.
+   ============================================================ */
+(function () {
+  'use strict';
+
+  var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var TOUCH   = window.matchMedia('(hover: none)').matches;
+  var MOBILE  = window.matchMedia('(max-width: 768px)').matches;
+
+  /* ──────────────────────────────────────────────────────────
+     1. SCROLL PROGRESS BAR
+     Thin gold line at very top of viewport tracks page scroll.
+  ────────────────────────────────────────────────────────── */
+  function initScrollProgress() {
+    var bar = document.createElement('div');
+    bar.className = 'scroll-progress-bar';
+    document.body.prepend(bar);
+
+    window.addEventListener('scroll', function () {
+      var scrolled = window.scrollY;
+      var total    = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+    }, { passive: true });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     2. CURSOR GLOW
+     Soft gold radial glow that follows the mouse on desktop.
+  ────────────────────────────────────────────────────────── */
+  function initCursorGlow() {
+    if (TOUCH || REDUCED) return;
+
+    var glow = document.createElement('div');
+    glow.className = 'cursor-glow';
+    document.body.appendChild(glow);
+
+    document.addEventListener('mousemove', function (e) {
+      glow.style.left = e.clientX + 'px';
+      glow.style.top  = e.clientY + 'px';
+    }, { passive: true });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     3. SCROLL-ENTRANCE ANIMATION ENGINE
+     Automatically targets key elements on every page,
+     applies .sa + direction class, stagger delay, then
+     adds .sa-in when element enters the viewport.
+  ────────────────────────────────────────────────────────── */
+  function initScrollEntrance() {
+    if (REDUCED) return;
+    if (!('IntersectionObserver' in window)) return;
+
+    /*
+      Each entry: [ CSS selector, animation type, stagger-ms ]
+      Types: 'up' | 'down' | 'left' | 'right' | 'scale' | 'blur'
+      stagger-ms: applied per child index (0 = no stagger / whole block)
+    */
+    var targets = [
+      /* ── Grids — each child staggers in ── */
+      ['.products-grid > .product-card',           'up',    65],
+      ['.seasonal-grid > .seasonal-card',           'scale', 110],
+      ['.list-collections-grid > .col-card',        'scale', 90],
+      ['.testimonials-grid > .testimonial-card',    'up',    90],
+      ['.about-values-grid > .about-value-card',    'up',    80],
+      ['.search-results-grid > .search-product-card','up',   55],
+      ['.footer-col',                               'up',    70],
+
+      /* ── Two-column reveal ── */
+      ['.pdp-gallery',                              'left',  0],
+      ['.pdp-info',                                 'right', 0],
+      ['.contact-form-col',                         'left',  0],
+      ['.contact-info-col',                         'right', 120],
+      ['.about-mission-text',                       'left',  0],
+      ['.about-mission-img-wrap',                   'right', 140],
+
+      /* ── Section-level blocks ── */
+      ['.newsletter-inner',                         'up',    0],
+      ['.collection-toolbar',                       'up',    0],
+      ['.about-cta .container',                     'up',    0],
+      ['.about-hero .container',                    'up',    0],
+      ['.footer-brand',                             'up',    0],
+      ['.vibe-section .section-header',             'up',    0],
+      ['.wishlist-grid > .wishlist-card',           'up',    60],
+
+      /* ── PDP detail ── */
+      ['.pdp-trust',                                'up',    0],
+      ['.pdp-accordion',                            'up',    0],
+    ];
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('sa-in');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -48px 0px' });
+
+    targets.forEach(function (cfg) {
+      var sel     = cfg[0];
+      var type    = cfg[1];
+      var stagger = cfg[2];
+
+      document.querySelectorAll(sel).forEach(function (el, i) {
+        /* Skip elements already handled by existing animate-on-scroll */
+        if (el.classList.contains('sa') || el.classList.contains('animated')) return;
+        el.classList.add('sa', 'sa-' + type);
+        if (stagger > 0) el.style.setProperty('--sa-delay', (i % 6 * stagger) + 'ms');
+        observer.observe(el);
+      });
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     4. HERO STAT COUNTER
+     Numbers count up from 0 when the hero scrolls into view.
+  ────────────────────────────────────────────────────────── */
+  function initCounters() {
+    if (REDUCED) return;
+
+    var stats = document.querySelectorAll('.hero-stat-value');
+    if (!stats.length) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el    = entry.target;
+        observer.unobserve(el);
+
+        var raw   = el.textContent.trim();
+        var match = raw.match(/^([\d,]+)/);
+        if (!match) return;
+
+        var end    = parseInt(match[1].replace(/,/g, ''), 10);
+        var suffix = raw.slice(match[1].length);
+        var dur    = 1600;
+        var start  = performance.now();
+
+        function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+        (function tick(now) {
+          var p = Math.min((now - start) / dur, 1);
+          el.textContent = Math.round(easeOut(p) * end).toLocaleString() + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        })(start);
+      });
+    }, { threshold: 0.6 });
+
+    stats.forEach(function (el) { observer.observe(el); });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     5. HERO PARALLAX
+     Background image moves at 25% scroll speed on desktop.
+  ────────────────────────────────────────────────────────── */
+  function initParallax() {
+    var bg = document.querySelector('.hero-bg');
+    if (!bg || REDUCED || MOBILE) return;
+
+    window.addEventListener('scroll', function () {
+      bg.style.transform = 'translateY(' + (window.scrollY * 0.22) + 'px)';
+    }, { passive: true });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     6. MOUSE PARALLAX ON HERO IMAGE
+     Image shifts subtly with cursor position on desktop.
+  ────────────────────────────────────────────────────────── */
+  function initHeroMouseParallax() {
+    var heroSection = document.querySelector('.hero-section');
+    var heroBgImg   = document.querySelector('.hero-bg-img');
+    if (!heroSection || !heroBgImg || TOUCH || REDUCED || MOBILE) return;
+
+    heroSection.addEventListener('mousemove', function (e) {
+      var rect = heroSection.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width  - 0.5) * 8;
+      var y = ((e.clientY - rect.top)  / rect.height - 0.5) * 6;
+      heroBgImg.style.transform = 'scale(1.06) translate(' + x + 'px, ' + y + 'px)';
+      heroBgImg.style.transition = 'transform 0.4s ease';
+    }, { passive: true });
+
+    heroSection.addEventListener('mouseleave', function () {
+      heroBgImg.style.transform = '';
+      heroBgImg.style.transition = 'transform 1s var(--ease-out)';
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     7. AMBIENT FLOATING ORBS
+     Soft gold radial orbs animate in hero and dark sections.
+  ────────────────────────────────────────────────────────── */
+  function initAmbientOrbs() {
+    if (REDUCED) return;
+
+    var orbConfigs = [
+      /* [selector, orb1-size, orb1-pos, orb2-size, orb2-pos, color-opacity] */
+      ['.newsletter-section',
+        {w:420, h:420, t:'-120px', l:'-80px',  delay:'0s',   dur:'9s'},
+        {w:280, h:280, b:'-90px',  r:'-60px',  delay:'-4.5s', dur:'11s'}],
+      ['.about-cta',
+        {w:380, h:380, t:'-100px', l:'-60px',  delay:'-2s',  dur:'8s'},
+        {w:240, h:240, b:'-70px',  r:'-50px',  delay:'-5s',  dur:'12s'}],
+    ];
+
+    orbConfigs.forEach(function (cfg) {
+      var section = document.querySelector(cfg[0]);
+      if (!section) return;
+      var pos = window.getComputedStyle(section).position;
+      if (pos === 'static') section.style.position = 'relative';
+
+      [cfg[1], cfg[2]].forEach(function (o, idx) {
+        var orb = document.createElement('div');
+        orb.className = 'ambient-orb';
+        orb.style.cssText = [
+          'width:'  + o.w + 'px',
+          'height:' + o.h + 'px',
+          o.t  ? 'top:'    + o.t : '',
+          o.b  ? 'bottom:' + o.b : '',
+          o.l  ? 'left:'   + o.l : '',
+          o.r  ? 'right:'  + o.r : '',
+          '--orb-delay:' + o.delay,
+          '--orb-dur:'   + o.dur,
+          'background: radial-gradient(circle, rgba(201,169,110,' + (idx === 0 ? '0.10' : '0.07') + ') 0%, transparent 70%)',
+        ].filter(Boolean).join(';');
+        section.appendChild(orb);
+      });
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     8. BUTTON RIPPLE
+     Gold ripple emanates from click point on primary buttons.
+  ────────────────────────────────────────────────────────── */
+  function initButtonRipple() {
+    if (REDUCED) return;
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.btn-primary, .btn-outline-gold');
+      if (!btn) return;
+
+      var rect   = btn.getBoundingClientRect();
+      var ripple = document.createElement('span');
+      ripple.className = 'btn-ripple';
+      ripple.style.left = (e.clientX - rect.left) + 'px';
+      ripple.style.top  = (e.clientY - rect.top)  + 'px';
+      btn.appendChild(ripple);
+      setTimeout(function () { if (ripple.parentNode) ripple.remove(); }, 600);
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     9. MAGNETIC BUTTONS
+     Primary + gold buttons subtly follow the cursor.
+  ────────────────────────────────────────────────────────── */
+  function initMagneticButtons() {
+    if (TOUCH || REDUCED) return;
+
+    document.querySelectorAll('.btn-primary, .btn-outline-gold').forEach(function (btn) {
+      btn.classList.add('btn-magnetic');
+
+      btn.addEventListener('mousemove', function (e) {
+        var rect = btn.getBoundingClientRect();
+        var dx   = (e.clientX - (rect.left + rect.width  / 2)) * 0.18;
+        var dy   = (e.clientY - (rect.top  + rect.height / 2)) * 0.18;
+        btn.style.transform = 'translate(' + dx + 'px, ' + dy + 'px) translateY(-2px)';
+      });
+
+      btn.addEventListener('mouseleave', function () {
+        btn.style.transform = '';
+      });
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     10. SECTION DIVIDERS
+     Inject animated gold shimmer dividers between sections.
+  ────────────────────────────────────────────────────────── */
+  function initSectionDividers() {
+    var pairs = [
+      ['.hero-section',          '.seasonal-section'],
+      ['.new-arrivals-section',  '.vibe-section'],
+      ['.vibe-section',          '.testimonials-section'],
+    ];
+
+    pairs.forEach(function (pair) {
+      var a = document.querySelector(pair[0]);
+      var b = document.querySelector(pair[1]);
+      if (!a || !b || a.nextElementSibling !== b) return;
+      var hr = document.createElement('hr');
+      hr.className = 'section-divider';
+      hr.setAttribute('aria-hidden', 'true');
+      b.insertAdjacentElement('beforebegin', hr);
+    });
+  }
+
+  /* ──────────────────────────────────────────────────────────
+     BOOT
+  ────────────────────────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', function () {
+    initScrollProgress();
+    initCursorGlow();
+    initScrollEntrance();
+    initCounters();
+    initParallax();
+    initHeroMouseParallax();
+    initAmbientOrbs();
+    initButtonRipple();
+    initMagneticButtons();
+    initSectionDividers();
+  });
 
 })();

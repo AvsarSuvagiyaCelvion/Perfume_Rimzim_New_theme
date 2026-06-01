@@ -1,8 +1,8 @@
 {%- liquid
   assign search_terms = search.terms | escape
-  assign results      = search.results
   assign total        = search.results_count
 -%}
+{%- paginate search.results by 24 -%}
 
 <div class="search-page">
 
@@ -73,7 +73,7 @@
     {%- else -%}
 
       <div class="search-results-grid">
-        {%- for item in results -%}
+        {%- for item in search.results -%}
           {%- if item.object_type == 'product' -%}
             {%- liquid
               assign item_price = item.price
@@ -131,6 +131,7 @@
 
   </div>
 </div>
+{%- endpaginate -%}
 
 {% style %}
 

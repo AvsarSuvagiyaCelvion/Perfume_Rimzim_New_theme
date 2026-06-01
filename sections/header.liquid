@@ -7,9 +7,15 @@
         <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
           {%- if section.settings.logo != blank -%}
             <img
-              src="{{ section.settings.logo | image_url: width: 200 }}"
+              src="{{ section.settings.logo | image_url: width: 480 }}"
+              srcset="{{ section.settings.logo | image_url: width: 240 }} 240w,
+                      {{ section.settings.logo | image_url: width: 480 }} 480w"
+              sizes="240px"
               alt="{{ section.settings.logo.alt | default: shop.name }}"
-              width="120" height="44" loading="eager"
+              width="{{ section.settings.logo_width | default: 160 }}"
+              height="56"
+              loading="eager"
+              style="height: {{ section.settings.logo_height | default: 56 }}px; width: auto;"
             >
           {%- else -%}
             <span class="logo-text">
@@ -130,7 +136,7 @@
 </header>
 
 {%- comment -%} ── Search Drawer ── {%- endcomment -%}
-<div class="search-drawer" id="SearchDrawer" aria-hidden="true" role="dialog" aria-label="Search">
+<div class="search-drawer" id="SearchDrawer" aria-hidden="true" role="dialog" aria-label="Search" inert>
   <div class="search-drawer-inner">
     <form action="{{ routes.search_url }}" method="get" class="search-drawer-form" role="search">
       <input type="hidden" name="type" value="product">
@@ -221,6 +227,15 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height (px)",
+      "min": 32,
+      "max": 96,
+      "step": 4,
+      "default": 56
     },
     {
       "type": "text",

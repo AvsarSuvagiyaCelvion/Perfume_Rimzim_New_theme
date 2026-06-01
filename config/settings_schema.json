@@ -8,6 +8,17 @@
     "theme_support_url": "https://help.shopify.com"
   },
   {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Upload a square image (512×512 px PNG recommended). Shopify will resize it automatically for browsers and Apple devices."
+      }
+    ]
+  },
+  {
     "name": "Colors",
     "settings": [
       {

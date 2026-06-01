@@ -16,7 +16,6 @@
             <a
               href="{{ block.settings.collection_url | default: '/collections/all' }}"
               class="vibe-card"
-              aria-label="{{ block.settings.name }} collection"
               {{ block.shopify_attributes }}
             >
               <div
@@ -48,7 +47,7 @@
             {%- assign default_vibes = 'Fresh,Fruity,Floral,Oud,Spicy,Woody,Musky' | split: ',' -%}
             {%- assign default_colors = '#D4ECD4,#FFE5CC,#F5D5E8,#C8A882,#E8C4A0,#C4A882,#E8DDD0' | split: ',' -%}
             {%- for vibe in default_vibes -%}
-              <a href="{{ routes.collections_url }}/{{ vibe | downcase }}" class="vibe-card" aria-label="{{ vibe }} collection">
+              <a href="{{ routes.collections_url }}/{{ vibe | downcase }}" class="vibe-card">
                 <div class="vibe-card-frame" style="background: {{ default_colors[forloop.index0] }};">
                   {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'vibe-card-img' -}}
                   <div class="vibe-card-overlay">
