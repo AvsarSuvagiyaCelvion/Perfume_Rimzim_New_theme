@@ -5018,6 +5018,17 @@ button,
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14) !important;
   }
 
+  /* Wishlisted state — gold fill so the heart icon is clearly readable */
+  .product-card-wishlist.is-wishlisted {
+    background: var(--color-primary) !important;
+    color: #fff !important;
+    box-shadow: var(--shadow-gold) !important;
+  }
+
+  .product-card-wishlist.is-wishlisted svg {
+    fill: currentColor !important;
+  }
+
   /* Quick-add bar: always anchored to bottom of image */
   .product-quick-add {
     transform: none !important;
