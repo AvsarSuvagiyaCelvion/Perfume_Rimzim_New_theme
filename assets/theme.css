@@ -1762,16 +1762,30 @@ svg {
   justify-content: center;
 }
 
-/* ── New Arrivals: Quick Add always visible at bottom of image ──
-   No hover required — works on touch devices too. */
-.new-arrivals-section .product-quick-add {
+/* ── New Arrivals + all Collection pages:
+   Quick Add always visible — no hover required, works on touch too. */
+.new-arrivals-section .product-quick-add,
+.main-collection-section .product-quick-add {
   transform: translateY(0);
   transition: none;
 }
+
 /* Wishlist button always visible to match */
-.new-arrivals-section .product-card-wishlist {
+.new-arrivals-section .product-card-wishlist,
+.main-collection-section .product-card-wishlist {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Collection page: remove the aggressive scale + dark overlay on hover.
+   Keep the subtle shadow/ring lift so hover still feels responsive. */
+.main-collection-section .product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg), 0 0 0 1.5px var(--color-primary-light);
+}
+
+.main-collection-section .product-card:hover::after {
+  background: rgba(0, 0, 0, 0);
 }
 
 /* Body slides up 6 px — feels like the card opens toward you */
