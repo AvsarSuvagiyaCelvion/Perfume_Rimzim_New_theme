@@ -1785,7 +1785,7 @@ svg {
 }
 
 .main-collection-section .product-card:hover::after {
-  background: rgba(0, 0, 0, 0);
+  background: transparent; /* suppress the global dark image overlay */
 }
 
 /* Body slides up 6 px — feels like the card opens toward you */
