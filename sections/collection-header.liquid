@@ -1,3 +1,36 @@
+{%- comment -%}
+  ── Structured Data: BreadcrumbList ──
+  Mirrors the visual breadcrumb rendered below: Home > Collections > [Collection].
+  Uses request.origin for canonical URLs (preferred over shop.url in OS 2.0).
+{%- endcomment -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ request.origin | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Collections",
+      "item": {{ request.origin | append: routes.collections_url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ collection.title | json }},
+      "item": {{ request.origin | append: collection.url | json }}
+    }
+  ]
+}
+</script>
+
 {%- assign col = collection -%}
 
 <section class="col-header-section" id="CollectionHeader">

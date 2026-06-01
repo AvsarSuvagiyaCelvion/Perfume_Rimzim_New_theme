@@ -22,6 +22,7 @@
 
   {{ 'theme.css' | asset_url | stylesheet_tag }}
   {{ content_for_header }}
+  {%- render 'schema-website' -%}
 </head>
 <body class="template-{{ template.name }}">
 

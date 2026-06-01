@@ -1,0 +1,88 @@
+{%- comment -%}
+  snippet: schema-website.liquid
+  Purpose : Injects WebSite + SearchAction JSON-LD (homepage only)
+            and site-wide Organization JSON-LD.
+  Render  : {% render 'schema-website' %} inside <head> in layout/theme.liquid
+  Notes   :
+    - WebSite is output on every page because Google uses it for sitelinks
+      search box — restricting it to index would suppress it on deep crawls.
+    - Organization is output on every page so Google can associate all URLs
+      with the brand entity regardless of which page is first crawled.
+    - Social URLs are read from the static footer section settings so merchants
+      manage them in one place (Footer > Social Media).
+    - No FAQPage is emitted: Google restricted FAQPage rich results to
+      government and health sites in Aug 2023; using it on e-commerce
+      produces zero rich results and risks a manual action.
+{%- endcomment -%}
+
+{%- liquid
+  assign footer_s = sections['footer'].settings
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | json }},
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": {{ request.origin | append: '/search?q={search_term_string}' | json }}
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | json }},
+  {%- if shop.description != blank %}
+  "description": {{ shop.description | json }},
+  {%- endif %}
+  {%- if footer_s.logo != blank %}
+  "logo": {{ footer_s.logo | image_url: width: 600 | prepend: 'https:' | json }},
+  {%- elsif section.settings.logo != blank %}
+  "logo": {{ section.settings.logo | image_url: width: 600 | prepend: 'https:' | json }},
+  {%- endif %}
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer support",
+    "email": {{ shop.email | json }}
+  },
+  "sameAs": [
+    {%- assign _sameAs_entries = '' -%}
+    {%- if footer_s.instagram_url != blank -%}
+      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.instagram_url | append: '||' -%}
+    {%- endif -%}
+    {%- if footer_s.facebook_url != blank -%}
+      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.facebook_url | append: '||' -%}
+    {%- endif -%}
+    {%- if footer_s.twitter_url != blank -%}
+      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.twitter_url | append: '||' -%}
+    {%- endif -%}
+    {%- if footer_s.pinterest_url != blank -%}
+      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.pinterest_url | append: '||' -%}
+    {%- endif -%}
+    {%- if footer_s.youtube_url != blank -%}
+      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.youtube_url | append: '||' -%}
+    {%- endif -%}
+    {%- assign _sameAs_list = _sameAs_entries | split: '||' -%}
+    {%- assign _sameAs_list_cleaned = '' -%}
+    {%- for _url in _sameAs_list -%}
+      {%- if _url != blank -%}
+        {%- assign _sameAs_list_cleaned = _sameAs_list_cleaned | append: _url | append: '||' -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign _sameAs_final = _sameAs_list_cleaned | split: '||' -%}
+    {%- for _url in _sameAs_final -%}
+      {{ _url | json }}{%- unless forloop.last %},{%- endunless %}
+    {%- endfor %}
+  ]
+}
+</script>
