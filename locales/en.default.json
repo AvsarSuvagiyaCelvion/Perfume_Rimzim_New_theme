@@ -1,0 +1,9 @@
+{
+  "general": {
+    "currency": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable"
+    }
+  }
+}

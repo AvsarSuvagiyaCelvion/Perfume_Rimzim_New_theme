@@ -4,7 +4,7 @@
 
       {%- comment -%} ── Logo ── {%- endcomment -%}
       <div class="header-logo">
-        <a href="/" aria-label="{{ shop.name }}">
+        <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
           {%- if section.settings.logo != blank -%}
             <img
               src="{{ section.settings.logo | image_url: width: 200 }}"
@@ -67,9 +67,9 @@
           {%- endif -%}
 
         {%- else -%}
-          <a href="/" class="nav-link">Home</a>
-          <a href="/collections" class="nav-link">Collections</a>
-          <a href="/collections/new-arrivals" class="nav-link">New Arrivals</a>
+          <a href="{{ routes.root_url }}" class="nav-link">Home</a>
+          <a href="{{ routes.collections_url }}" class="nav-link">Collections</a>
+          <a href="{{ routes.collections_url }}/new-arrivals" class="nav-link">New Arrivals</a>
           <a href="/pages/about" class="nav-link">About</a>
           <a href="/pages/contact" class="nav-link">Contact</a>
         {%- endfor -%}
@@ -101,7 +101,7 @@
         </a>
 
         {%- comment -%} Cart {%- endcomment -%}
-        <a href="/cart" class="header-icon-btn" aria-label="Cart ({{ cart.item_count }} items)">
+        <a href="{{ routes.cart_url }}" class="header-icon-btn" aria-label="Cart ({{ cart.item_count }} items)">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm5.625 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
           </svg>
@@ -132,7 +132,7 @@
 {%- comment -%} ── Search Drawer ── {%- endcomment -%}
 <div class="search-drawer" id="SearchDrawer" aria-hidden="true" role="dialog" aria-label="Search">
   <div class="search-drawer-inner">
-    <form action="/search" method="get" class="search-drawer-form" role="search">
+    <form action="{{ routes.search_url }}" method="get" class="search-drawer-form" role="search">
       <input type="hidden" name="type" value="product">
       <div class="search-drawer-field">
         <svg class="search-drawer-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -205,9 +205,9 @@
     {%- endif -%}
 
   {%- else -%}
-    <a href="/" class="mobile-nav-link">Home</a>
-    <a href="/collections" class="mobile-nav-link">Collections</a>
-    <a href="/collections/new-arrivals" class="mobile-nav-link">New Arrivals</a>
+    <a href="{{ routes.root_url }}" class="mobile-nav-link">Home</a>
+    <a href="{{ routes.collections_url }}" class="mobile-nav-link">Collections</a>
+    <a href="{{ routes.collections_url }}/new-arrivals" class="mobile-nav-link">New Arrivals</a>
     <a href="/pages/about" class="mobile-nav-link">About</a>
     <a href="/pages/contact" class="mobile-nav-link">Contact</a>
   {%- endfor -%}

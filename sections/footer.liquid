@@ -76,10 +76,10 @@
           {%- for link in linklists[section.settings.category_menu].links -%}
             <li><a href="{{ link.url }}">{{ link.title }}</a></li>
           {%- else -%}
-            <li><a href="/collections/all">All Fragrances</a></li>
-            <li><a href="/collections/new-arrivals">New Arrivals</a></li>
-            <li><a href="/collections/best-sellers">Best Sellers</a></li>
-            <li><a href="/collections/gift-sets">Gift Sets</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}">All Fragrances</a></li>
+            <li><a href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a></li>
+            <li><a href="{{ routes.collections_url }}/best-sellers">Best Sellers</a></li>
+            <li><a href="{{ routes.collections_url }}/gift-sets">Gift Sets</a></li>
           {%- endfor -%}
         </ul>
       </div>
@@ -95,7 +95,7 @@
             <li><a href="{{ routes.account_logout_url }}">Logout</a></li>
           {%- endif -%}
           <li><a href="/pages/wishlist">My Wishlist</a></li>
-          <li><a href="/cart">My Cart</a></li>
+          <li><a href="{{ routes.cart_url }}">My Cart</a></li>
           <li><a href="/pages/contact">Track My Order</a></li>
         </ul>
       </div>

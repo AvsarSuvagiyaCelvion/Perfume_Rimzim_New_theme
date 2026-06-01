@@ -18,7 +18,7 @@
         </div>
         <h2 class="cart-empty-heading">Your cart is empty</h2>
         <p class="cart-empty-sub">Discover our curated collection of fragrances.</p>
-        <a href="/collections/all" class="btn btn-primary">Continue Shopping</a>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">Continue Shopping</a>
       </div>
 
     {%- else -%}
@@ -140,7 +140,7 @@
               Proceed to Checkout
             </a>
 
-            <a href="/collections/all" class="cart-continue-link">← Continue Shopping</a>
+            <a href="{{ routes.all_products_collection_url }}" class="cart-continue-link">← Continue Shopping</a>
           </div>
         </div>
 

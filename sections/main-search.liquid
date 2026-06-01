@@ -9,7 +9,7 @@
   {%- comment -%} ── Hero bar ── {%- endcomment -%}
   <div class="search-page-hero">
     <div class="container">
-      <form action="/search" method="get" class="search-page-form" role="search">
+      <form action="{{ routes.search_url }}" method="get" class="search-page-form" role="search">
         <input type="hidden" name="type" value="product">
         <div class="search-page-field">
           <svg class="search-page-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -67,7 +67,7 @@
         </div>
         <h2 class="search-empty-heading">No results found</h2>
         <p class="search-empty-sub">Try a different keyword or browse our collections below.</p>
-        <a href="/collections/all" class="btn btn-primary" style="margin-top:24px;">Browse All Products</a>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary" style="margin-top:24px;">Browse All Products</a>
       </div>
 
     {%- else -%}
