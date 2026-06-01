@@ -2,28 +2,63 @@
 {%- if section.settings.hero_image != blank -%}
   {%- assign has_bg = true -%}
 {%- endif -%}
+{%- assign img_pos        = section.settings.image_position        | default: 'center center' -%}
+{%- assign img_pos_mobile = section.settings.image_position_mobile | default: img_pos -%}
 
 <section
   class="hero-section{% if has_bg %} hero-section--has-bg{% endif %}"
   id="HeroSection"
+  style="--hero-img-pos: {{ img_pos }}; --hero-img-pos-mobile: {{ img_pos_mobile }}"
 >
 
   {%- comment -%} ── Full-bleed background image ── {%- endcomment -%}
   {%- if has_bg -%}
     <div class="hero-bg" aria-hidden="true">
-      <img
-        class="hero-bg-img"
-        src="{{ section.settings.hero_image | image_url: width: 1600 }}"
-        srcset="{{ section.settings.hero_image | image_url: width: 800  }} 800w,
-                {{ section.settings.hero_image | image_url: width: 1200 }} 1200w,
-                {{ section.settings.hero_image | image_url: width: 1600 }} 1600w,
-                {{ section.settings.hero_image | image_url: width: 2000 }} 2000w"
-        sizes="100vw"
-        alt="{{ section.settings.hero_image.alt | default: '' }}"
-        width="1600" height="900"
-        loading="eager"
-        fetchpriority="high"
-      >
+      <picture>
+        {%- comment -%} Portrait / mobile-specific image (optional) {%- endcomment -%}
+        {%- if section.settings.hero_mobile_image != blank -%}
+          {%- assign mob = section.settings.hero_mobile_image -%}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ mob | image_url: width: 400, format: 'webp' }} 400w,
+                    {{ mob | image_url: width: 600, format: 'webp' }} 600w,
+                    {{ mob | image_url: width: 800, format: 'webp' }} 800w"
+            sizes="100vw"
+          >
+        {%- else -%}
+          {%- comment -%} No dedicated mobile image — serve small slices of the desktop image {%- endcomment -%}
+          <source
+            media="(max-width: 767px)"
+            srcset="{{ section.settings.hero_image | image_url: width: 400, format: 'webp' }} 400w,
+                    {{ section.settings.hero_image | image_url: width: 600, format: 'webp' }} 600w,
+                    {{ section.settings.hero_image | image_url: width: 800, format: 'webp' }} 800w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        {%- comment -%} Desktop WebP srcset {%- endcomment -%}
+        <source
+          media="(min-width: 768px)"
+          srcset="{{ section.settings.hero_image | image_url: width: 800,  format: 'webp' }} 800w,
+                  {{ section.settings.hero_image | image_url: width: 1200, format: 'webp' }} 1200w,
+                  {{ section.settings.hero_image | image_url: width: 1600, format: 'webp' }} 1600w,
+                  {{ section.settings.hero_image | image_url: width: 2000, format: 'webp' }} 2000w"
+          sizes="100vw"
+        >
+        {%- comment -%} Fallback <img> — non-WebP for legacy browsers; also carries loading/fetchpriority {%- endcomment -%}
+        <img
+          class="hero-bg-img"
+          src="{{ section.settings.hero_image | image_url: width: 1600 }}"
+          srcset="{{ section.settings.hero_image | image_url: width: 800  }} 800w,
+                  {{ section.settings.hero_image | image_url: width: 1200 }} 1200w,
+                  {{ section.settings.hero_image | image_url: width: 1600 }} 1600w,
+                  {{ section.settings.hero_image | image_url: width: 2000 }} 2000w"
+          sizes="100vw"
+          alt="{{ section.settings.hero_image.alt | default: '' }}"
+          width="1600" height="900"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </picture>
     </div>
     <div class="hero-overlay" aria-hidden="true"></div>
   {%- else -%}
@@ -73,33 +108,9 @@
           {%- endif -%}
         </div>
 
-        <div class="hero-divider t-reveal" style="--td:1200ms"></div>
-
-        <div class="hero-stats">
-          <div class="t-reveal" style="--td:1300ms">
-            <span class="hero-stat-value">{{ section.settings.stat1_value | default: '500+' }}</span>
-            <span class="hero-stat-label">{{ section.settings.stat1_label | default: 'Fragrances' }}</span>
-          </div>
-          <div class="t-reveal" style="--td:1420ms">
-            <span class="hero-stat-value">{{ section.settings.stat2_value | default: '50K+' }}</span>
-            <span class="hero-stat-label">{{ section.settings.stat2_label | default: 'Happy Clients' }}</span>
-          </div>
-          <div class="t-reveal" style="--td:1540ms">
-            <span class="hero-stat-value">{{ section.settings.stat3_value | default: '15+' }}</span>
-            <span class="hero-stat-label">{{ section.settings.stat3_label | default: 'Collections' }}</span>
-          </div>
-        </div>
 
       </div>
 
-      {%- comment -%} ── Floating badge (bottom-right) ── {%- endcomment -%}
-      <div class="hero-badge t-reveal t-reveal--scale" style="--td:1600ms" aria-hidden="true">
-        <div class="hero-badge-icon">✨</div>
-        <div>
-          <span class="hero-badge-strong">{{ section.settings.badge_title | default: 'Premium Quality' }}</span>
-          <span class="hero-badge-muted">{{ section.settings.badge_subtitle | default: '100% Authentic' }}</span>
-        </div>
-      </div>
 
     </div>
   </div>
@@ -220,7 +231,38 @@
     {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Background image"
+      "label": "Background image — Desktop (landscape, 16:9 recommended)"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_mobile_image",
+      "label": "Background image — Mobile (portrait, 9:16 recommended)"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image focal point — Desktop",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "center top",    "label": "Top" },
+        { "value": "center bottom", "label": "Bottom" },
+        { "value": "left center",   "label": "Left" },
+        { "value": "right center",  "label": "Right" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "select",
+      "id": "image_position_mobile",
+      "label": "Image focal point — Mobile",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "center top",    "label": "Top" },
+        { "value": "center bottom", "label": "Bottom" },
+        { "value": "left center",   "label": "Left" },
+        { "value": "right center",  "label": "Right" }
+      ],
+      "default": "center center"
     },
     {
       "type": "text",

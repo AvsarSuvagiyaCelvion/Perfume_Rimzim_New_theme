@@ -59,14 +59,13 @@
 
   .seasonal-v2-section {
     background-color: var(--cream-bg);
-    padding: 100px 0;
     overflow: hidden;
   }
 
   /* Header Styling */
   .section-header-v2 {
     text-align: center;
-    margin-bottom: 80px;
+    margin-bottom: 10px; 
   }
   .section-header-v2 .eyebrow {
     font-family: 'Philosopher', sans-serif;
@@ -75,6 +74,7 @@
     font-size: 12px;
     display: block;
     margin-bottom: 10px;
+    margin-top: 20px;
   }
   .section-header-v2 .section-title {
     font-family: 'Philosopher', sans-serif;
@@ -86,14 +86,14 @@
     width: 50px;
     height: 1px;
     background: var(--gold-accent);
-    margin: 20px auto;
+    margin: 10px auto;
   }
 
   /* Asymmetrical Grid */
   .seasonal-editorial-grid {
     display: flex;
     align-items: flex-start;
-    gap: 40px;
+    gap: 20px; /* ← was 40px */
     max-width: 1400px;
     margin: 0 auto;
   }
@@ -104,9 +104,9 @@
   }
 
   /* Card Heights (Editorial Symmetry) */
-  .card-size-1 { margin-top: 60px; } /* Winter */
-  .card-size-2 { flex: 1.4; }        /* Summer (Center - Featured) */
-  .card-size-3 { margin-top: 100px; } /* Monsoon */
+  .card-size-1 { margin-top: 30px; }  /* ← was 60px */
+  .card-size-2 { flex: 1.4; }
+  .card-size-3 { margin-top: 50px; }  /* ← was 100px */
 
   /* Floating Mood Text */
   .floating-mood-text {
@@ -141,7 +141,7 @@
     border-radius: 4px;
   }
   
-  .card-size-2 .image-wrapper { aspect-ratio: 3/4; } /* Middle one slightly wider */
+  .card-size-2 .image-wrapper { aspect-ratio: 3/4; }
 
   .seasonal-card-img {
     width: 100%;
@@ -158,13 +158,13 @@
     transition: opacity 0.4s ease;
   }
 
-  /* Content (Glassmorphism effect) */
+  /* Content */
   .card-content-v2 {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 40px 30px;
+    padding: 24px 20px; /* ← was 40px 30px */
     color: #fff;
     z-index: 3;
   }
@@ -213,30 +213,53 @@
     transform: translateY(-10px);
     box-shadow: 0 30px 60px rgba(0,0,0,0.15);
   }
+  .seasonal-card-v2:hover .seasonal-card-img { transform: scale(1.1); }
+  .seasonal-card-v2:hover .luxury-cta { opacity: 1; transform: translateY(0); }
+  .seasonal-card-v2:hover .card-overlay-v2 { opacity: 0.9; }
 
-  .seasonal-card-v2:hover .seasonal-card-img {
-    transform: scale(1.1);
+  /* ── Tablet 700px–990px: 2 cards row 1, 1 card row 2 ── */
+  @media (min-width: 700px) and (max-width: 990px) {
+    .seasonal-editorial-grid {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 0;
+    }
+    .card-size-1,
+    .card-size-2,
+    .card-size-3 {
+      flex: 0 0 calc(50% - 10px);
+      margin-top: 0;
+    }
+    /* All cards same height — override card-size-2's special ratio */
+    .seasonal-editorial-grid .image-wrapper,
+    .card-size-2 .image-wrapper {
+      aspect-ratio: 3/4;
+    }
+    /* Center the lone 3rd card on row 2 */
+    .seasonal-card-wrapper:last-child {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .floating-mood-text { display: none; }
+    .luxury-cta { opacity: 1; transform: none; }
   }
 
-  .seasonal-card-v2:hover .luxury-cta {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  .seasonal-card-v2:hover .card-overlay-v2 {
-    opacity: 0.9;
-  }
-
-  /* Mobile Responsiveness */
-  @media (max-width: 991px) {
+  /* ── Mobile ≤699px: single column, equal card heights ── */
+  @media (max-width: 699px) {
     .seasonal-editorial-grid {
       flex-direction: column;
-      gap: 60px;
-      padding: 0 20px;
+      gap: 20px;
+      padding: 0;
     }
     .card-size-1, .card-size-2, .card-size-3 {
       margin-top: 0;
       width: 100%;
+    }
+    /* Same height for every card */
+    .seasonal-editorial-grid .image-wrapper,
+    .card-size-2 .image-wrapper {
+      aspect-ratio: 4/3;
     }
     .floating-mood-text { display: none; }
     .luxury-cta { opacity: 1; transform: none; }

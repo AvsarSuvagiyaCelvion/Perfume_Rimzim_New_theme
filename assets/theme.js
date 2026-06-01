@@ -283,90 +283,181 @@
   function initVibeSlider() {
     var container = document.querySelector('.vibe-slider-outer');
     if (!container) return;
-
     var clip    = container.querySelector('.vibe-slider-clip');
     var track   = container.querySelector('.vibe-track');
     var prevBtn = container.querySelector('.slider-btn.prev');
     var nextBtn = container.querySelector('.slider-btn.next');
     var dots    = container.querySelectorAll('.slider-dot');
-
     if (!track) return;
 
-    var cards       = track.querySelectorAll('.vibe-card');
-    var idx         = 0;
-    var cardW       = 0;
-    var gap         = 0;
-    var visible     = 1;
-    var max         = 0;
-    var autoTimer   = null;
+    /* ── 1. Clone real cards so the loop is visually seamless ──
+       Layout after cloning (CLONES=4, R=7):
+       [clone(3..6)][real(0..6)][clone(0..3)]
+       idx starts at CLONES = first real card.
+       When idx enters clone territory we silently jump to the
+       corresponding real position after the animation finishes. */
+    var realCards = Array.from(track.querySelectorAll('.vibe-card'));
+    var R         = realCards.length;
+    if (!R) return;
 
+    var CLONES = Math.min(R, 4);
+
+    for (var ci = R - CLONES; ci < R; ci++) {
+      var cl = realCards[ci].cloneNode(true);
+      cl.setAttribute('aria-hidden', 'true');
+      cl.setAttribute('tabindex', '-1');
+      track.insertBefore(cl, track.firstChild);
+    }
+    for (var ci = 0; ci < CLONES; ci++) {
+      var cl = realCards[ci].cloneNode(true);
+      cl.setAttribute('aria-hidden', 'true');
+      cl.setAttribute('tabindex', '-1');
+      track.appendChild(cl);
+    }
+
+    /* ── 2. State ── */
+    var ANIM_MS    = 575;       /* must be ≥ CSS transition duration (0.55s) */
+    var idx        = CLONES;    /* current slot — CLONES = first real card */
+    var cardW      = 0;
+    var gap        = 0;
+    var autoTimer  = null;
+    var mq         = window.matchMedia('(max-width: 768px)');
+    var scrollLock = false;
+
+    /* ── 3. Measurement ── */
     function measure() {
-      if (!cards.length) return;
-      var style  = window.getComputedStyle(track);
-      gap        = parseFloat(style.gap) || 20;
-      cardW      = cards[0].offsetWidth + gap;
-      visible    = Math.max(1, Math.floor(clip.offsetWidth / cardW));
-      max        = Math.max(0, cards.length - visible);
-      idx        = Math.min(idx, max);
-      render();
+      var style = window.getComputedStyle(track);
+      gap   = parseFloat(style.gap) || 20;
+      cardW = track.children[0].offsetWidth + gap;
+      if (mq.matches) {
+        track.style.transform = '';
+        scrollLock = true;
+        clip.scrollLeft = idx * cardW;
+        setTimeout(function () { scrollLock = false; }, 200);
+      } else {
+        clip.scrollLeft = 0;
+        desktopJump();
+      }
+      updateDots();
     }
 
-    function render() {
+    /* ── 4. Desktop positioning ── */
+    function desktopJump() {   /* instant — no animation */
+      track.style.transition = 'none';
+      track.style.transform  = 'translateX(-' + (idx * cardW) + 'px)';
+      track.offsetHeight;      /* force reflow so 'none' takes effect */
+      track.style.transition  = '';
+    }
+    function desktopSlide() {  /* animated */
       track.style.transform = 'translateX(-' + (idx * cardW) + 'px)';
-      dots.forEach(function (d, i) {
-        d.classList.toggle('active', i === idx);
-      });
     }
 
+    /* ── 5. Dots ── */
+    function updateDots() {
+      var ri = ((idx - CLONES) % R + R) % R;
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === ri); });
+    }
+
+    /* ── 6. Infinite-loop correction (fires after animation ends) ──
+       Formulas:
+         idx >= CLONES + R  →  idx -= R  (entered append-clone zone)
+         idx <  CLONES      →  idx += R  (entered prepend-clone zone)  */
+    function loopCorrect() {
+      var jumped = false;
+      if (idx >= CLONES + R) { idx -= R; jumped = true; }
+      else if (idx < CLONES) { idx += R; jumped = true; }
+      if (!jumped) return;
+      if (mq.matches) {
+        scrollLock = true;
+        clip.scrollLeft = idx * cardW;
+        setTimeout(function () { scrollLock = false; }, 50);
+      } else {
+        desktopJump();
+      }
+      updateDots();
+    }
+
+    /* ── 7. Navigation ── */
     function next() {
-      idx = idx >= max ? 0 : idx + 1;
-      render();
+      idx++;
+      if (mq.matches) {
+        track.style.transform = '';
+        clip.scrollTo({ left: idx * cardW, behavior: 'smooth' });
+      } else {
+        desktopSlide();
+      }
+      updateDots();
+      setTimeout(loopCorrect, ANIM_MS);
     }
 
     function prev() {
-      idx = idx <= 0 ? max : idx - 1;
-      render();
+      idx--;
+      if (mq.matches) {
+        track.style.transform = '';
+        clip.scrollTo({ left: idx * cardW, behavior: 'smooth' });
+      } else {
+        desktopSlide();
+      }
+      updateDots();
+      setTimeout(loopCorrect, ANIM_MS);
     }
 
-    function startAuto() {
-      stopAuto();
-      autoTimer = setInterval(next, 4000);
-    }
+    function startAuto() { stopAuto(); autoTimer = setInterval(next, 1500); }
+    function stopAuto()  { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
 
-    function stopAuto() {
-      if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-    }
-
+    /* ── 8. Controls ── */
     if (nextBtn) nextBtn.addEventListener('click', function () { next(); startAuto(); });
     if (prevBtn) prevBtn.addEventListener('click', function () { prev(); startAuto(); });
 
     dots.forEach(function (d, i) {
       d.addEventListener('click', function () {
-        idx = Math.min(i, max);
-        render();
+        idx = CLONES + i;
+        if (mq.matches) {
+          clip.scrollTo({ left: idx * cardW, behavior: 'smooth' });
+        } else {
+          desktopSlide();
+        }
+        updateDots();
         startAuto();
       });
     });
 
-    /* Touch swipe */
-    var touchStart = 0;
+    /* ── 9. Mobile: sync idx after native swipe settles ──
+       scroll-snap already snaps the card; we just reconcile idx
+       and jump out of clone territory if the user swiped there. */
+    var scrollTimer;
+    clip.addEventListener('scroll', function () {
+      if (!mq.matches || scrollLock) return;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(function () {
+        var snapped = Math.round(clip.scrollLeft / cardW);
+        if (snapped !== idx) { idx = snapped; updateDots(); }
+        loopCorrect();
+      }, 120);
+    }, { passive: true });
+
+    /* ── 10. Desktop touch swipe (mobile relies on native scroll) ── */
+    var swipeX = 0, swipeT = 0;
     track.addEventListener('touchstart', function (e) {
-      touchStart = e.changedTouches[0].clientX;
+      if (mq.matches) return;
+      swipeX = e.changedTouches[0].clientX;
+      swipeT = Date.now();
       stopAuto();
     }, { passive: true });
     track.addEventListener('touchend', function (e) {
-      var diff = touchStart - e.changedTouches[0].clientX;
-      if (diff > 40) next();
-      else if (diff < -40) prev();
+      if (mq.matches) return;
+      var dist = swipeX - e.changedTouches[0].clientX;
+      if (Math.abs(dist) > 40 && Date.now() - swipeT < 400) {
+        if (dist > 0) next(); else prev();
+      }
       startAuto();
     }, { passive: true });
 
-    /* Pause on hover */
-    track.addEventListener('mouseenter', stopAuto);
-    track.addEventListener('mouseleave', startAuto);
+    container.addEventListener('mouseenter', stopAuto);
+    container.addEventListener('mouseleave', startAuto);
 
+    /* ── 11. Init ── */
     measure();
-    /* Debounce resize so CSS breakpoint changes have time to apply */
     var resizeTimer;
     window.addEventListener('resize', function () {
       clearTimeout(resizeTimer);

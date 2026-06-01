@@ -26,10 +26,12 @@
                 {%- if block.settings.image != blank -%}
                   <img
                     class="vibe-card-img"
-                    src="{{ block.settings.image | image_url: width: 300 }}"
-                    srcset="{{ block.settings.image | image_url: width: 200 }} 200w,
-                            {{ block.settings.image | image_url: width: 300 }} 300w"
-                    sizes="200px"
+                    src="{{ block.settings.image | image_url: width: 300, format: 'webp' }}"
+                    srcset="{{ block.settings.image | image_url: width: 150, format: 'webp' }} 150w,
+                            {{ block.settings.image | image_url: width: 200, format: 'webp' }} 200w,
+                            {{ block.settings.image | image_url: width: 300, format: 'webp' }} 300w,
+                            {{ block.settings.image | image_url: width: 400, format: 'webp' }} 400w"
+                    sizes="(max-width: 768px) calc(39vw - 10px), 200px"
                     alt="{{ block.settings.image.alt | default: block.settings.name }}"
                     width="200" height="267" loading="lazy"
                   >
@@ -59,7 +61,6 @@
         </div>
       </div>
 
-      {%- comment -%} Slider Controls {%- endcomment -%}
       <div class="slider-controls" aria-label="Slider controls">
         <button class="slider-btn prev" aria-label="Previous slide">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
