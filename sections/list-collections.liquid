@@ -46,10 +46,10 @@
             {%- if col.image != blank -%}
               <img
                 class="col-card-img"
-                src="{{ col.image | image_url: width: 600 }}"
-                srcset="{{ col.image | image_url: width: 400 }} 400w,
-                        {{ col.image | image_url: width: 600 }} 600w,
-                        {{ col.image | image_url: width: 900 }} 900w"
+                src="{{ col.image | image_url: width: 600, format: 'webp' }}"
+                srcset="{{ col.image | image_url: width: 400, format: 'webp' }} 400w,
+                        {{ col.image | image_url: width: 600, format: 'webp' }} 600w,
+                        {{ col.image | image_url: width: 900, format: 'webp' }} 900w"
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 alt="{{ col.image.alt | default: col.title }}"
                 width="600" height="720" loading="lazy"
@@ -58,7 +58,7 @@
               {%- comment -%} Fallback: first product image {%- endcomment -%}
               <img
                 class="col-card-img"
-                src="{{ col.products.first.featured_image | image_url: width: 600 }}"
+                src="{{ col.products.first.featured_image | image_url: width: 600, format: 'webp' }}"
                 alt="{{ col.title }}"
                 width="600" height="720" loading="lazy"
               >

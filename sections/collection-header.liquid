@@ -38,10 +38,10 @@
   {%- if col.image != blank -%}
     <div class="col-header-bg" aria-hidden="true">
       <img
-        src="{{ col.image | image_url: width: 1400 }}"
-        srcset="{{ col.image | image_url: width: 800 }} 800w,
-                {{ col.image | image_url: width: 1200 }} 1200w,
-                {{ col.image | image_url: width: 1400 }} 1400w"
+        src="{{ col.image | image_url: width: 1400, format: 'webp' }}"
+        srcset="{{ col.image | image_url: width: 800, format: 'webp' }} 800w,
+                {{ col.image | image_url: width: 1200, format: 'webp' }} 1200w,
+                {{ col.image | image_url: width: 1400, format: 'webp' }} 1400w"
         sizes="100vw"
         alt=""
         width="1400" height="500" loading="eager"

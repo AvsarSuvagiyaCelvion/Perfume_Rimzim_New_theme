@@ -163,10 +163,10 @@
             <img
               id="PdpMainImage"
               class="pdp-main-img"
-              src="{{ product.featured_image | image_url: width: 900 }}"
-              srcset="{{ product.featured_image | image_url: width: 600 }} 600w,
-                      {{ product.featured_image | image_url: width: 900 }} 900w,
-                      {{ product.featured_image | image_url: width: 1200 }} 1200w"
+              src="{{ product.featured_image | image_url: width: 900, format: 'webp' }}"
+              srcset="{{ product.featured_image | image_url: width: 600, format: 'webp' }} 600w,
+                      {{ product.featured_image | image_url: width: 900, format: 'webp' }} 900w,
+                      {{ product.featured_image | image_url: width: 1200, format: 'webp' }} 1200w"
               sizes="(max-width: 768px) 100vw, 55vw"
               alt="{{ product.featured_image.alt | default: product.title | escape }}"
               width="900" height="1200"
@@ -188,13 +188,13 @@
               <button
                 type="button"
                 class="pdp-thumb {% if forloop.first %}active{% endif %}"
-                data-full-src="{{ image | image_url: width: 900 }}"
-                data-srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w"
+                data-full-src="{{ image | image_url: width: 900, format: 'webp' }}"
+                data-srcset="{{ image | image_url: width: 600, format: 'webp' }} 600w, {{ image | image_url: width: 900, format: 'webp' }} 900w"
                 aria-label="View image {{ forloop.index }}"
                 role="listitem"
               >
                 <img
-                  src="{{ image | image_url: width: 120 }}"
+                  src="{{ image | image_url: width: 120, format: 'webp' }}"
                   alt="{{ image.alt | default: product.title | escape }}"
                   width="120" height="120" loading="lazy"
                 >

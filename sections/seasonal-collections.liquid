@@ -23,7 +23,7 @@
               {%- if block.settings.image != blank -%}
                 <img
                   class="seasonal-card-img"
-                  src="{{ block.settings.image | image_url: width: 800 }}"
+                  src="{{ block.settings.image | image_url: width: 800, format: 'webp' }}"
                   alt="{{ block.settings.title }}"
                   width="800" height="1067"
                   loading="lazy"

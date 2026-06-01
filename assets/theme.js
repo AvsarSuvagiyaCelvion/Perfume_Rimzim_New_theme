@@ -924,19 +924,32 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    /* Critical path — runs immediately on every page */
     initHeaderScroll();
     initMobileMenu();
     initDropdowns();
-    initTextAnimations();
-    initScrollAnimations();
-    initVibeSlider();
     initSearchDrawer();
     initAddToCart();
     initWishlist();
-    initNewsletterForm();
     refreshCartCount();
     initScrollToTop();
-    initStickyATC();
+
+    /* PDP sticky bar — only when the element exists */
+    if (document.getElementById('PdpStickyBar')) initStickyATC();
+
+    /* Non-critical UI — defer until the browser is idle so main-thread
+       work doesn't block LCP/TTI. Falls back to setTimeout for Safari. */
+    var _deferred = function () {
+      initTextAnimations();
+      initScrollAnimations();
+      if (document.querySelector('.vibe-slider-outer')) initVibeSlider();
+      if (document.querySelector('.newsletter-form'))   initNewsletterForm();
+    };
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(_deferred, { timeout: 2000 });
+    } else {
+      setTimeout(_deferred, 200);
+    }
   });
 
 })();
@@ -1097,7 +1110,9 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initWishlistPage);
+  if (document.getElementById('WishlistProducts')) {
+    document.addEventListener('DOMContentLoaded', initWishlistPage);
+  }
 })();
 
 /* ============================================================
@@ -1169,7 +1184,9 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', initCartPage);
+  if (document.getElementById('CartPage')) {
+    document.addEventListener('DOMContentLoaded', initCartPage);
+  }
 })();
 
 /* ============================================================
@@ -1331,11 +1348,13 @@
   /* --------------------------------------------------------
      Boot PDP functions
   -------------------------------------------------------- */
-  document.addEventListener('DOMContentLoaded', function () {
-    initPdpGallery();
-    initPdpVariants();
-    initPdpQty();
-    initPdpAccordion();
-  });
+  if (document.getElementById('ProductSection')) {
+    document.addEventListener('DOMContentLoaded', function () {
+      initPdpGallery();
+      initPdpVariants();
+      initPdpQty();
+      initPdpAccordion();
+    });
+  }
 
 })();

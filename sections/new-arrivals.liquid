@@ -42,10 +42,10 @@
               {%- if product.featured_image != blank -%}
                 <img
                   class="product-card-img"
-                  src="{{ product.featured_image | image_url: width: 480 }}"
-                  srcset="{{ product.featured_image | image_url: width: 320 }} 320w,
-                          {{ product.featured_image | image_url: width: 480 }} 480w,
-                          {{ product.featured_image | image_url: width: 640 }} 640w"
+                  src="{{ product.featured_image | image_url: width: 480, format: 'webp' }}"
+                  srcset="{{ product.featured_image | image_url: width: 320, format: 'webp' }} 320w,
+                          {{ product.featured_image | image_url: width: 480, format: 'webp' }} 480w,
+                          {{ product.featured_image | image_url: width: 640, format: 'webp' }} 640w"
                   sizes="(max-width: 425px) 100vw, (max-width: 768px) 50vw, (max-width: 1100px) 33vw, 25vw"
                   alt="{{ product.featured_image.alt | default: product.title | escape }}"
                   width="480" height="640" loading="lazy"
@@ -53,7 +53,7 @@
                 {%- if product.images.size > 1 -%}
                   <img
                     class="product-card-img product-card-img--hover"
-                    src="{{ product.images[1] | image_url: width: 480 }}"
+                    src="{{ product.images[1] | image_url: width: 480, format: 'webp' }}"
                     alt="{{ product.images[1].alt | default: product.title | escape }}"
                     width="480" height="640" loading="lazy"
                     aria-hidden="true"

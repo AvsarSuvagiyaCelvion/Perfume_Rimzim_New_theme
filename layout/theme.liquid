@@ -13,12 +13,32 @@
   {%- if page_description -%}
     <meta name="description" content="{{ page_description | escape }}">
   {%- endif -%}
-  <link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
   <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- comment -%} Preconnects FIRST — before any cross-origin request fires {%- endcomment -%}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+  {%- comment -%} Single consolidated font request with display=swap so text renders immediately with fallback font {%- endcomment -%}
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Lato:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+  {%- comment -%} LCP hero image preload — homepage only, only when a hero image is set {%- endcomment -%}
+  {%- if template.name == 'index' -%}
+    {%- assign hero_section_settings = sections['hero'].settings -%}
+    {%- if hero_section_settings.hero_image != blank -%}
+      <link
+        rel="preload"
+        as="image"
+        imagesrcset="{{ hero_section_settings.hero_image | image_url: width: 400, format: 'webp' }} 400w,
+                     {{ hero_section_settings.hero_image | image_url: width: 600, format: 'webp' }} 600w,
+                     {{ hero_section_settings.hero_image | image_url: width: 800, format: 'webp' }} 800w,
+                     {{ hero_section_settings.hero_image | image_url: width: 1200, format: 'webp' }} 1200w"
+        imagesizes="100vw"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+  {%- endif -%}
 
   {{ 'theme.css' | asset_url | stylesheet_tag }}
   {{ content_for_header }}
