@@ -176,7 +176,7 @@ svg {
 
 .section-header {
   text-align: center;
-  margin-bottom: var(--space-48);
+  margin-bottom: var(--space-20);
 }
 
 /* --- Buttons --- */
@@ -1423,7 +1423,7 @@ svg {
    NEW ARRIVALS
    ============================================================ */
 .new-arrivals-section {
-  padding: var(--space-80) 0;
+  padding: var(--space-16) 0;
   background: var(--color-bg-cream);
 }
 
@@ -1973,7 +1973,7 @@ svg {
    ============================================================ */
 .vibe-section {
   /* padding: var(--space-80) 0; */
-  padding: 20px 0;
+  padding: 10px 0;
   margin-top: 15px;
   background: linear-gradient(180deg, var(--color-bg-cream) 0%, var(--color-white) 65%);
   overflow: hidden;
@@ -2310,7 +2310,7 @@ svg {
    NEWSLETTER
    ============================================================ */
 .newsletter-section {
-  padding: var(--space-80) 0;
+  padding: var(--space-20) 0;
   /* background: linear-gradient(135deg, #141414 0%, #222018 100%); */
   position: relative;
   overflow: hidden;
