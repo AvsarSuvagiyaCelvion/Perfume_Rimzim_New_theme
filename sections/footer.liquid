@@ -118,7 +118,7 @@
     </div>
 
     {%- comment -%} ── Footer Bottom ── {%- endcomment -%}
-    {% comment %} <div class="footer-bottom">
+    <div class="footer-bottom">
       <p class="footer-copy">
         &copy; {{ 'now' | date: '%Y' }}
         <a href="{{ routes.root_url }}">{{ shop.name }}</a>.
@@ -129,7 +129,7 @@
         <a href="{{ shop.terms_of_service.url }}">Terms of Service</a>
         <a href="{{ shop.refund_policy.url }}">Refund Policy</a>
       </nav>
-    </div> {% endcomment %}
+    </div>
 
   </div>
 </footer>

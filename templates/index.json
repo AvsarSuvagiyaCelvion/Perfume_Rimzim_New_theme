@@ -47,48 +47,48 @@
         "trust4_sub": "SSL encrypted checkout"
       }
     },
-    "seasonal_collections": {
-      "type": "seasonal-collections",
+    "gender_collections": {
+      "type": "gender-collections",
       "blocks": {
-        "winter": {
-          "type": "collection_card",
+        "men": {
+          "type": "gender_card",
           "settings": {
-            "image": "shopify://shop_images/pexels-rethaferguson-3059609.jpg",
-            "title": "Winter Collection",
-            "mood_text": "",
-            "description": "Warm, rich scents crafted for cold evenings by the fire.",
-            "collection_url": "/collections/winter"
+            "collection": "men",
+            "title": "Men",
+            "mood_text": "BOLD & POWERFUL",
+            "description": "Commanding, intense fragrances crafted for the modern gentleman.",
+            "collection_url": "/collections/men"
           }
         },
-        "summer": {
-          "type": "collection_card",
+        "women": {
+          "type": "gender_card",
           "settings": {
-            "image": "shopify://shop_images/pexels-laurachouette-21008923.jpg",
-            "title": "Summer Collection",
-            "mood_text": "",
-            "description": "Fresh and vibrant fragrances for long, sun-drenched days.",
-            "collection_url": "/collections/summer"
+            "collection": "women",
+            "title": "Women",
+            "mood_text": "FLORAL & ELEGANT",
+            "description": "Delicate, sophisticated scents that celebrate femininity.",
+            "collection_url": "/collections/women"
           }
         },
-        "monsoon": {
-          "type": "collection_card",
+        "unisex": {
+          "type": "gender_card",
           "settings": {
-            "image": "shopify://shop_images/pexels-alesiakozik-7796225.jpg",
-            "title": "Monsoon Collection",
-            "mood_text": "",
-            "description": "Earthy petrichor and rain-kissed florals for stormy days.",
-            "collection_url": "/collections/monsoon"
+            "collection": "unisex",
+            "title": "Unisex",
+            "mood_text": "FOR EVERYONE",
+            "description": "Boundary-free fragrances designed for every soul.",
+            "collection_url": "/collections/unisex"
           }
         }
       },
       "block_order": [
-        "winter",
-        "summer",
-        "monsoon"
+        "men",
+        "women",
+        "unisex"
       ],
       "settings": {
-        "title": "Shop by Season",
-        "subtitle": "Every season calls for a different scent"
+        "title": "Shop by Gender",
+        "subtitle": "Fragrances crafted for every expression"
       }
     },
     "new_arrivals": {
@@ -346,27 +346,15 @@
         "contact_text": "Still have questions? Our fragrance experts are here to help.",
         "contact_url": ""
       }
-    },
-    "newsletter": {
-      "type": "newsletter",
-      "settings": {
-        "title": "Subscribe Our Newsletter",
-        "description": "Get exclusive access to new arrivals, limited editions, and special offers delivered straight to your inbox.",
-        "placeholder": "Your email address",
-        "button_text": "Subscribe",
-        "privacy_text": "We respect your privacy. Unsubscribe at any time.",
-        "privacy_url": ""
-      }
     }
   },
   "order": [
     "hero",
     "trust_bar",
-    "seasonal_collections",
+    "gender_collections",
     "new_arrivals",
     "vibe_slider",
     "testimonials",
-    "faq",
-    "newsletter"
+    "faq"
   ]
 }

@@ -1,0 +1,379 @@
+<section class="gender-section" id="GenderCollections">
+  <div class="container">
+
+    <div class="gender-section-header animate-on-scroll">
+      <span class="eyebrow-label">EXPLORE</span>
+      <h2 class="section-title">{{ section.settings.title | default: 'Shop by Gender' }}</h2>
+      <div class="gender-accent-line"></div>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="gender-grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign gc       = collections[block.settings.collection]
+          assign card_img = gc.image   | default: block.settings.image
+          assign card_url = gc.url     | default: block.settings.collection_url | default: routes.all_products_collection_url
+          assign card_title = gc.title | default: block.settings.title
+          assign card_desc  = gc.description | strip_html | truncate: 120 | default: block.settings.description
+        -%}
+        <div class="gender-card-wrapper card-size-{{ forloop.index }} animate-on-scroll" data-delay="{{ forloop.index0 | times: 150 }}" {{ block.shopify_attributes }}>
+
+          
+
+          <a href="{{ card_url }}" class="gender-card">
+            <div class="gender-img-wrap">
+              {%- if card_img != blank -%}
+                <img
+                  class="gender-card-img"
+                  src="{{ card_img | image_url: width: 800, format: 'webp' }}"
+                  srcset="{{ card_img | image_url: width: 480, format: 'webp' }} 480w,
+                          {{ card_img | image_url: width: 800, format: 'webp' }} 800w,
+                          {{ card_img | image_url: width: 1100, format: 'webp' }} 1100w"
+                  sizes="(max-width: 699px) 100vw, (max-width: 990px) 50vw, 33vw"
+                  alt="{{ card_img.alt | default: card_title }}"
+                  width="800" height="1067"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'gender-card-img' -}}
+              {%- endif -%}
+              <div class="gender-card-overlay"></div>
+            </div>
+
+            <div class="gender-card-content">
+              <span class="gender-card-label">COLLECTION</span>
+              <h3 class="gender-card-name">{{ card_title }}</h3>
+              {%- if card_desc != blank -%}
+                <p class="gender-card-desc">{{ card_desc }}</p>
+              {%- endif -%}
+              <span class="gender-cta">
+                SHOP NOW
+                <svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true">
+                  <path d="M13 1L17 5M17 5L13 9M17 5H1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{% style %}
+
+:root {
+  --gold-accent: #c5a059;
+  --cream-bg: #f9f7f2;
+  --dark-text: #1a1a1a;
+}
+
+.gender-section {
+  background-color: var(--cream-bg);
+  overflow: hidden;
+}
+
+/* ── Section header ── */
+.gender-section-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.gender-section-header .eyebrow-label {
+  font-family: 'Philosopher', sans-serif;
+  letter-spacing: 0.3em;
+  color: var(--gold-accent);
+  font-size: 12px;
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.gender-section-header .section-title {
+  font-family: 'Philosopher', sans-serif;
+  font-size: clamp(32px, 4vw, 52px);
+  color: var(--dark-text);
+  margin: 0;
+}
+
+.gender-accent-line {
+  width: 50px;
+  height: 1px;
+  background: var(--gold-accent);
+  margin: 10px auto;
+}
+
+/* ── Asymmetric editorial grid ── */
+.gender-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.gender-card-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.card-size-1 { margin-top: 30px; }
+.card-size-2 { flex: 1.4; }
+.card-size-3 { margin-top: 50px; }
+
+/* ── Floating mood text ── */
+.gender-mood-text {
+  position: absolute;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  left: -25px;
+  top: 50px;
+  font-family: 'Philosopher', sans-serif;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--dark-text);
+  opacity: 0.4;
+  z-index: 2;
+}
+
+/* ── Card ── */
+.gender-card {
+  display: block;
+  text-decoration: none;
+  position: relative;
+  background: #fff;
+  border-radius: 4px;
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.gender-img-wrap {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 4.5;
+  border-radius: 4px;
+}
+
+.card-size-2 .gender-img-wrap { aspect-ratio: 3 / 4; }
+
+.gender-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s ease;
+}
+
+.gender-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 50%);
+  opacity: 0.7;
+  transition: opacity 0.4s ease;
+}
+
+/* ── Card content ── */
+.gender-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 24px 20px;
+  color: #fff;
+  z-index: 3;
+}
+
+.gender-card-label {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--gold-accent);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.gender-card-name {
+  font-family: 'Philosopher', sans-serif;
+  font-size: clamp(18px, 2.8vw, 28px);
+  margin-bottom: 12px;
+  color: #fff !important;
+}
+
+.gender-card-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+  max-width: 250px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gender-cta {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+
+/* ── Hover effects ── */
+.gender-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+}
+.gender-card:hover .gender-card-img    { transform: scale(1.1); }
+.gender-card:hover .gender-cta         { opacity: 1; transform: translateY(0); }
+.gender-card:hover .gender-card-overlay { opacity: 0.9; }
+
+/* ── Mobile active state ── */
+.gender-card:active {
+  transform: scale(0.983);
+  transition: transform 90ms ease;
+}
+
+/* ── Tablet 700px–990px ── */
+@media (min-width: 700px) and (max-width: 990px) {
+  .gender-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0;
+  }
+  .card-size-1,
+  .card-size-2,
+  .card-size-3 {
+    flex: 0 0 calc(50% - 10px);
+    margin-top: 0;
+  }
+  .gender-grid .gender-img-wrap,
+  .card-size-2 .gender-img-wrap { aspect-ratio: 3 / 4; }
+  .gender-card-wrapper:last-child {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .gender-mood-text { display: none; }
+  .gender-cta { opacity: 1; transform: none; }
+}
+
+/* ── Mobile ≤699px ── */
+@media (max-width: 699px) {
+  .gender-grid {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0;
+  }
+  .card-size-1, .card-size-2, .card-size-3 {
+    margin-top: 0;
+    width: 100%;
+  }
+  .gender-grid .gender-img-wrap,
+  .card-size-2 .gender-img-wrap { aspect-ratio: 3 / 4; }
+  .gender-mood-text { display: none; }
+  .gender-cta { opacity: 1; transform: none; }
+}
+
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Gender Collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Shop by Gender"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Fragrances crafted for every expression"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "gender_card",
+      "name": "Gender Card",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Select a collection — its banner image, title and URL are used automatically."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Override image (optional)",
+          "info": "Leave blank to use the collection banner image."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Override title (optional)",
+          "info": "Leave blank to use the collection title."
+        },
+        {
+          "type": "text",
+          "id": "mood_text",
+          "label": "Floating mood text",
+          "info": "e.g., BOLD & POWERFUL"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Override description (optional)",
+          "info": "Leave blank to use the collection description."
+        },
+        {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Override link URL (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gender Collections",
+      "blocks": [
+        {
+          "type": "gender_card",
+          "settings": {
+            "title": "Men",
+            "description": "Commanding, intense fragrances crafted for the modern gentleman.",
+            "collection_url": "/collections/men"
+          }
+        },
+        {
+          "type": "gender_card",
+          "settings": {
+            "title": "Women",
+            "description": "Delicate, sophisticated scents that celebrate femininity.",
+            "collection_url": "/collections/women"
+          }
+        },
+        {
+          "type": "gender_card",
+          "settings": {
+            "title": "Unisex",
+            "description": "Boundary-free fragrances designed for every soul.",
+            "collection_url": "/collections/unisex"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
