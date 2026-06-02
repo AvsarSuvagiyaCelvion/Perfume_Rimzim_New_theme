@@ -56,31 +56,31 @@
     "email": {{ shop.email | json }}
   },
   "sameAs": [
-    {%- assign _sameAs_entries = '' -%}
+    {%- assign same_as_entries = '' -%}
     {%- if footer_s.instagram_url != blank -%}
-      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.instagram_url | append: '||' -%}
+      {%- assign same_as_entries = same_as_entries | append: footer_s.instagram_url | append: '||' -%}
     {%- endif -%}
     {%- if footer_s.facebook_url != blank -%}
-      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.facebook_url | append: '||' -%}
+      {%- assign same_as_entries = same_as_entries | append: footer_s.facebook_url | append: '||' -%}
     {%- endif -%}
     {%- if footer_s.twitter_url != blank -%}
-      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.twitter_url | append: '||' -%}
+      {%- assign same_as_entries = same_as_entries | append: footer_s.twitter_url | append: '||' -%}
     {%- endif -%}
     {%- if footer_s.pinterest_url != blank -%}
-      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.pinterest_url | append: '||' -%}
+      {%- assign same_as_entries = same_as_entries | append: footer_s.pinterest_url | append: '||' -%}
     {%- endif -%}
     {%- if footer_s.youtube_url != blank -%}
-      {%- assign _sameAs_entries = _sameAs_entries | append: footer_s.youtube_url | append: '||' -%}
+      {%- assign same_as_entries = same_as_entries | append: footer_s.youtube_url | append: '||' -%}
     {%- endif -%}
-    {%- assign _sameAs_list = _sameAs_entries | split: '||' -%}
-    {%- assign _sameAs_list_cleaned = '' -%}
-    {%- for _url in _sameAs_list -%}
+    {%- assign same_as_list = same_as_entries | split: '||' -%}
+    {%- assign same_as_list_clean = '' -%}
+    {%- for _url in same_as_list -%}
       {%- if _url != blank -%}
-        {%- assign _sameAs_list_cleaned = _sameAs_list_cleaned | append: _url | append: '||' -%}
+        {%- assign same_as_list_clean = same_as_list_clean | append: _url | append: '||' -%}
       {%- endif -%}
     {%- endfor -%}
-    {%- assign _sameAs_final = _sameAs_list_cleaned | split: '||' -%}
-    {%- for _url in _sameAs_final -%}
+    {%- assign same_as_final = same_as_list_clean | split: '||' -%}
+    {%- for _url in same_as_final -%}
       {{ _url | json }}{%- unless forloop.last %},{%- endunless %}
     {%- endfor %}
   ]

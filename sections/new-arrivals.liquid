@@ -114,12 +114,12 @@
               {%- endif -%}
             </p>
 
-            {%- assign _r = product.id | modulo: 9 -%}
-            {%- assign _fallback_rating = _r | plus: 41 | times: 0.1 | round: 1 -%}
-            {%- assign _c = product.id | modulo: 7 -%}
-            {%- assign _fallback_count = _c | times: 23 | plus: 84 -%}
-            {%- assign rating_value = product.metafields.judgeme.rating.value | default: _fallback_rating -%}
-            {%- assign rating_count = product.metafields.judgeme.reviews_count.value | default: _fallback_count -%}
+            {%- assign rating_mod = product.id | modulo: 9 -%}
+            {%- assign fallback_rating = rating_mod | plus: 41 | times: 0.1 | round: 1 -%}
+            {%- assign count_mod = product.id | modulo: 7 -%}
+            {%- assign fallback_count = count_mod | times: 23 | plus: 84 -%}
+            {%- assign rating_value = product.metafields.judgeme.rating.value | default: fallback_rating -%}
+            {%- assign rating_count = product.metafields.judgeme.reviews_count.value | default: fallback_count -%}
             <div class="product-card-reviews">
               <div
                 class="product-card-stars"
