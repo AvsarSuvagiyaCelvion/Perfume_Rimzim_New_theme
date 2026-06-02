@@ -487,12 +487,11 @@ svg {
   position: absolute;
   inset: 0;
   z-index: 2;
-  background:
-    linear-gradient(to bottom,
-      rgba(10, 8, 5, 0.40) 0%,
-      rgba(10, 8, 5, 0.10) 30%,
-      rgba(10, 8, 5, 0.10) 70%,
-      rgba(10, 8, 5, 0.45) 100%);
+  background: linear-gradient(to bottom,
+      rgba(10, 8, 5, 0.25) 0%,
+      rgba(10, 8, 5, 0.05) 35%,
+      rgba(10, 8, 5, 0.35) 65%,
+      rgba(10, 8, 5, 0.82) 100%);
 }
 
 /* Text centred over the image */
@@ -550,19 +549,12 @@ svg {
 }
 
 .col-header-inner.has-bg .col-breadcrumb {
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 6px 16px;
-  border-radius: var(--radius-full);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.85);
-  gap: var(--space-8);
-  margin-bottom: var(--space-20);
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: var(--space-12);
 }
 
 .col-header-inner.has-bg .col-breadcrumb a {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .col-header-inner.has-bg .col-breadcrumb a:hover {
@@ -570,24 +562,21 @@ svg {
 }
 
 .col-header-inner.has-bg .col-header-title {
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.9);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .col-header-inner.has-bg .col-header-desc {
-  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
-  color: rgba(255, 255, 255, 0.90);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .col-header-inner.has-bg .col-header-count {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 18px;
-  background: rgba(201, 169, 110, 0.18);
+  padding: 5px 16px;
+  background: rgba(201, 169, 110, 0.20);
   border: 1px solid rgba(201, 169, 110, 0.45);
   border-radius: var(--radius-full);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   color: var(--color-primary-light);
   letter-spacing: 2.5px;
   font-size: 0.7rem;
@@ -600,7 +589,6 @@ svg {
 
 .col-header-inner.has-bg .section-label {
   color: var(--color-primary-light);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 
 .col-breadcrumb {
@@ -611,7 +599,7 @@ svg {
   flex-wrap: wrap;
   font-size: 0.75rem;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-16);
+  margin-bottom: var(--space-8);
 }
 
 .col-breadcrumb a:hover {
@@ -5102,7 +5090,7 @@ video {
   }
 
   .col-header-inner {
-    padding: var(--space-32) var(--space-20);
+    padding: var(--space-16) var(--space-20) var(--space-32);
   }
 
   .col-header-title {
@@ -5117,10 +5105,9 @@ video {
   }
 
   .col-header-inner.has-bg .col-breadcrumb {
-    font-size: 0.7rem;
-    padding: 5px 12px;
+    font-size: 0.68rem;
     gap: 5px;
-    margin-bottom: var(--space-12);
+    margin-bottom: var(--space-8);
   }
 
   .col-header-inner.has-bg .col-header-count {

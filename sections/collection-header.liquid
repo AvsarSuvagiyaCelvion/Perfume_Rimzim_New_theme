@@ -125,9 +125,9 @@
         <span aria-hidden="true">›</span>
         <span aria-current="page">{{ col.title }}</span>
       </nav>
-      <span class="section-label t-reveal t-reveal--left" style="--td:80ms">
+      {% comment %} <span class="section-label t-reveal t-reveal--left" style="--td:80ms">
         {{ section.settings.label | default: 'Collection' }}
-      </span>
+      </span> {% endcomment %}
       <h1 class="col-header-title t-split-title" data-anim="split">
         {{ col.title }}
       </h1>
