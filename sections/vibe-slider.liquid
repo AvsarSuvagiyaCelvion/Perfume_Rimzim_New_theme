@@ -2,8 +2,8 @@
 
   <div class="container">
     <div class="section-header animate-on-scroll">
-      <span class="section-label">Discover</span>
-      <h2 class="section-title">{{ section.settings.title | default: 'Choose Your Vibe' }}</h2>
+      <span class="section-label vibe-label">Discover</span>
+      <h2 class="section-title vibe-title">{{ section.settings.title | default: 'Choose Your Vibe' }}</h2>
       {%- if section.settings.subtitle != blank -%}
         <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       {%- endif -%}
