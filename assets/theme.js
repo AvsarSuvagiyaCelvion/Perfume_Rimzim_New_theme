@@ -1233,13 +1233,8 @@
     var moneyFmt  = moneyFmtEl ? JSON.parse(moneyFmtEl.textContent) : '{{amount}}';
     var variants  = product.variants;
 
-    /* Track selected options */
+    /* Track selected options — nothing pre-selected on fresh load */
     var selected = {};
-    section.querySelectorAll('.pdp-option').forEach(function (optEl) {
-      var idx = parseInt(optEl.dataset.optionIndex, 10);
-      var active = optEl.querySelector('.pdp-option-btn.active');
-      if (active) selected[idx] = active.dataset.optionVal;
-    });
 
     section.querySelectorAll('.pdp-option-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -1275,11 +1270,20 @@
         /* Update price */
         updatePrice(match, moneyFmt);
 
-        /* Update ATC button */
+        /* Update ATC button — require all options selected */
         var atcBtn = document.getElementById('PdpATC');
+        var hint   = document.getElementById('PdpSelectHint');
+        var totalOptions = section.querySelectorAll('.pdp-option').length;
+        var allSelected  = Object.keys(selected).length >= totalOptions;
         if (atcBtn) {
-          atcBtn.disabled = !match.available;
-          atcBtn.querySelector('span') && (atcBtn.querySelector('span').textContent = match.available ? 'Add to Cart' : 'Sold Out');
+          if (allSelected) {
+            atcBtn.disabled = !match.available;
+            atcBtn.removeAttribute('data-awaiting-selection');
+            if (hint) hint.classList.add('is-hidden');
+          } else {
+            atcBtn.disabled = true;
+            if (hint) hint.classList.remove('is-hidden');
+          }
         }
 
         /* Update availability */
@@ -1345,7 +1349,7 @@
         var body     = btn.nextElementSibling;
         var expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
-        body.hidden = expanded;
+        body.classList.toggle('is-open', !expanded);
       });
     });
   }

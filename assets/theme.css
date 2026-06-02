@@ -5351,7 +5351,7 @@ video {
 .pdp-banner {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 140px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -5441,7 +5441,7 @@ video {
 
 @media (max-width: 600px) {
   .pdp-banner {
-    height: 160px;
+    height: 110px;
   }
 
   .pdp-banner-title {
@@ -5498,14 +5498,13 @@ video {
   border-radius: var(--radius-xl);
   overflow: hidden;
   background: var(--color-bg-alt);
-  aspect-ratio: 4/5;
   margin-bottom: var(--space-12);
 }
 
 .pdp-main-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 480px;
+  display: block;
   transition: opacity var(--duration-base);
 }
 
@@ -5618,6 +5617,28 @@ video {
 /* Variant options */
 .pdp-option {
   margin-bottom: var(--space-20);
+  opacity: 1;
+  transform: none;
+}
+
+/* Select size hint */
+.pdp-select-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: #C0392B;
+  font-weight: 500;
+  margin-bottom: var(--space-16);
+  padding: 8px 12px;
+  background: rgba(192,57,43,0.06);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid #C0392B;
+  transition: opacity 0.3s ease;
+}
+
+.pdp-select-hint.is-hidden {
+  display: none;
 }
 
 .pdp-option-header {
@@ -5866,11 +5887,6 @@ video {
   letter-spacing: 0.5px;
   color: var(--color-text);
   text-align: left;
-  transition: color var(--duration-fast);
-}
-
-.pdp-accordion-trigger:hover {
-  color: var(--color-primary);
 }
 
 .pdp-accordion-icon {
@@ -5883,14 +5899,18 @@ video {
 }
 
 .pdp-accordion-body {
-  padding-bottom: var(--space-20);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s var(--ease-out), padding-bottom 0.3s ease;
+  padding-bottom: 0;
   font-size: 0.9rem;
   line-height: 1.8;
   color: var(--color-text-light);
 }
 
-.pdp-accordion-body[hidden] {
-  display: none;
+.pdp-accordion-body.is-open {
+  max-height: 800px;
+  padding-bottom: var(--space-20);
 }
 
 .pdp-description {
@@ -5911,7 +5931,7 @@ video {
   }
 
   .pdp-gallery-main {
-    aspect-ratio: 1/1;
+    width: 100%;
   }
 }
 

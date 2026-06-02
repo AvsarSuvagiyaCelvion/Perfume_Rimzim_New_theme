@@ -165,9 +165,6 @@
       <span aria-current="page">{{ product.title }}</span>
     </nav>
     <p class="pdp-banner-title" aria-hidden="true">{{ product.title }}</p>
-    {%- unless product.vendor == blank -%}
-      <p class="pdp-banner-vendor">{{ product.vendor }}</p>
-    {%- endunless -%}
   </div>
 </div>
 {%- endif -%}
@@ -247,9 +244,9 @@
           {%- else -%}
             <span class="pdp-price-current">{{ current_variant.price | money }}</span>
           {%- endif -%}
-          {%- if product.price_varies -%}
+          {% comment %} {%- if product.price_varies -%}
             <span class="pdp-price-from">From</span>
-          {%- endif -%}
+          {%- endif -%} {% endcomment %}
         </div>
 
         <div class="pdp-divider t-reveal" style="--td:320ms"></div>
@@ -267,10 +264,10 @@
               endif
             -%}
 
-            <div class="pdp-option t-reveal" style="--td:{{ 380 | plus: forloop.index0 | times: 80 }}ms" data-option-index="{{ forloop.index0 }}">
+            <div class="pdp-option" data-option-index="{{ forloop.index0 }}">
               <div class="pdp-option-header">
                 <span class="pdp-option-name">{{ option.name }}</span>
-                <span class="pdp-option-value" id="PdpOptionVal-{{ forloop.index }}">{{ option.selected_value }}</span>
+                <span class="pdp-option-value" id="PdpOptionVal-{{ forloop.index }}"></span>
               </div>
 
               <div class="pdp-option-values" role="radiogroup" aria-label="{{ option.name }}">
@@ -282,10 +279,10 @@
 
                   <button
                     type="button"
-                    class="pdp-option-btn {% if is_colour %}pdp-option-btn--colour{% endif %} {% if is_selected %}active{% endif %}"
+                    class="pdp-option-btn {% if is_colour %}pdp-option-btn--colour{% endif %}"
                     data-option-pos="{{ forloop.parentloop.index }}"
                     data-option-val="{{ value | escape }}"
-                    aria-pressed="{{ is_selected }}"
+                    aria-pressed="false"
                     {%- if is_colour -%}
                       style="background-color: {{ value | downcase }};"
                       title="{{ value }}"
@@ -299,7 +296,16 @@
           {%- endfor -%}
 
           {%- comment -%} Hidden variant ID input {%- endcomment -%}
-          <input type="hidden" name="id" id="PdpVariantId" value="{{ current_variant.id }}">
+          <input type="hidden" name="id" id="PdpVariantId" value="">
+
+          {%- if product.variants.size > 1 -%}
+            <p class="pdp-select-hint" id="PdpSelectHint">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+              </svg>
+              Please select a size to continue
+            </p>
+          {%- endif -%}
 
           {%- comment -%} Quantity {%- endcomment -%}
           <div class="pdp-quantity t-reveal" style="--td:560ms">
@@ -337,7 +343,8 @@
               data-title="{{ product.title | escape }}"
               data-has-variants="{{ product.variants.size | minus: 1 | at_least: 0 }}"
               data-variant-id="{{ current_variant.id }}"
-              {%- unless current_variant.available %} disabled{%- endunless -%}
+              {%- if product.variants.size > 1 %} disabled data-awaiting-selection="true"
+              {%- elsif current_variant.available == false %} disabled{%- endif -%}
             >
               {%- if current_variant.available -%}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18" aria-hidden="true">
@@ -364,40 +371,6 @@
 
         {%- endform -%}
 
-        {%- comment -%} ── Sticky ATC Bar ── {%- endcomment -%}
-        <div class="pdp-sticky-bar" id="PdpStickyBar" aria-hidden="true">
-          <div class="container pdp-sticky-bar-inner">
-            <div class="pdp-sticky-info">
-              {%- if product.featured_image -%}
-                <img
-                  src="{{ product.featured_image | image_url: width: 80 }}"
-                  alt="{{ product.title | escape }}"
-                  class="pdp-sticky-img"
-                  width="40" height="53" loading="lazy"
-                >
-              {%- endif -%}
-              <div>
-                <p class="pdp-sticky-title">{{ product.title }}</p>
-                <p class="pdp-sticky-price" id="PdpStickyPrice">{{ current_variant.price | money }}</p>
-              </div>
-            </div>
-            <button
-              type="button"
-              class="btn btn-primary pdp-sticky-atc"
-              id="PdpStickyATC"
-              data-form-id="{{ product_form_id }}"
-              data-handle="{{ product.handle }}"
-              data-title="{{ product.title | escape }}"
-              data-has-variants="{{ product.variants.size | minus: 1 | at_least: 0 }}"
-              {%- unless current_variant.available %} disabled{%- endunless -%}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z"/>
-              </svg>
-              {%- if current_variant.available %}Add to Cart{%- else %}Sold Out{%- endif -%}
-            </button>
-          </div>
-        </div>
 
         {%- comment -%} ── Availability notice ── {%- endcomment -%}
         <p class="pdp-availability t-reveal" style="--td:720ms" id="PdpAvailability">
@@ -441,7 +414,7 @@
           {%- comment -%} Description {%- endcomment -%}
           {%- if product.description != blank -%}
             <div class="pdp-accordion-item">
-              <button type="button" class="pdp-accordion-trigger" aria-expanded="true">
+              <button type="button" class="pdp-accordion-trigger" aria-expanded="false">
                 <span>Description</span>
                 <svg class="pdp-accordion-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
@@ -464,7 +437,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
                 </svg>
               </button>
-              <div class="pdp-accordion-body" hidden>
+              <div class="pdp-accordion-body">
                 {{ product.metafields.custom.fragrance_notes }}
               </div>
             </div>
@@ -478,7 +451,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
               </svg>
             </button>
-            <div class="pdp-accordion-body" hidden>
+            <div class="pdp-accordion-body">
               <p>{{ section.settings.shipping_text | default: 'Free standard delivery on orders over $50. Express delivery available at checkout. Easy 30-day returns on all orders. See our full returns policy for details.' }}</p>
             </div>
           </div>
@@ -492,7 +465,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
                 </svg>
               </button>
-              <div class="pdp-accordion-body" hidden>
+              <div class="pdp-accordion-body">
                 {{ product.metafields.custom.ingredients }}
               </div>
             </div>
