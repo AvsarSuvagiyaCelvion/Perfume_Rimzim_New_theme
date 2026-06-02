@@ -1,0 +1,58 @@
+<section class="policy-hero">
+  <div class="policy-hero-bg" aria-hidden="true"></div>
+  <div class="policy-hero-overlay" aria-hidden="true"></div>
+  <div class="container policy-hero-inner">
+    <nav class="policy-breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">{{ policy.title }}</span>
+    </nav>
+    <span class="section-label policy-hero-label">Legal</span>
+    <h1 class="policy-hero-title">{{ policy.title }}</h1>
+  </div>
+</section>
+
+<section class="policy-body-section">
+  <div class="container">
+    <div class="policy-layout">
+
+      <aside class="policy-sidebar">
+        <p class="policy-sidebar-label">Other Policies</p>
+        <nav aria-label="Policy pages">
+          <ul class="policy-sidebar-links">
+            {%- if shop.privacy_policy != blank -%}
+              <li><a href="{{ shop.privacy_policy.url }}" class="policy-sidebar-link{% if shop.privacy_policy.url == policy.url %} active{% endif %}">{{ shop.privacy_policy.title }}</a></li>
+            {%- endif -%}
+            {%- if shop.refund_policy != blank -%}
+              <li><a href="{{ shop.refund_policy.url }}" class="policy-sidebar-link{% if shop.refund_policy.url == policy.url %} active{% endif %}">{{ shop.refund_policy.title }}</a></li>
+            {%- endif -%}
+            {%- if shop.terms_of_service != blank -%}
+              <li><a href="{{ shop.terms_of_service.url }}" class="policy-sidebar-link{% if shop.terms_of_service.url == policy.url %} active{% endif %}">{{ shop.terms_of_service.title }}</a></li>
+            {%- endif -%}
+            {%- if shop.shipping_policy != blank -%}
+              <li><a href="{{ shop.shipping_policy.url }}" class="policy-sidebar-link{% if shop.shipping_policy.url == policy.url %} active{% endif %}">{{ shop.shipping_policy.title }}</a></li>
+            {%- endif -%}
+            {%- if shop.subscription_policy != blank -%}
+              <li><a href="{{ shop.subscription_policy.url }}" class="policy-sidebar-link{% if shop.subscription_policy.url == policy.url %} active{% endif %}">{{ shop.subscription_policy.title }}</a></li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      </aside>
+
+      <article class="policy-content rte">
+        {{ policy.body }}
+      </article>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Policy",
+  "settings": [],
+  "presets": [
+    { "name": "Policy" }
+  ]
+}
+{% endschema %}
