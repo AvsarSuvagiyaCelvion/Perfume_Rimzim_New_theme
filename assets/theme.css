@@ -4862,7 +4862,7 @@ video {
 
   /* On mobile: native scroll, hide floating arrows */
   .vibe-slider-outer {
-    padding: 0 var(--space-16);
+    padding: 0;
   }
 
   .vibe-arrow {
@@ -4875,6 +4875,9 @@ video {
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    padding-left: var(--space-16);
+    padding-right: var(--space-16);
+    scroll-padding-left: var(--space-16);
   }
 
   .vibe-slider-clip::-webkit-scrollbar {
