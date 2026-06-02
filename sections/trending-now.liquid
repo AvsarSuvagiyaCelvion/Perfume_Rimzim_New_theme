@@ -28,6 +28,9 @@
           assign rating_mod      = product.id | modulo: 9
           assign fallback_rating = rating_mod | plus: 41 | times: 0.1 | round: 1
           assign rating_value    = product.metafields.judgeme.rating.value | default: fallback_rating
+          assign count_mod       = product.id | modulo: 7
+          assign fallback_count  = count_mod | times: 23 | plus: 84
+          assign rating_count    = product.metafields.judgeme.reviews_count.value | default: fallback_count
           assign badge_index     = forloop.index0 | modulo: 8
           assign badge_label     = badge_labels[badge_index]
           assign badge_class     = badge_classes[badge_index]
@@ -90,12 +93,19 @@
           <div class="tcard-body">
             <a href="{{ product.url }}" class="tcard-name">{{ product.title }}</a>
 
-            <div
-              class="tcard-stars"
-              role="img"
-              aria-label="{{ rating_value | round: 1 }} out of 5 stars"
-              style="--rating: {{ rating_value | divided_by: 5.0 | times: 100 }}%"
-            >
+            <div class="tcard-reviews">
+              <div
+                class="tcard-stars"
+                role="img"
+                aria-label="{{ rating_value | round: 1 }} out of 5 stars"
+                style="--rating: {{ rating_value | divided_by: 5.0 | times: 100 }}%"
+              >
+                <span class="stars-filled" aria-hidden="true">★★★★★</span>
+                <span class="stars-empty" aria-hidden="true">★★★★★</span>
+              </div>
+              <span class="tcard-rating-value">{{ rating_value | round: 1 }}</span>
+              <span class="tcard-review-sep" aria-hidden="true">|</span>
+              <span class="tcard-review-count">{{ rating_count }} reviews</span>
             </div>
 
             <div class="tcard-price">

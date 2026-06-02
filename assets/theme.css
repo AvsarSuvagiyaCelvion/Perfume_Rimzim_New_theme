@@ -2346,6 +2346,29 @@ svg {
   color: #D5D5D5;
 }
 
+.tcard-reviews {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.tcard-rating-value {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.tcard-review-sep {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+.tcard-review-count {
+  font-size: 0.72rem;
+  color: black;
+}
+
 .tcard-price {
   display: flex;
   align-items: baseline;
@@ -2741,9 +2764,8 @@ svg {
    TESTIMONIALS
    ============================================================ */
 .testimonials-section {
-  padding: var(--space-40) 0;
-  padding-top: 20px;
-  background: var(--color-bg-cream);
+  padding: var(--space-80) 0;
+  background: #F9F7F2;
 }
 
 .testimonials-grid {
@@ -2753,17 +2775,36 @@ svg {
 }
 
 .testimonial-card {
-  background: var(--color-white);
+  background: #1a1510;
+  border: 1px solid rgba(201,169,110,0.20);
   border-radius: var(--radius-xl);
   padding: var(--space-40) var(--space-32);
-  box-shadow: var(--shadow-sm);
   position: relative;
-  transition: transform var(--duration-base), box-shadow var(--duration-base);
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  transition: transform var(--duration-base), box-shadow var(--duration-base),
+              border-color var(--duration-base);
+}
+
+/* Decorative quote mark */
+.testimonial-card::before {
+  content: '"';
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  line-height: 1;
+  color: rgba(201,169,110,0.14);
+  pointer-events: none;
 }
 
 .testimonial-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
+  border-color: rgba(201,169,110,0.5);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25),
+              0 0 0 1px rgba(201,169,110,0.25),
+              0 0 24px rgba(201,169,110,0.08);
 }
 
 .testimonial-header {
@@ -2776,10 +2817,10 @@ svg {
 
 .testimonial-text {
   font-family: var(--font-body);
-  font-style: normal;
+  font-style: italic;
   font-size: 0.95rem;
-  line-height: 1.75;
-  color: var(--color-text);
+  line-height: 1.8;
+  color: rgba(255,255,255,0.75);
 }
 
 .testimonial-stars {
@@ -2806,7 +2847,8 @@ svg {
   height: 48px;
   border-radius: 50%;
   overflow: hidden;
-  background: var(--color-primary-subtle);
+  background: rgba(201,169,110,0.15);
+  border: 1.5px solid rgba(201,169,110,0.4);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -2826,14 +2868,15 @@ svg {
 .testimonial-name {
   font-weight: 700;
   font-size: 0.9rem;
-  color: var(--color-text);
+  color: #fff;
 }
 
 .testimonial-tag {
-  font-size: 0.7rem;
-  color: var(--color-text-muted);
+  font-size: 0.68rem;
+  color: var(--color-primary);
   letter-spacing: 1px;
   margin-top: 2px;
+  text-transform: uppercase;
 }
 
 /* ============================================================
