@@ -637,8 +637,10 @@
       var title       = btn.dataset.title || 'Product';
       if (!variantId) return;
 
-      if (hasVariants > 0 && handle && !variantId) {
-        window.location.href = '/products/' + handle;
+      if (hasVariants > 0 && handle) {
+        var cardEl = btn.closest('[class*="card"]');
+        var imgSrc = cardEl ? ((cardEl.querySelector('.tcard-img, .product-card-img') || {}).src || '') : '';
+        openVariantPicker(handle, title, imgSrc, '');
         return;
       }
 

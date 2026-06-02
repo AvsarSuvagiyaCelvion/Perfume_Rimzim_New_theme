@@ -110,38 +110,25 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
-    background: none;
     padding: 0;
+    align-items: stretch;
   }
+  .trust-divider { display: none; }
   .trust-item {
-    background: none;
-    border: none;
     width: auto;
     justify-content: flex-start;
     padding: 16px 14px;
-    position: relative;
+    border: none;
   }
-
-  /* Horizontal line — full width, between rows */
-  .trust-item:nth-child(1)::after,
-  .trust-item:nth-child(3)::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 1px;
-    background: rgba(255,255,255,0.08);
+  /* Horizontal divider between rows — border on row-1 items (nth-child counts all DOM children) */
+  .trust-item:nth-child(1),
+  .trust-item:nth-child(3) {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
-
-  /* Vertical line — stops 14px short of top & bottom so it never touches the horizontal line */
-  .trust-item:nth-child(1)::before,
-  .trust-item:nth-child(5)::before {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 14px;
-    bottom: 14px;
-    width: 1px;
-    background: rgba(255,255,255,0.08);
+  /* Vertical divider between columns — border on left-column items */
+  .trust-item:nth-child(1),
+  .trust-item:nth-child(5) {
+    border-right: 1px solid rgba(255,255,255,0.1);
   }
 }
 {% endstyle %}

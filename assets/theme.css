@@ -1078,11 +1078,15 @@ svg {
 
 /* Submenu */
 .mobile-nav-submenu {
-  padding: var(--space-8) 0 var(--space-16) var(--space-24);
+  padding: var(--space-8) var(--space-8) var(--space-12) var(--space-16);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   animation: mobileSubmenuOpen 0.25s var(--ease-out) both;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-md);
+  margin: 2px var(--space-12) var(--space-8);
+  border-left: 2px solid var(--color-border);
 }
 
 .mobile-nav-submenu[hidden] {
@@ -1103,11 +1107,11 @@ svg {
 
 .mobile-nav-submenu-link {
   display: block;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   padding: var(--space-8) var(--space-12);
   border-radius: var(--radius-md);
-  color: var(--color-text-light);
+  color: var(--color-text-mid);
   transition: color var(--duration-fast), background var(--duration-fast);
 }
 
@@ -2199,62 +2203,18 @@ svg {
   position: absolute;
   top: 10px;
   left: 10px;
-  padding: 4px 10px;
+  padding: 3px 9px;
   border-radius: 20px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   white-space: nowrap;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.tbadge--fire {
-  background: rgba(255, 90, 31, 0.15);
-  color: #E84B1A;
-  border: 1px solid rgba(255, 90, 31, 0.3);
-}
-
-.tbadge--hot {
-  background: rgba(59, 130, 246, 0.12);
-  color: #1D6FDB;
-  border: 1px solid rgba(59, 130, 246, 0.25);
-}
-
-.tbadge--gold {
-  background: rgba(201, 168, 76, 0.15);
-  color: #9A7520;
-  border: 1px solid rgba(201, 168, 76, 0.35);
-}
-
-.tbadge--pink {
-  background: rgba(236, 72, 153, 0.12);
-  color: #C2185B;
-  border: 1px solid rgba(236, 72, 153, 0.25);
-}
-
-.tbadge--purple {
-  background: rgba(139, 92, 246, 0.12);
-  color: #6D28D9;
-  border: 1px solid rgba(139, 92, 246, 0.25);
-}
-
-.tbadge--green {
-  background: rgba(16, 185, 129, 0.12);
-  color: #047857;
-  border: 1px solid rgba(16, 185, 129, 0.25);
-}
-
-.tbadge--red {
-  background: rgba(239, 68, 68, 0.12);
-  color: #B91C1C;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-}
-
-.tbadge--teal {
-  background: rgba(20, 184, 166, 0.12);
-  color: #0F766E;
-  border: 1px solid rgba(20, 184, 166, 0.25);
+  background: rgba(255, 255, 255, 0.88);
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 /* ── Wishlist — always visible, top-right corner ── */
@@ -2362,7 +2322,7 @@ svg {
 .tcard-name {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--color-text);
+  color: #000;
   text-decoration: none;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -2405,12 +2365,12 @@ svg {
 .tcard-rating-value {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: #000;
 }
 
 .tcard-review-sep {
   font-size: 0.72rem;
-  color: var(--color-text-mid);
+  color: #000;
 }
 
 .tcard-review-count {
@@ -2428,7 +2388,7 @@ svg {
 .tcard-price-current {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: #000;
 }
 
 .tcard-price-compare {
@@ -2462,6 +2422,58 @@ svg {
   .tcard-price-current {
     font-size: 0.88rem;
   }
+}
+
+/* ── Section header text: black for Trending Now & New Arrivals ── */
+.trending-now-section .section-label,
+.new-arrivals-section .section-label {
+  color: #000;
+}
+
+.trending-now-section .section-title,
+.new-arrivals-section .section-title {
+  color: #000;
+}
+
+.trending-now-section .section-subtitle,
+.new-arrivals-section .section-subtitle {
+  color: #000;
+}
+
+/* ── New Arrivals card text: black ── */
+.new-arrivals-section .product-card-title,
+.new-arrivals-section .product-card-title a {
+  color: #000;
+}
+
+.new-arrivals-section .product-card-price,
+.new-arrivals-section .product-price-current {
+  color: #000;
+}
+
+.new-arrivals-section .product-card-rating-value {
+  color: #000;
+}
+
+.new-arrivals-section .product-card-review-sep {
+  color: #000;
+}
+
+.new-arrivals-section .product-card-review-count {
+  color: #000;
+}
+
+/* ── New Arrivals: suppress hover color changes ── */
+.new-arrivals-section .product-card:hover {
+  box-shadow: var(--shadow-xl);
+}
+
+.new-arrivals-section .product-card-title a::after {
+  display: none;
+}
+
+.new-arrivals-section .product-card:hover .product-price-current {
+  color: #000;
 }
 
 /* ============================================================
@@ -3497,6 +3509,10 @@ a.pagination-page:hover {
   display: flex;
   gap: var(--space-8);
   flex-wrap: wrap;
+}
+
+.footer-social:empty {
+  display: none;
 }
 
 .footer-social-link {
@@ -4941,8 +4957,12 @@ video {
 
   /* Show ~1.1 cards — enough peek to signal scrollability without showing previous card border */
   .vibe-card {
-    flex: 0 0 76vw;
+    flex: 0 0 68vw;
     scroll-snap-align: start;
+  }
+
+  .vibe-card-frame {
+    aspect-ratio: 1/1;
   }
 
   /* Show "Explore" CTA always on mobile (no hover state on touch) */
@@ -4998,7 +5018,6 @@ video {
     align-items: center;
     text-align: center;
     padding-bottom: var(--space-32);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .footer-brand-desc {
@@ -5233,7 +5252,7 @@ video {
 
   /* Vibe slider — small phones */
   .vibe-card {
-    flex: 0 0 78vw;
+    flex: 0 0 72vw;
   }
 
   .vibe-card-name {
@@ -5503,7 +5522,7 @@ video {
 
 .pdp-main-img {
   width: 100%;
-  height: 480px;
+  height: 50%;
   display: block;
   transition: opacity var(--duration-base);
 }
