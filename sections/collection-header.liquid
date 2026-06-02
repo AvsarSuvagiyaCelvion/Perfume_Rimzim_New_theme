@@ -32,9 +32,13 @@
 </script>
 
 {%- assign col = collection -%}
-{%- assign banner_img = section.settings.banner_image | default: col.image -%}
 {%- assign is_all = false -%}
-{%- if col.handle == 'all' -%}{%- assign is_all = true -%}{%- endif -%}
+{%- if col.handle == 'all' -%}
+  {%- assign is_all = true -%}
+  {%- assign banner_img = section.settings.banner_image -%}
+{%- else -%}
+  {%- assign banner_img = col.image -%}
+{%- endif -%}
 
 {%- if is_all -%}
 

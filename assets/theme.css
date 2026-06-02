@@ -2397,13 +2397,13 @@ svg {
    ============================================================ */
 
 .vibe-section {
-  padding: var(--space-20) 0 var(--space-20);
-  background: #fff;
+  padding: var(--space-80) 0 var(--space-64);
+  background: #0f0d0b;
   overflow: hidden;
   position: relative;
 }
 
-/* Subtle warm glow — top right */
+/* Ambient gold glow — top right */
 .vibe-section::before {
   content: '';
   position: absolute;
@@ -2411,25 +2411,34 @@ svg {
   right: -80px;
   width: 480px;
   height: 480px;
-  background: radial-gradient(ellipse at 60% 40%, rgba(201, 169, 110, 0.06) 0%, transparent 65%);
+  background: radial-gradient(ellipse at 60% 40%, rgba(201,169,110,0.10) 0%, transparent 65%);
   pointer-events: none;
 }
 
+/* Ambient glow — bottom left */
 .vibe-section::after {
-  display: none;
+  content: '';
+  position: absolute;
+  bottom: -60px;
+  left: -80px;
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(ellipse at 40% 60%, rgba(201,169,110,0.06) 0%, transparent 65%);
+  pointer-events: none;
+  display: block;
 }
 
-/* Section header colours for light bg */
+/* Section header colours for dark bg */
 .vibe-section .section-label {
   color: var(--color-primary);
 }
 
 .vibe-section .section-title {
-  color: var(--color-text);
+  color: #fff;
 }
 
 .vibe-section .section-subtitle {
-  color: var(--color-text-mid);
+  color: rgba(255,255,255,0.55);
 }
 
 .vibe-label {
@@ -2471,8 +2480,8 @@ svg {
   overflow: hidden;
   position: relative;
   aspect-ratio: 3/4;
-  border: 1.5px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 1.5px solid rgba(255,255,255,0.06);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   transition: box-shadow 0.45s ease, border-color 0.45s ease;
 }
 
@@ -2619,9 +2628,10 @@ svg {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 1.5px solid rgba(201, 169, 110, 0.50);
-  background: #fff;
-  color: var(--color-text);
+  border: 1.5px solid rgba(201,169,110,0.40);
+  background: rgba(15,13,11,0.75);
+  color: rgba(255,255,255,0.85);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
