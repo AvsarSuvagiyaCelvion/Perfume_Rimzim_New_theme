@@ -1,0 +1,41 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify://shop_images/RIM-ZIM_LOGO_BLACK.avif",
+          "logo_height": 56,
+          "brand_name": "LUMIÈRE",
+          "tagline": "Luxury Perfumes",
+          "menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "brand_name": "LUMIÈRE",
+          "tagline": "Luxury Perfumes",
+          "about_text": "We craft luxury fragrances that tell stories. Each bottle is a masterpiece — a blend of rare ingredients and passionate artistry for those who seek the extraordinary.",
+          "category_menu": "main-menu",
+          "policies_menu": "",
+          "instagram_url": "",
+          "facebook_url": "",
+          "twitter_url": "",
+          "pinterest_url": "",
+          "youtube_url": ""
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}
