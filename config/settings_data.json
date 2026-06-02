@@ -23,6 +23,7 @@
       "footer": {
         "type": "footer",
         "settings": {
+          "logo": "shopify://shop_images/RIM-ZIM_LOGO_BLACK.avif",
           "brand_name": "LUMIÈRE",
           "tagline": "Luxury Perfumes",
           "about_text": "We craft luxury fragrances that tell stories. Each bottle is a masterpiece — a blend of rare ingredients and passionate artistry for those who seek the extraordinary.",
