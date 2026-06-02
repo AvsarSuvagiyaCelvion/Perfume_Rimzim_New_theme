@@ -135,11 +135,24 @@
 }
 </script>
 
-<section class="pdp-section" id="ProductSection" data-section-id="{{ section.id }}">
-  <div class="container">
-
-    {%- comment -%} ── Breadcrumb ── {%- endcomment -%}
-    <nav class="pdp-breadcrumb t-reveal t-reveal--left" style="--td:0ms" aria-label="Breadcrumb">
+{%- if product.featured_image != blank -%}
+<div class="pdp-banner">
+  <img
+    class="pdp-banner-bg"
+    src="{{ product.featured_image | image_url: width: 1200, format: 'webp' }}"
+    srcset="{{ product.featured_image | image_url: width: 480, format: 'webp' }} 480w,
+            {{ product.featured_image | image_url: width: 800, format: 'webp' }} 800w,
+            {{ product.featured_image | image_url: width: 1200, format: 'webp' }} 1200w"
+    sizes="100vw"
+    alt=""
+    aria-hidden="true"
+    width="1200" height="800"
+    loading="eager"
+    fetchpriority="high"
+  >
+  <div class="pdp-banner-overlay"></div>
+  <div class="pdp-banner-content container">
+    <nav class="pdp-banner-breadcrumb" aria-label="Breadcrumb">
       <a href="{{ routes.root_url }}">Home</a>
       <span aria-hidden="true">›</span>
       {%- if collection -%}
@@ -151,6 +164,16 @@
       {%- endif -%}
       <span aria-current="page">{{ product.title }}</span>
     </nav>
+    <p class="pdp-banner-title">{{ product.title }}</p>
+    {%- unless product.vendor == blank -%}
+      <p class="pdp-banner-vendor">{{ product.vendor }}</p>
+    {%- endunless -%}
+  </div>
+</div>
+{%- endif -%}
+
+<section class="pdp-section" id="ProductSection" data-section-id="{{ section.id }}">
+  <div class="container">
 
     <div class="pdp-layout">
 
