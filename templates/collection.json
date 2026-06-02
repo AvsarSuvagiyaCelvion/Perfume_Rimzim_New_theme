@@ -13,6 +13,9 @@
       "type": "collection-header",
       "settings": {
         "banner_image": "shopify://shop_images/pexels-suhashanjar-36779955.jpg",
+        "all_label": "Our Collection",
+        "all_title": "All Products",
+        "all_desc": "Explore our complete range of luxury fragrances.",
         "label": "Collection",
         "fallback_desc": "Explore our curated selection of luxury fragrances."
       }
