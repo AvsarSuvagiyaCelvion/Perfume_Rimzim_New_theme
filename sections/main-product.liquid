@@ -164,7 +164,7 @@
       {%- endif -%}
       <span aria-current="page">{{ product.title }}</span>
     </nav>
-    <p class="pdp-banner-title">{{ product.title }}</p>
+    <p class="pdp-banner-title" aria-hidden="true">{{ product.title }}</p>
     {%- unless product.vendor == blank -%}
       <p class="pdp-banner-vendor">{{ product.vendor }}</p>
     {%- endunless -%}

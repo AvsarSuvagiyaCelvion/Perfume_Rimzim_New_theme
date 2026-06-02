@@ -2410,7 +2410,7 @@ svg {
 
 .tcard-review-sep {
   font-size: 0.72rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-mid);
 }
 
 .tcard-review-count {
