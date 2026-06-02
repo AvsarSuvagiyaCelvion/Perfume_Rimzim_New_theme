@@ -1,0 +1,211 @@
+{%- liquid
+  assign trending_col = collections[section.settings.collection]
+  if trending_col == empty or trending_col.products_count == 0
+    assign trending_col = collections.all
+  endif
+  assign product_limit = section.settings.product_limit | default: 8
+
+  assign badge_labels  = 'Trending,Hot Pick,Best Seller,Fan Fave,Top Rated,New Hit,Must Have,Editor Pick' | split: ','
+  assign badge_classes = 'tbadge--fire,tbadge--hot,tbadge--gold,tbadge--pink,tbadge--purple,tbadge--green,tbadge--red,tbadge--teal' | split: ','
+  assign badge_icons   = '🔥,⚡,🏆,❤️,💫,🆕,✨,🎯' | split: ','
+-%}
+
+<section class="trending-now-section" id="TrendingNow">
+  <div class="container">
+
+    <div class="section-header animate-on-scroll">
+      <span class="section-label">{{ section.settings.label | default: 'Hot Right Now' }}</span>
+      <h2 class="section-title">{{ section.settings.title | default: 'Trending Now' }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="trending-grid">
+      {%- for product in trending_col.products limit: product_limit -%}
+        {%- liquid
+          assign first_variant   = product.selected_or_first_available_variant
+          assign rating_mod      = product.id | modulo: 9
+          assign fallback_rating = rating_mod | plus: 41 | times: 0.1 | round: 1
+          assign rating_value    = product.metafields.judgeme.rating.value | default: fallback_rating
+          assign badge_index     = forloop.index0 | modulo: 8
+          assign badge_label     = badge_labels[badge_index]
+          assign badge_class     = badge_classes[badge_index]
+          assign badge_icon      = badge_icons[badge_index]
+        -%}
+
+        <div class="tcard animate-on-scroll" data-delay="{{ forloop.index0 | times: 60 }}">
+
+          {%- comment -%} ── Image ── {%- endcomment -%}
+          <div class="tcard-media">
+            <a href="{{ product.url }}" class="tcard-img-link" tabindex="-1" aria-hidden="true">
+              {%- if product.featured_image != blank -%}
+                <img
+                  class="tcard-img"
+                  src="{{ product.featured_image | image_url: width: 480, format: 'webp' }}"
+                  srcset="{{ product.featured_image | image_url: width: 320, format: 'webp' }} 320w,
+                          {{ product.featured_image | image_url: width: 480, format: 'webp' }} 480w"
+                  sizes="(max-width: 600px) 50vw, 25vw"
+                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  width="480" height="480"
+                  loading="lazy"
+                >
+                {%- if product.images.size > 1 -%}
+                  <img
+                    class="tcard-img tcard-img--hover"
+                    src="{{ product.images[1] | image_url: width: 480, format: 'webp' }}"
+                    alt="{{ product.images[1].alt | default: product.title | escape }}"
+                    width="480" height="480"
+                    loading="lazy"
+                    aria-hidden="true"
+                  >
+                {%- endif -%}
+              {%- else -%}
+                {{- 'product-' | append: forloop.index | placeholder_svg_tag: 'tcard-img' -}}
+              {%- endif -%}
+            </a>
+
+            {%- comment -%} Badge {%- endcomment -%}
+            <span class="tcard-badge {{ badge_class }}">{{ badge_icon }} {{ badge_label }}</span>
+
+            {%- comment -%} Wishlist — always visible top-right {%- endcomment -%}
+            <button
+              class="tcard-wishlist product-card-wishlist"
+              aria-label="Add {{ product.title | escape }} to wishlist"
+              data-handle="{{ product.handle }}"
+              data-title="{{ product.title | escape }}"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+              </svg>
+            </button>
+
+
+            {%- unless product.available -%}
+              <span class="tcard-soldout">Sold Out</span>
+            {%- endunless -%}
+          </div>
+
+          {%- comment -%} ── Info ── {%- endcomment -%}
+          <div class="tcard-body">
+            <a href="{{ product.url }}" class="tcard-name">{{ product.title }}</a>
+
+            <div
+              class="tcard-stars"
+              role="img"
+              aria-label="{{ rating_value | round: 1 }} out of 5 stars"
+              style="--rating: {{ rating_value | divided_by: 5.0 | times: 100 }}%"
+            >
+              <span class="stars-filled" aria-hidden="true">★★★★★</span>
+              <span class="stars-empty" aria-hidden="true">★★★★★</span>
+            </div>
+
+            <div class="tcard-price">
+              <span class="tcard-price-current">{{ product.price | money }}</span>
+              {%- if product.compare_at_price > product.price -%}
+                <s class="tcard-price-compare">{{ product.compare_at_price | money }}</s>
+              {%- endif -%}
+            </div>
+
+            {%- if product.available -%}
+              <button
+                class="tcard-quick-add product-quick-add-btn"
+                type="button"
+                data-variant-id="{{ first_variant.id }}"
+                data-has-variants="{{ product.variants.size | minus: 1 | at_least: 0 }}"
+                data-handle="{{ product.handle }}"
+                data-title="{{ product.title | escape }}"
+                data-product-url="{{ product.url }}"
+                aria-label="Quick add {{ product.title | escape }}"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                </svg>
+                Quick Add
+              </button>
+            {%- else -%}
+              <span class="tcard-soldout-btn">Sold Out</span>
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- else -%}
+        {%- for i in (1..8) -%}
+          <div class="tcard animate-on-scroll" data-delay="{{ forloop.index0 | times: 60 }}">
+            <div class="tcard-media">
+              {{- 'product-' | append: forloop.index | placeholder_svg_tag: 'tcard-img' -}}
+              <span class="tcard-badge tbadge--fire">🔥 Trending</span>
+            </div>
+            <div class="tcard-body">
+              <span class="tcard-name">Sample Fragrance {{ i }}</span>
+              <div class="tcard-price"><span class="tcard-price-current">$84.00</span></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.show_view_all -%}
+      <div class="section-cta animate-on-scroll">
+        <a href="{{ trending_col.url | default: '/collections/all' }}" class="btn btn-outline-gold">
+          View All
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="15" height="15">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trending Now",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section label",
+      "default": "Hot Right Now"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Trending Now"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "What everyone's buying this week"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to display"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Number of products",
+      "min": 4,
+      "max": 8,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All' button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trending Now"
+    }
+  ]
+}
+{% endschema %}

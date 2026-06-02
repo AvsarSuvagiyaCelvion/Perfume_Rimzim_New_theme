@@ -115,8 +115,7 @@
     transition: color var(--duration-fast);
   }
   .faq-tab:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    background: var(--color-surface);
   }
   .faq-tab.active {
     background: var(--color-primary);
@@ -170,7 +169,7 @@
     color: var(--color-primary);
   } */
   .faq-question[aria-expanded='true'] {
-    color: var(--color-primary);
+    color: var(--color-text);
   }
 
   .faq-icon {
@@ -201,16 +200,23 @@
   .faq-answer {
     overflow: hidden;
     max-height: 0;
-    transition: max-height 0.4s var(--ease-out);
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .faq-answer:not([hidden]) {
-    max-height: 600px;
+  .faq-answer.is-open {
+    max-height: 800px;
   }
   .faq-answer-inner {
     padding: 0 4px 24px;
     font-size: 0.93rem;
-    color: var(--color-text-muted);
     line-height: 1.8;
+    color: black;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.3s ease 0.12s, transform 0.3s ease 0.12s;
+  }
+  .faq-answer.is-open .faq-answer-inner {
+    opacity: 1;
+    transform: translateY(0);
   }
   .faq-answer-inner a {
     color: var(--color-primary);
@@ -264,21 +270,41 @@
     });
 
     /* ── Accordion ── */
-    /* ── Accordion ── */
+    function closeAnswer(answer) {
+      answer.classList.remove('is-open');
+      answer.addEventListener('transitionend', function handler() {
+        answer.hidden = true;
+        answer.removeEventListener('transitionend', handler);
+      });
+    }
+
+    function openAnswer(answer) {
+      answer.hidden = false;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          answer.classList.add('is-open');
+        });
+      });
+    }
+
     section.querySelectorAll('.faq-question').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var expanded = btn.getAttribute('aria-expanded') === 'true';
-        var answer = btn.nextElementSibling;
+        var answer   = btn.nextElementSibling;
 
         /* Close all others */
         section.querySelectorAll('.faq-question').forEach(function (other) {
           if (other === btn) return;
           other.setAttribute('aria-expanded', 'false');
-          other.nextElementSibling.hidden = true;
+          closeAnswer(other.nextElementSibling);
         });
 
         btn.setAttribute('aria-expanded', String(!expanded));
-        answer.hidden = expanded;
+        if (expanded) {
+          closeAnswer(answer);
+        } else {
+          openAnswer(answer);
+        }
       });
     });
 

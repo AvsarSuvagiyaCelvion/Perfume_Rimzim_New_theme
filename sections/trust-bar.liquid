@@ -106,9 +106,28 @@
   .trust-divider { display: none; }
 }
 @media (max-width: 480px) {
-  .trust-bar-inner { flex-direction: column; align-items: flex-start; padding: 0 16px; }
-  .trust-item { width: 100%; justify-content: flex-start; border-bottom: 1px solid rgba(255,255,255,0.06); padding: 14px 0; }
-  .trust-item:last-child { border-bottom: none; }
+  .trust-bar-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 4px 0;
+  }
+  .trust-item {
+    width: auto;
+    justify-content: flex-start;
+    padding: 14px 12px;
+    border-right: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  /* Right column: items 2 and 4 (nth-child counts hidden dividers) */
+  .trust-item:nth-child(3),
+  .trust-item:nth-child(7) {
+    border-right: none;
+  }
+  /* Bottom row: items 3 and 4 */
+  .trust-item:nth-child(5),
+  .trust-item:nth-child(7) {
+    border-bottom: none;
+  }
 }
 {% endstyle %}
 

@@ -91,6 +91,18 @@
         "subtitle": "Fragrances crafted for every expression"
       }
     },
+    "trending_now_zBMCDg": {
+      "type": "trending-now",
+      "name": "Trending Now",
+      "settings": {
+        "label": "Hot Right Now",
+        "title": "Trending Now",
+        "subtitle": "What everyone's buying this week",
+        "collection": "best-seller",
+        "product_limit": 8,
+        "show_view_all": true
+      }
+    },
     "new_arrivals": {
       "type": "new-arrivals",
       "settings": {
@@ -107,7 +119,7 @@
         "fresh": {
           "type": "vibe_card",
           "settings": {
-            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090145.jpg",
+            "collection": "fresh",
             "name": "Fresh",
             "collection_url": "/collections/fresh",
             "bg_color": "#d4ecd4"
@@ -116,7 +128,7 @@
         "fruity": {
           "type": "vibe_card",
           "settings": {
-            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090145_2_4a268d31-461d-49ad-9a74-6360d99b4afe.jpg",
+            "collection": "fruity",
             "name": "Fruity",
             "collection_url": "/collections/fruity",
             "bg_color": "#ffe5cc"
@@ -125,7 +137,7 @@
         "floral": {
           "type": "vibe_card",
           "settings": {
-            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090145_3.jpg",
+            "collection": "floral",
             "name": "Floral",
             "collection_url": "/collections/floral",
             "bg_color": "#f5d5e8"
@@ -134,7 +146,7 @@
         "oud": {
           "type": "vibe_card",
           "settings": {
-            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090146_2.jpg",
+            "collection": "oud",
             "name": "Oud",
             "collection_url": "/collections/oud",
             "bg_color": "#c8a882"
@@ -143,7 +155,7 @@
         "spicy": {
           "type": "vibe_card",
           "settings": {
-            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090137.jpg",
+            "collection": "spicy",
             "name": "Spicy",
             "collection_url": "/collections/spicy",
             "bg_color": "#e8c4a0"
@@ -152,7 +164,7 @@
         "woody": {
           "type": "vibe_card",
           "settings": {
-            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090145_2.jpg",
+            "collection": "woody",
             "name": "Woody",
             "collection_url": "/collections/woody",
             "bg_color": "#c4a882"
@@ -161,9 +173,9 @@
         "vibe_card_8LQNaV": {
           "type": "vibe_card",
           "settings": {
-            "image": "shopify://shop_images/Professional_luxury_perfume_product_photography_202605090146_2.jpg",
+            "collection": "musky",
             "name": "Musky",
-            "collection_url": "shopify://collections/musky",
+            "collection_url": "/collections/musky",
             "bg_color": "#e8ddd0"
           }
         }
@@ -352,6 +364,7 @@
     "hero",
     "trust_bar",
     "gender_collections",
+    "trending_now_zBMCDg",
     "new_arrivals",
     "vibe_slider",
     "testimonials",

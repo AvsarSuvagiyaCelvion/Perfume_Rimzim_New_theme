@@ -307,10 +307,13 @@
           {%- comment -%} Add to Cart + Wishlist ── {%- endcomment -%}
           <div class="pdp-actions t-reveal t-reveal--scale" style="--td:660ms">
             <button
-              type="submit"
-              name="add"
+              type="button"
               id="PdpATC"
               class="btn btn-primary pdp-atc-btn"
+              data-handle="{{ product.handle }}"
+              data-title="{{ product.title | escape }}"
+              data-has-variants="{{ product.variants.size | minus: 1 | at_least: 0 }}"
+              data-variant-id="{{ current_variant.id }}"
               {%- unless current_variant.available %} disabled{%- endunless -%}
             >
               {%- if current_variant.available -%}
@@ -360,6 +363,9 @@
               class="btn btn-primary pdp-sticky-atc"
               id="PdpStickyATC"
               data-form-id="{{ product_form_id }}"
+              data-handle="{{ product.handle }}"
+              data-title="{{ product.title | escape }}"
+              data-has-variants="{{ product.variants.size | minus: 1 | at_least: 0 }}"
               {%- unless current_variant.available %} disabled{%- endunless -%}
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="16" height="16" aria-hidden="true">

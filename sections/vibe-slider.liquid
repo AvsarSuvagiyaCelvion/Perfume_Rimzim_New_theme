@@ -1,6 +1,6 @@
 <section class="vibe-section" id="VibeSlider">
-  <div class="container">
 
+  <div class="container">
     <div class="section-header animate-on-scroll">
       <span class="section-label">Discover</span>
       <h2 class="section-title">{{ section.settings.title | default: 'Choose Your Vibe' }}</h2>
@@ -8,75 +8,114 @@
         <p class="section-subtitle">{{ section.settings.subtitle }}</p>
       {%- endif -%}
     </div>
+  </div>
 
-    <div class="vibe-slider-outer">
-      <div class="vibe-slider-clip">
-        <div class="vibe-track">
-          {%- for block in section.blocks -%}
-            <a
-              href="{{ block.settings.collection_url | default: '/collections/all' }}"
-              class="vibe-card"
-              {{ block.shopify_attributes }}
+  <div class="vibe-slider-outer">
+
+    {%- comment -%} Floating side arrows {%- endcomment -%}
+    <button class="vibe-arrow vibe-arrow--prev slider-btn prev" aria-label="Previous slide">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+      </svg>
+    </button>
+
+    <div class="vibe-slider-clip">
+      <div class="vibe-track">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign gc       = collections[block.settings.collection]
+            assign card_img = block.settings.image
+            if card_img == blank and gc != blank
+              assign card_img = gc.image
+            endif
+            assign card_url  = block.settings.collection_url
+            if card_url == blank and gc != blank
+              assign card_url = gc.url
+            endif
+            if card_url == blank
+              assign card_url = '/collections/all'
+            endif
+            assign card_name = block.settings.name
+            if card_name == blank and gc != blank
+              assign card_name = gc.title
+            endif
+            if card_name == blank
+              assign card_name = 'Vibe'
+            endif
+          -%}
+          <a
+            href="{{ card_url }}"
+            class="vibe-card"
+            {{ block.shopify_attributes }}
+          >
+            <div
+              class="vibe-card-frame"
+              style="background: {{ block.settings.bg_color | default: '#1a1410' }};"
             >
-              <div
-                class="vibe-card-frame"
-                style="background: {{ block.settings.bg_color | default: '#E8DDD0' }};"
-              >
-                {%- if block.settings.image != blank -%}
-                  <img
-                    class="vibe-card-img"
-                    src="{{ block.settings.image | image_url: width: 300, format: 'webp' }}"
-                    srcset="{{ block.settings.image | image_url: width: 150, format: 'webp' }} 150w,
-                            {{ block.settings.image | image_url: width: 200, format: 'webp' }} 200w,
-                            {{ block.settings.image | image_url: width: 300, format: 'webp' }} 300w,
-                            {{ block.settings.image | image_url: width: 400, format: 'webp' }} 400w"
-                    sizes="(max-width: 480px) calc(58vw - 10px), (max-width: 768px) calc(44vw - 10px), 240px"
-                    alt="{{ block.settings.image.alt | default: block.settings.name }}"
-                    width="200" height="267" loading="lazy"
-                  >
-                {%- else -%}
-                  {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'vibe-card-img' -}}
-                {%- endif -%}
+              {%- if card_img != blank -%}
+                <img
+                  class="vibe-card-img"
+                  src="{{ card_img | image_url: width: 400, format: 'webp' }}"
+                  srcset="{{ card_img | image_url: width: 200, format: 'webp' }} 200w,
+                          {{ card_img | image_url: width: 300, format: 'webp' }} 300w,
+                          {{ card_img | image_url: width: 400, format: 'webp' }} 400w,
+                          {{ card_img | image_url: width: 600, format: 'webp' }} 600w"
+                  sizes="(max-width: 480px) 72vw, (max-width: 768px) 46vw, 260px"
+                  alt="{{ card_img.alt | default: card_name }}"
+                  width="260" height="360" loading="lazy"
+                >
+              {%- else -%}
+                {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'vibe-card-img' -}}
+              {%- endif -%}
 
+              <div class="vibe-card-overlay">
+                <div class="vibe-card-content">
+                  <span class="vibe-card-name">{{ card_name }}</span>
+                  <span class="vibe-card-cta">
+                    Explore
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="13" height="13" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+        {%- else -%}
+          {%- assign default_vibes = 'Fresh,Fruity,Floral,Oud,Spicy,Woody,Musky' | split: ',' -%}
+          {%- assign default_colors = '#1a2018,#201508,#1e1018,#2a1e0a,#221508,#181410,#1a1814' | split: ',' -%}
+          {%- for vibe in default_vibes -%}
+            <a href="{{ routes.collections_url }}/{{ vibe | downcase }}" class="vibe-card">
+              <div class="vibe-card-frame" style="background: {{ default_colors[forloop.index0] }};">
+                {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'vibe-card-img' -}}
                 <div class="vibe-card-overlay">
-                  <span class="vibe-card-name">{{ block.settings.name | default: 'Vibe' }}</span>
+                  <div class="vibe-card-content">
+                    <span class="vibe-card-name">{{ vibe }}</span>
+                    <span class="vibe-card-cta">
+                      Explore
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="13" height="13" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                      </svg>
+                    </span>
+                  </div>
                 </div>
               </div>
             </a>
-          {%- else -%}
-            {%- assign default_vibes = 'Fresh,Fruity,Floral,Oud,Spicy,Woody,Musky' | split: ',' -%}
-            {%- assign default_colors = '#D4ECD4,#FFE5CC,#F5D5E8,#C8A882,#E8C4A0,#C4A882,#E8DDD0' | split: ',' -%}
-            {%- for vibe in default_vibes -%}
-              <a href="{{ routes.collections_url }}/{{ vibe | downcase }}" class="vibe-card">
-                <div class="vibe-card-frame" style="background: {{ default_colors[forloop.index0] }};">
-                  {{- 'collection-' | append: forloop.index | placeholder_svg_tag: 'vibe-card-img' -}}
-                  <div class="vibe-card-overlay">
-                    <span class="vibe-card-name">{{ vibe }}</span>
-                  </div>
-                </div>
-              </a>
-            {%- endfor -%}
           {%- endfor -%}
-        </div>
-      </div>
-
-      <div class="slider-controls" aria-label="Slider controls">
-        <button class="slider-btn prev" aria-label="Previous slide">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
-          </svg>
-        </button>
-
-        
-        <button class="slider-btn next" aria-label="Next slide">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-          </svg>
-        </button>
+        {%- endfor -%}
       </div>
     </div>
 
+    <button class="vibe-arrow vibe-arrow--next slider-btn next" aria-label="Next slide">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+      </svg>
+    </button>
+
   </div>
+
+    
+
 </section>
 
 {% schema %}
@@ -102,26 +141,34 @@
       "name": "Vibe Card",
       "settings": [
         {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Image, title and URL are pulled automatically from the collection."
+        },
+        {
           "type": "image_picker",
           "id": "image",
-          "label": "Card image"
+          "label": "Override image (optional)",
+          "info": "Leave blank to use the collection banner image."
         },
         {
           "type": "text",
           "id": "name",
-          "label": "Vibe name",
-          "default": "Fresh"
+          "label": "Override label (optional)",
+          "info": "Leave blank to use the collection title."
         },
         {
           "type": "url",
           "id": "collection_url",
-          "label": "Collection URL"
+          "label": "Override URL (optional)",
+          "info": "Leave blank to use the collection URL."
         },
         {
           "type": "color",
           "id": "bg_color",
-          "label": "Background colour (when no image)",
-          "default": "#E8DDD0"
+          "label": "Fallback background colour",
+          "default": "#1a1410"
         }
       ]
     }

@@ -16,40 +16,38 @@
           data-delay="{{ forloop.index0 | times: 120 }}"
           {{ block.shopify_attributes }}
         >
-          <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-
-          {%- comment -%} Star Rating {%- endcomment -%}
-          <div class="testimonial-stars" role="img" aria-label="{{ block.settings.rating }} out of 5 stars">
-            {%- assign rating = block.settings.rating | default: 5 -%}
-            {%- for i in (1..5) -%}
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                style="{%- if i > rating -%}opacity:.25{%- endif -%}">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-            {%- endfor -%}
+          <div class="testimonial-header">
+            <div class="testimonial-author">
+              <div class="testimonial-avatar" aria-hidden="true">
+                {%- if block.settings.avatar != blank -%}
+                  <img
+                    src="{{ block.settings.avatar | image_url: width: 96 }}"
+                    alt="{{ block.settings.name }}"
+                    width="48" height="48" loading="lazy"
+                  >
+                {%- else -%}
+                  {{- block.settings.name | default: 'A' | slice: 0 | upcase -}}
+                {%- endif -%}
+              </div>
+              <div>
+                <p class="testimonial-name">{{ block.settings.name | default: 'Happy Customer' }}</p>
+                <p class="testimonial-tag">{{ block.settings.tag | default: 'Verified Purchase' }}</p>
+              </div>
+            </div>
+            <div class="testimonial-stars" role="img" aria-label="{{ block.settings.rating }} out of 5 stars">
+              {%- assign rating = block.settings.rating | default: 5 -%}
+              {%- for i in (1..5) -%}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                  style="{%- if i > rating -%}opacity:.25{%- endif -%}">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              {%- endfor -%}
+            </div>
           </div>
 
           <blockquote class="testimonial-text">
             {{ block.settings.text | default: 'Amazing fragrance and long-lasting scent. Truly a luxury experience.' }}
           </blockquote>
-
-          <div class="testimonial-author">
-            <div class="testimonial-avatar" aria-hidden="true">
-              {%- if block.settings.avatar != blank -%}
-                <img
-                  src="{{ block.settings.avatar | image_url: width: 96 }}"
-                  alt="{{ block.settings.name }}"
-                  width="48" height="48" loading="lazy"
-                >
-              {%- else -%}
-                {{- block.settings.name | default: 'A' | slice: 0 | upcase -}}
-              {%- endif -%}
-            </div>
-            <div>
-              <p class="testimonial-name">{{ block.settings.name | default: 'Happy Customer' }}</p>
-              <p class="testimonial-tag">{{ block.settings.tag | default: 'Verified Purchase' }}</p>
-            </div>
-          </div>
         </div>
       {%- else -%}
         {%- comment -%} Default cards when no blocks are added {%- endcomment -%}
@@ -57,24 +55,25 @@
         {%- assign default_names = 'Sophia Laurent,Emma Rosewood,James Hartley' | split: ',' -%}
         {%- for review in default_reviews -%}
           <div class="testimonial-card animate-on-scroll" data-delay="{{ forloop.index0 | times: 120 }}">
-            <span class="testimonial-quote-mark" aria-hidden="true">&ldquo;</span>
-            <div class="testimonial-stars" role="img" aria-label="5 out of 5 stars">
-              {%- for i in (1..5) -%}
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                </svg>
-              {%- endfor -%}
+            <div class="testimonial-header">
+              <div class="testimonial-author">
+                <div class="testimonial-avatar" aria-hidden="true">
+                  {{- default_names[forloop.index0] | slice: 0 | upcase -}}
+                </div>
+                <div>
+                  <p class="testimonial-name">{{ default_names[forloop.index0] }}</p>
+                  <p class="testimonial-tag">Verified Purchase</p>
+                </div>
+              </div>
+              <div class="testimonial-stars" role="img" aria-label="5 out of 5 stars">
+                {%- for i in (1..5) -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                {%- endfor -%}
+              </div>
             </div>
             <blockquote class="testimonial-text">{{ review }}</blockquote>
-            <div class="testimonial-author">
-              <div class="testimonial-avatar" aria-hidden="true">
-                {{- default_names[forloop.index0] | slice: 0 | upcase -}}
-              </div>
-              <div>
-                <p class="testimonial-name">{{ default_names[forloop.index0] }}</p>
-                <p class="testimonial-tag">Verified Purchase</p>
-              </div>
-            </div>
           </div>
         {%- endfor -%}
       {%- endfor -%}

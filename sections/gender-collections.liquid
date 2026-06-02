@@ -32,7 +32,7 @@
                   srcset="{{ card_img | image_url: width: 480, format: 'webp' }} 480w,
                           {{ card_img | image_url: width: 800, format: 'webp' }} 800w,
                           {{ card_img | image_url: width: 1100, format: 'webp' }} 1100w"
-                  sizes="(max-width: 699px) 100vw, (max-width: 990px) 50vw, 33vw"
+                  sizes="(max-width: 699px) 50vw, (max-width: 990px) 50vw, 33vw"
                   alt="{{ card_img.alt | default: card_title }}"
                   width="800" height="1067"
                   loading="lazy"
@@ -44,7 +44,6 @@
             </div>
 
             <div class="gender-card-content">
-              <span class="gender-card-label">COLLECTION</span>
               <h3 class="gender-card-name">{{ card_title }}</h3>
               {%- if card_desc != blank -%}
                 <p class="gender-card-desc">{{ card_desc }}</p>
@@ -186,13 +185,7 @@
   z-index: 3;
 }
 
-.gender-card-label {
-  font-size: 9px;
-  letter-spacing: 0.3em;
-  color: var(--gold-accent);
-  margin-bottom: 8px;
-  display: block;
-}
+
 
 .gender-card-name {
   font-family: 'Philosopher', sans-serif;
@@ -268,18 +261,30 @@
 /* ── Mobile ≤699px ── */
 @media (max-width: 699px) {
   .gender-grid {
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
     padding: 0;
   }
   .card-size-1, .card-size-2, .card-size-3 {
+    flex: unset;
     margin-top: 0;
     width: 100%;
+  }
+  /* Centre lone last card if odd total */
+  .gender-card-wrapper:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: calc(50% - 6px);
+    margin-inline: auto;
   }
   .gender-grid .gender-img-wrap,
   .card-size-2 .gender-img-wrap { aspect-ratio: 3 / 4; }
   .gender-mood-text { display: none; }
   .gender-cta { opacity: 1; transform: none; }
+  /* Tighten content so it fits small cards */
+  .gender-card-content { padding: 16px 12px; }
+  .gender-card-name { font-size: 16px; margin-bottom: 4px; }
+  .gender-card-desc { display: none; }
 }
 
 {% endstyle %}

@@ -50,7 +50,7 @@
                 srcset="{{ col.image | image_url: width: 400, format: 'webp' }} 400w,
                         {{ col.image | image_url: width: 600, format: 'webp' }} 600w,
                         {{ col.image | image_url: width: 900, format: 'webp' }} 900w"
-                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                sizes="(max-width: 480px) 50vw, (max-width: 768px) 50vw, (max-width: 1024px) 50vw, 33vw"
                 alt="{{ col.image.alt | default: col.title }}"
                 width="600" height="720" loading="lazy"
               >

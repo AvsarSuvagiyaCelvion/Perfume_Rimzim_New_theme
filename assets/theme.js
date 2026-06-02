@@ -283,19 +283,18 @@
   function initVibeSlider() {
     var container = document.querySelector('.vibe-slider-outer');
     if (!container) return;
+    var section = container.closest('.vibe-section') || document.querySelector('.vibe-section');
     var clip    = container.querySelector('.vibe-slider-clip');
     var track   = container.querySelector('.vibe-track');
     var prevBtn = container.querySelector('.slider-btn.prev');
     var nextBtn = container.querySelector('.slider-btn.next');
-    var dots    = container.querySelectorAll('.slider-dot');
+    /* Dots live outside .vibe-slider-outer — query from section */
+    var dots    = section ? Array.from(section.querySelectorAll('.slider-dot')) : [];
     if (!track) return;
 
-    /* ── 1. Clone real cards so the loop is visually seamless ──
-       Layout after cloning (CLONES=4, R=7):
-       [clone(3..6)][real(0..6)][clone(0..3)]
-       idx starts at CLONES = first real card.
-       When idx enters clone territory we silently jump to the
-       corresponding real position after the animation finishes. */
+    /* ── 1. Clone cards for seamless infinite loop ──
+       Layout: [tail-clones][real cards][head-clones]
+       idx starts at CLONES = first real card position. */
     var realCards = Array.from(track.querySelectorAll('.vibe-card'));
     var R         = realCards.length;
     if (!R) return;
@@ -316,11 +315,12 @@
     }
 
     /* ── 2. State ── */
-    var ANIM_MS    = 575;       /* must be ≥ CSS transition duration (0.55s) */
-    var idx        = CLONES;    /* current slot — CLONES = first real card */
+    var ANIM_MS    = 580;
+    var idx        = CLONES;
     var cardW      = 0;
     var gap        = 0;
     var autoTimer  = null;
+    var busy       = false;
     var mq         = window.matchMedia('(max-width: 768px)');
     var scrollLock = false;
 
@@ -329,26 +329,23 @@
       var style = window.getComputedStyle(track);
       gap   = parseFloat(style.gap) || 20;
       cardW = track.children[0].offsetWidth + gap;
-      if (mq.matches) {
-        track.style.transform = '';
-        scrollLock = true;
-        clip.scrollLeft = idx * cardW;
-        setTimeout(function () { scrollLock = false; }, 200);
-      } else {
-        clip.scrollLeft = 0;
-        desktopJump();
-      }
+      clip.scrollLeft = 0;
+      desktopJump();
       updateDots();
     }
 
-    /* ── 4. Desktop positioning ── */
-    function desktopJump() {   /* instant — no animation */
+    /* ── 4. Positioning — transform-based on all devices ── */
+    function desktopJump() {
       track.style.transition = 'none';
       track.style.transform  = 'translateX(-' + (idx * cardW) + 'px)';
-      track.offsetHeight;      /* force reflow so 'none' takes effect */
-      track.style.transition  = '';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          track.style.transition = '';
+        });
+      });
     }
-    function desktopSlide() {  /* animated */
+
+    function desktopSlide() {
       track.style.transform = 'translateX(-' + (idx * cardW) + 'px)';
     }
 
@@ -358,59 +355,46 @@
       dots.forEach(function (d, i) { d.classList.toggle('active', i === ri); });
     }
 
-    /* ── 6. Infinite-loop correction (fires after animation ends) ──
-       Formulas:
-         idx >= CLONES + R  →  idx -= R  (entered append-clone zone)
-         idx <  CLONES      →  idx += R  (entered prepend-clone zone)  */
+    /* ── 6. Loop correction — fires after animation ends ── */
     function loopCorrect() {
+      busy = false;
       var jumped = false;
       if (idx >= CLONES + R) { idx -= R; jumped = true; }
-      else if (idx < CLONES) { idx += R; jumped = true; }
+      else if (idx < CLONES)  { idx += R; jumped = true; }
       if (!jumped) return;
-      if (mq.matches) {
-        scrollLock = true;
-        clip.scrollLeft = idx * cardW;
-        setTimeout(function () { scrollLock = false; }, 50);
-      } else {
-        desktopJump();
-      }
+      desktopJump();
       updateDots();
     }
 
     /* ── 7. Navigation ── */
     function next() {
+      if (busy) return;
+      busy = true;
       idx++;
-      if (mq.matches) {
-        track.style.transform = '';
-        clip.scrollTo({ left: idx * cardW, behavior: 'smooth' });
-      } else {
-        desktopSlide();
-      }
+      desktopSlide();
       updateDots();
       setTimeout(loopCorrect, ANIM_MS);
     }
 
     function prev() {
+      if (busy) return;
+      busy = true;
       idx--;
-      if (mq.matches) {
-        track.style.transform = '';
-        clip.scrollTo({ left: idx * cardW, behavior: 'smooth' });
-      } else {
-        desktopSlide();
-      }
+      desktopSlide();
       updateDots();
       setTimeout(loopCorrect, ANIM_MS);
     }
 
-    function startAuto() { stopAuto(); autoTimer = setInterval(next, 1500); }
+    function startAuto() { stopAuto(); busy = false; autoTimer = setInterval(next, 2000); }
     function stopAuto()  { if (autoTimer) { clearInterval(autoTimer); autoTimer = null; } }
 
     /* ── 8. Controls ── */
-    if (nextBtn) nextBtn.addEventListener('click', function () { next(); startAuto(); });
-    if (prevBtn) prevBtn.addEventListener('click', function () { prev(); startAuto(); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { stopAuto(); next(); startAuto(); });
+    if (prevBtn) prevBtn.addEventListener('click', function () { stopAuto(); prev(); startAuto(); });
 
     dots.forEach(function (d, i) {
       d.addEventListener('click', function () {
+        if (busy) return;
         idx = CLONES + i;
         if (mq.matches) {
           clip.scrollTo({ left: idx * cardW, behavior: 'smooth' });
@@ -422,30 +406,14 @@
       });
     });
 
-    /* ── 9. Mobile: sync idx after native swipe settles ──
-       scroll-snap already snaps the card; we just reconcile idx
-       and jump out of clone territory if the user swiped there. */
-    var scrollTimer;
-    clip.addEventListener('scroll', function () {
-      if (!mq.matches || scrollLock) return;
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(function () {
-        var snapped = Math.round(clip.scrollLeft / cardW);
-        if (snapped !== idx) { idx = snapped; updateDots(); }
-        loopCorrect();
-      }, 120);
-    }, { passive: true });
-
-    /* ── 10. Desktop touch swipe (mobile relies on native scroll) ── */
+    /* ── 9. Touch swipe (all devices) ── */
     var swipeX = 0, swipeT = 0;
     track.addEventListener('touchstart', function (e) {
-      if (mq.matches) return;
       swipeX = e.changedTouches[0].clientX;
       swipeT = Date.now();
       stopAuto();
     }, { passive: true });
     track.addEventListener('touchend', function (e) {
-      if (mq.matches) return;
       var dist = swipeX - e.changedTouches[0].clientX;
       if (Math.abs(dist) > 40 && Date.now() - swipeT < 400) {
         if (dist > 0) next(); else prev();
@@ -455,6 +423,16 @@
 
     container.addEventListener('mouseenter', stopAuto);
     container.addEventListener('mouseleave', startAuto);
+
+    /* Resume when tab becomes visible again */
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { stopAuto(); } else { startAuto(); }
+    });
+
+    /* Resume after browser back-button (bfcache restore) */
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted) { startAuto(); }
+    });
 
     /* ── 11. Init ── */
     measure();
@@ -623,6 +601,24 @@
 
   function initAddToCart() {
     document.addEventListener('click', function (e) {
+      /* ── PDP main Add to Cart button ── */
+      var pdpAtc = e.target.closest('#PdpATC');
+      if (pdpAtc && !pdpAtc.disabled) {
+        var hasVariants = parseInt(pdpAtc.dataset.hasVariants || '0', 10);
+        var handle      = pdpAtc.dataset.handle;
+        var title       = pdpAtc.dataset.title || 'Product';
+        var variantId   = pdpAtc.dataset.variantId;
+        if (hasVariants > 0 && handle) {
+          openVariantPicker(handle, title, null, null);
+        } else if (variantId) {
+          var origHtml = pdpAtc.innerHTML;
+          pdpAtc.disabled = true;
+          pdpAtc.textContent = 'Adding…';
+          addToCart(variantId, title, pdpAtc, origHtml);
+        }
+        return;
+      }
+
       /* ── Product card ATC button ── */
       var atcBtn = e.target.closest('.product-card-atc');
       if (atcBtn && !atcBtn.disabled) {
@@ -915,11 +911,18 @@
     }, { threshold: 0 });
     observer.observe(mainATC);
 
-    /* Sticky ATC click — submit the main product form */
+    /* Sticky ATC click — open variant picker if multi-variant, else submit form */
     if (stickyBtn) {
       stickyBtn.addEventListener('click', function () {
-        var formId  = stickyBtn.dataset.formId;
-        var form    = document.getElementById(formId);
+        var hasVariants = parseInt(stickyBtn.dataset.hasVariants || '0', 10);
+        var handle      = stickyBtn.dataset.handle;
+        var title       = stickyBtn.dataset.title || 'Product';
+        if (hasVariants > 0 && handle) {
+          openVariantPicker(handle, title, null, null);
+          return;
+        }
+        var formId = stickyBtn.dataset.formId;
+        var form   = document.getElementById(formId);
         if (form) form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
       });
     }
