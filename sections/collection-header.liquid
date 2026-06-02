@@ -131,11 +131,11 @@
       <h1 class="col-header-title t-split-title" data-anim="split">
         {{ col.title }}
       </h1>
-      {%- if col.description != blank or section.settings.fallback_desc != blank -%}
+      {% comment %} {%- if col.description != blank or section.settings.fallback_desc != blank -%}
         <p class="col-header-desc t-reveal" style="--td:600ms">
           {{ col.description | default: section.settings.fallback_desc }}
         </p>
-      {%- endif -%}
+      {%- endif -%} {% endcomment %}
       <p class="col-header-count t-reveal" style="--td:750ms">
         <span>{{ col.products_count }}</span>
         {{ col.products_count | pluralize: 'product', 'products' }}

@@ -549,12 +549,23 @@ svg {
 }
 
 .col-header-inner.has-bg .col-breadcrumb {
-  color: rgba(255, 255, 255, 0.75);
-  margin-bottom: var(--space-12);
+  display: inline-flex;
+  align-self: center;
+  background: rgba(0, 0, 0, 0.40);
+  /* backdrop-filter: blur(10px); */
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-full);
+  padding: 7px 18px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.78rem;
+  letter-spacing: 0.3px;
+  margin-bottom: var(--space-16);
+  opacity: 0.5;
 }
 
 .col-header-inner.has-bg .col-breadcrumb a {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .col-header-inner.has-bg .col-breadcrumb a:hover {
