@@ -940,6 +940,20 @@
     /* PDP sticky bar — only when the element exists */
     if (document.getElementById('PdpStickyBar')) initStickyATC();
 
+    /* PDP share button — copies current URL to clipboard */
+    var shareBtn = document.getElementById('PdpShareBtn');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', function () {
+        var url = shareBtn.dataset.url || location.href;
+        navigator.clipboard.writeText(url).then(function () {
+          var span = shareBtn.querySelector('span');
+          var prev = span.textContent;
+          span.textContent = 'Copied!';
+          setTimeout(function () { span.textContent = prev; }, 2000);
+        }).catch(function () {});
+      });
+    }
+
     /* Non-critical UI — defer until the browser is idle so main-thread
        work doesn't block LCP/TTI. Falls back to setTimeout for Safari. */
     var _deferred = function () {
