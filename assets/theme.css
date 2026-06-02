@@ -487,11 +487,12 @@ svg {
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: linear-gradient(to bottom,
-      rgba(10, 8, 5, 0.45) 0%,
+  background:
+    linear-gradient(to bottom,
+      rgba(10, 8, 5, 0.40) 0%,
       rgba(10, 8, 5, 0.10) 30%,
       rgba(10, 8, 5, 0.10) 70%,
-      rgba(10, 8, 5, 0.52) 100%);
+      rgba(10, 8, 5, 0.45) 100%);
 }
 
 /* Text centred over the image */
@@ -548,8 +549,58 @@ svg {
   color: #fff;
 }
 
+.col-header-inner.has-bg .col-breadcrumb {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+  gap: var(--space-8);
+  margin-bottom: var(--space-20);
+}
+
+.col-header-inner.has-bg .col-breadcrumb a {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.col-header-inner.has-bg .col-breadcrumb a:hover {
+  color: var(--color-primary-light);
+}
+
+.col-header-inner.has-bg .col-header-title {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.col-header-inner.has-bg .col-header-desc {
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+  color: rgba(255, 255, 255, 0.90);
+}
+
+.col-header-inner.has-bg .col-header-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  background: rgba(201, 169, 110, 0.18);
+  border: 1px solid rgba(201, 169, 110, 0.45);
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--color-primary-light);
+  letter-spacing: 2.5px;
+  font-size: 0.7rem;
+}
+
+.col-header-inner.has-bg .col-header-count span {
+  color: #fff;
+  font-weight: 800;
+}
+
 .col-header-inner.has-bg .section-label {
   color: var(--color-primary-light);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 
 .col-breadcrumb {
@@ -5042,7 +5093,31 @@ video {
   }
 
   .col-header-inner {
-    padding: var(--space-32) var(--space-16);
+    padding: var(--space-32) var(--space-20);
+  }
+
+  .col-header-title {
+    font-size: clamp(1.6rem, 9vw, 2.6rem);
+    margin: var(--space-8) 0 var(--space-12);
+  }
+
+  .col-header-desc {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    max-width: 100%;
+  }
+
+  .col-header-inner.has-bg .col-breadcrumb {
+    font-size: 0.7rem;
+    padding: 5px 12px;
+    gap: 5px;
+    margin-bottom: var(--space-12);
+  }
+
+  .col-header-inner.has-bg .col-header-count {
+    font-size: 0.65rem;
+    padding: 5px 14px;
+    letter-spacing: 2px;
   }
 
   .collection-toolbar {
