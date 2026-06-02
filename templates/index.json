@@ -383,6 +383,15 @@
         "instafeed_app_block_NhtD7K"
       ],
       "settings": {}
+    },
+    "instagram_header_teghTX": {
+      "type": "instagram-header",
+      "name": "Instagram Header",
+      "settings": {
+        "handle": "@therimzimperfumes",
+        "follow_url": "",
+        "btn_label": "Follow Now"
+      }
     }
   },
   "order": [
@@ -394,6 +403,7 @@
     "vibe_slider",
     "testimonials",
     "faq",
-    "1780391773a8446b24"
+    "1780391773a8446b24",
+    "instagram_header_teghTX"
   ]
 }
