@@ -109,24 +109,39 @@
   .trust-bar-inner {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 4px 0;
+    gap: 0;
+    background: none;
+    padding: 0;
   }
   .trust-item {
+    background: none;
+    border: none;
     width: auto;
     justify-content: flex-start;
-    padding: 14px 12px;
-    border-right: 1px solid rgba(255,255,255,0.06);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 16px 14px;
+    position: relative;
   }
-  /* Right column: items 2 and 4 (nth-child counts hidden dividers) */
-  .trust-item:nth-child(3),
-  .trust-item:nth-child(7) {
-    border-right: none;
+
+  /* Horizontal line — full width, between rows */
+  .trust-item:nth-child(1)::after,
+  .trust-item:nth-child(3)::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
   }
-  /* Bottom row: items 3 and 4 */
-  .trust-item:nth-child(5),
-  .trust-item:nth-child(7) {
-    border-bottom: none;
+
+  /* Vertical line — stops 14px short of top & bottom so it never touches the horizontal line */
+  .trust-item:nth-child(1)::before,
+  .trust-item:nth-child(5)::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 14px;
+    bottom: 14px;
+    width: 1px;
+    background: rgba(255,255,255,0.08);
   }
 }
 {% endstyle %}

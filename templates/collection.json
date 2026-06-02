@@ -1,8 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "collection_header": {
       "type": "collection-header",
       "settings": {
+        "banner_image": "shopify://shop_images/pexels-suhashanjar-36779955.jpg",
         "label": "Collection",
         "fallback_desc": "Explore our curated selection of luxury fragrances."
       }
@@ -14,5 +24,8 @@
       }
     }
   },
-  "order": ["collection_header", "collection_products"]
+  "order": [
+    "collection_header",
+    "collection_products"
+  ]
 }

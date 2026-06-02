@@ -452,19 +452,33 @@ svg {
   text-align: center;
 }
 
-/* Container controls height via aspect-ratio — full width, no black bars */
+/* ── Background wrapper ── */
 .col-header-bg {
   position: relative;
-  z-index: 0;
   width: 100%;
-  aspect-ratio: 16 / 6;
+  /* Reasonable banner height — not too tall, not too short */
+  height: clamp(400px, 56vh, 580px);
   overflow: hidden;
 }
 
-.col-header-bg img {
+/* Blurred fill layer — same image, blurred + scaled to cover empty sides */
+.col-header-bg-blur {
+  position: absolute;
+  inset: -30px; /* extra bleed so blur edge never shows */
+  background-size: cover;
+  background-position: center center;
+  filter: blur(28px);
+  transform: scale(1.08);
+  opacity: 0.75;
+}
+
+/* Main image — contained, zero cropping */
+.col-header-bg-img {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
   display: block;
 }
@@ -472,12 +486,13 @@ svg {
 .col-header-bg-overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
   background: linear-gradient(
     to bottom,
-    rgba(10,8,5,0.52) 0%,
-    rgba(10,8,5,0.22) 30%,
-    rgba(10,8,5,0.22) 70%,
-    rgba(10,8,5,0.60) 100%
+    rgba(10,8,5,0.45) 0%,
+    rgba(10,8,5,0.10) 30%,
+    rgba(10,8,5,0.10) 70%,
+    rgba(10,8,5,0.52) 100%
   );
 }
 
@@ -485,7 +500,7 @@ svg {
 .col-header-inner {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -494,9 +509,38 @@ svg {
   padding: var(--space-40) var(--space-24);
 }
 
-/* No image: fallback height */
-.col-header-section:not(:has(.col-header-bg img)) {
+/* No image: fallback banner with gradient */
+.col-header-section:not(:has(.col-header-bg)) {
   min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1208 0%, #2c1f0e 40%, #1a1208 100%);
+}
+
+.col-header-section:not(:has(.col-header-bg)) .col-header-inner {
+  position: relative;
+  inset: unset;
+  padding: 48px 0;
+}
+
+.col-header-section:not(:has(.col-header-bg)) .col-breadcrumb,
+.col-header-section:not(:has(.col-header-bg)) .col-header-title,
+.col-header-section:not(:has(.col-header-bg)) .col-header-desc,
+.col-header-section:not(:has(.col-header-bg)) .col-header-count {
+  color: #fff;
+}
+
+.col-header-section:not(:has(.col-header-bg)) .section-label {
+  color: var(--color-primary);
+}
+
+.col-header-section:not(:has(.col-header-bg)) .col-breadcrumb a {
+  color: rgba(255,255,255,0.6);
+}
+
+.col-header-section:not(:has(.col-header-bg)) .col-breadcrumb a:hover {
+  color: var(--color-primary);
 }
 
 .col-header-inner.has-bg .col-breadcrumb,
@@ -4845,7 +4889,7 @@ video {
 
   /* ── Collection banner ── */
   .col-header-bg {
-    aspect-ratio: 4 / 3;
+    height: clamp(320px, 50vh, 480px);
   }
 
   .col-header-inner {
@@ -5056,6 +5100,82 @@ video {
 /* ============================================================
    PRODUCT DETAIL PAGE (PDP)
    ============================================================ */
+
+/* ── Product Banner ── */
+.pdp-banner {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+
+.pdp-banner-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: blur(18px) brightness(0.45);
+  transform: scale(1.08);
+}
+
+.pdp-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+}
+
+.pdp-banner-content {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 32px;
+  width: 100%;
+}
+
+.pdp-banner-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.pdp-banner-breadcrumb a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+.pdp-banner-breadcrumb a:hover { color: var(--color-primary); }
+.pdp-banner-breadcrumb span[aria-current] { color: rgba(255,255,255,0.9); }
+
+.pdp-banner-title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  margin: 0 0 6px;
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.pdp-banner-vendor {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 600px) {
+  .pdp-banner { height: 200px; }
+  .pdp-banner-title { font-size: 1.3rem; }
+}
+
 .pdp-section {
   padding: var(--space-40) 0 var(--space-80);
   background: var(--color-bg);
