@@ -604,13 +604,9 @@
       /* ── PDP main Add to Cart button ── */
       var pdpAtc = e.target.closest('#PdpATC');
       if (pdpAtc && !pdpAtc.disabled) {
-        var hasVariants = parseInt(pdpAtc.dataset.hasVariants || '0', 10);
-        var handle      = pdpAtc.dataset.handle;
-        var title       = pdpAtc.dataset.title || 'Product';
-        var variantId   = pdpAtc.dataset.variantId;
-        if (hasVariants > 0 && handle) {
-          openVariantPicker(handle, title, null, null);
-        } else if (variantId) {
+        var variantId = pdpAtc.dataset.variantId;
+        var title     = pdpAtc.dataset.title || 'Product';
+        if (variantId) {
           var origHtml = pdpAtc.innerHTML;
           pdpAtc.disabled = true;
           pdpAtc.textContent = 'Adding…';
@@ -641,8 +637,8 @@
       var title       = btn.dataset.title || 'Product';
       if (!variantId) return;
 
-      if (hasVariants > 0 && handle) {
-        openVariantPicker(handle, title, null, null);
+      if (hasVariants > 0 && handle && !variantId) {
+        window.location.href = '/products/' + handle;
         return;
       }
 
