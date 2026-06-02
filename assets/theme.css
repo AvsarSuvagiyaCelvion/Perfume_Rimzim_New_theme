@@ -5092,6 +5092,15 @@ video {
     height: clamp(320px, 50vh, 480px);
   }
 
+  .col-header-bg-img {
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  .col-header-bg-blur {
+    display: none;
+  }
+
   .col-header-inner {
     padding: var(--space-32) var(--space-20);
   }
