@@ -33,81 +33,149 @@
 
 {%- assign col = collection -%}
 {%- assign banner_img = section.settings.banner_image | default: col.image -%}
+{%- assign is_all = false -%}
+{%- if col.handle == 'all' -%}{%- assign is_all = true -%}{%- endif -%}
 
-<section class="col-header-section" id="CollectionHeader">
-  {%- comment -%} Background image — from schema setting or collection image {%- endcomment -%}
-  {%- if banner_img != blank -%}
-    <div class="col-header-bg" aria-hidden="true">
-      {%- comment -%} Blurred background fills empty sides without black bars {%- endcomment -%}
-      <div
-        class="col-header-bg-blur"
-        style="background-image: url('{{ banner_img | image_url: width: 800, format: 'webp' }}');"
-      ></div>
-      <img
-        class="col-header-bg-img"
-        src="{{ banner_img | image_url: width: 1200, format: 'webp' }}"
-        srcset="{{ banner_img | image_url: width: 480, format: 'webp' }} 480w,
-                {{ banner_img | image_url: width: 768, format: 'webp' }} 768w,
-                {{ banner_img | image_url: width: 1200, format: 'webp' }} 1200w,
-                {{ banner_img | image_url: width: 1600, format: 'webp' }} 1600w"
-        sizes="100vw"
-        alt="{{ banner_img.alt | default: col.title | escape }}"
-        width="{{ banner_img.width }}"
-        height="{{ banner_img.height }}"
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      >
-      <div class="col-header-bg-overlay"></div>
-    </div>
-  {%- endif -%}
+{%- if is_all -%}
 
-  <div class="container col-header-inner {% if banner_img != blank %}has-bg{% endif %}">
-
-    {%- comment -%} Breadcrumb {%- endcomment -%}
-    <nav class="col-breadcrumb t-reveal t-reveal--left" style="--td:0ms" aria-label="Breadcrumb">
-      <a href="{{ routes.root_url }}">Home</a>
-      <span aria-hidden="true">›</span>
-      <a href="{{ routes.collections_url }}">Collections</a>
-      <span aria-hidden="true">›</span>
-      <span aria-current="page">{{ col.title }}</span>
-    </nav>
-
-    {%- comment -%} Label {%- endcomment -%}
-    <span class="section-label t-reveal t-reveal--left" style="--td:80ms">
-      {{ section.settings.label | default: 'Collection' }}
-    </span>
-
-    {%- comment -%} Title — each word rises individually via JS word-split {%- endcomment -%}
-    <h1 class="col-header-title t-split-title" data-anim="split">
-      {{ col.title }}
-    </h1>
-
-    {%- comment -%} Description {%- endcomment -%}
-    {%- if col.description != blank or section.settings.fallback_desc != blank -%}
-      <p class="col-header-desc t-reveal" style="--td:600ms">
-        {{ col.description | default: section.settings.fallback_desc }}
-      </p>
+  {%- comment -%} ── /collections/all → Generic All Products banner ── {%- endcomment -%}
+  <section class="col-header-section col-header-all" id="CollectionHeader">
+    {%- if banner_img != blank -%}
+      <div class="col-header-bg" aria-hidden="true">
+        <div
+          class="col-header-bg-blur"
+          style="background-image: url('{{ banner_img | image_url: width: 800, format: 'webp' }}');"
+        ></div>
+        <img
+          class="col-header-bg-img"
+          src="{{ banner_img | image_url: width: 1200, format: 'webp' }}"
+          srcset="{{ banner_img | image_url: width: 480, format: 'webp' }} 480w,
+                  {{ banner_img | image_url: width: 768, format: 'webp' }} 768w,
+                  {{ banner_img | image_url: width: 1200, format: 'webp' }} 1200w"
+          sizes="100vw"
+          alt="{{ section.settings.all_title | default: 'All Products' }}"
+          width="1200" height="400"
+          loading="eager"
+          fetchpriority="high"
+        >
+        <div class="col-header-bg-overlay"></div>
+      </div>
     {%- endif -%}
 
-    {%- comment -%} Product count {%- endcomment -%}
-    <p class="col-header-count t-reveal" style="--td:750ms">
-      <span>{{ col.products_count }}</span>
-      {{ col.products_count | pluralize: 'product', 'products' }}
-    </p>
+    <div class="container col-header-inner {% if banner_img != blank %}has-bg{% endif %}">
+      <nav class="col-breadcrumb t-reveal t-reveal--left" style="--td:0ms" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">{{ section.settings.all_title | default: 'All Products' }}</span>
+      </nav>
+      <span class="section-label t-reveal t-reveal--left" style="--td:80ms">
+        {{ section.settings.all_label | default: 'Our Collection' }}
+      </span>
+      <h1 class="col-header-title t-split-title" data-anim="split">
+        {{ section.settings.all_title | default: 'All Products' }}
+      </h1>
+      {%- if section.settings.all_desc != blank -%}
+        <p class="col-header-desc t-reveal" style="--td:600ms">{{ section.settings.all_desc }}</p>
+      {%- endif -%}
+      <p class="col-header-count t-reveal" style="--td:750ms">
+        <span>{{ col.products_count }}</span>
+        {{ col.products_count | pluralize: 'product', 'products' }}
+      </p>
+    </div>
+  </section>
 
-  </div>
-</section>
+{%- else -%}
+
+  {%- comment -%} ── /collections/[handle] → Collection-specific banner ── {%- endcomment -%}
+  <section class="col-header-section" id="CollectionHeader">
+    {%- if banner_img != blank -%}
+      <div class="col-header-bg" aria-hidden="true">
+        <div
+          class="col-header-bg-blur"
+          style="background-image: url('{{ banner_img | image_url: width: 800, format: 'webp' }}');"
+        ></div>
+        <img
+          class="col-header-bg-img"
+          src="{{ banner_img | image_url: width: 1200, format: 'webp' }}"
+          srcset="{{ banner_img | image_url: width: 480, format: 'webp' }} 480w,
+                  {{ banner_img | image_url: width: 768, format: 'webp' }} 768w,
+                  {{ banner_img | image_url: width: 1200, format: 'webp' }} 1200w,
+                  {{ banner_img | image_url: width: 1600, format: 'webp' }} 1600w"
+          sizes="100vw"
+          alt="{{ banner_img.alt | default: col.title | escape }}"
+          width="{{ banner_img.width }}"
+          height="{{ banner_img.height }}"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        >
+        <div class="col-header-bg-overlay"></div>
+      </div>
+    {%- endif -%}
+
+    <div class="container col-header-inner {% if banner_img != blank %}has-bg{% endif %}">
+      <nav class="col-breadcrumb t-reveal t-reveal--left" style="--td:0ms" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">Home</a>
+        <span aria-hidden="true">›</span>
+        <a href="{{ routes.collections_url }}">Collections</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">{{ col.title }}</span>
+      </nav>
+      <span class="section-label t-reveal t-reveal--left" style="--td:80ms">
+        {{ section.settings.label | default: 'Collection' }}
+      </span>
+      <h1 class="col-header-title t-split-title" data-anim="split">
+        {{ col.title }}
+      </h1>
+      {%- if col.description != blank or section.settings.fallback_desc != blank -%}
+        <p class="col-header-desc t-reveal" style="--td:600ms">
+          {{ col.description | default: section.settings.fallback_desc }}
+        </p>
+      {%- endif -%}
+      <p class="col-header-count t-reveal" style="--td:750ms">
+        <span>{{ col.products_count }}</span>
+        {{ col.products_count | pluralize: 'product', 'products' }}
+      </p>
+    </div>
+  </section>
+
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Collection Header",
   "settings": [
     {
+      "type": "header",
+      "content": "All Products page (/collections/all)"
+    },
+    {
       "type": "image_picker",
       "id": "banner_image",
       "label": "Banner image",
-      "info": "Overrides the collection image. Use a wide landscape photo (1600×500px recommended)."
+      "info": "Used on /collections/all. Other collections use their own collection image."
+    },
+    {
+      "type": "text",
+      "id": "all_label",
+      "label": "Eyebrow label",
+      "default": "Our Collection"
+    },
+    {
+      "type": "text",
+      "id": "all_title",
+      "label": "Banner title",
+      "default": "All Products"
+    },
+    {
+      "type": "textarea",
+      "id": "all_desc",
+      "label": "Banner description",
+      "default": "Explore our complete range of luxury fragrances."
+    },
+    {
+      "type": "header",
+      "content": "Other collection pages"
     },
     {
       "type": "text",
