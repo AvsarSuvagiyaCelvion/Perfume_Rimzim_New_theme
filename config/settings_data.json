@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "favicon": "shopify://shop_images/RIM-ZIM_LOGO_BLACK.avif",
     "sections": {
       "header": {
         "type": "header",
