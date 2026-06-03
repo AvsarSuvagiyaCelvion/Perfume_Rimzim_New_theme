@@ -15,51 +15,19 @@
         "shipping_text": "Free standard delivery on orders over $50. Express delivery available at checkout. Easy 30-day returns on all orders."
       }
     },
-    "product_reviews": {
-      "type": "product-reviews",
-      "settings": {
-        "title": "What Our Customers Say"
-      },
-      "blocks": {
-        "review_1": {
-          "type": "review",
-          "settings": {
-            "name": "Sophia Laurent",
-            "rating": 5,
-            "text": "Absolutely breathtaking fragrance. The longevity is incredible — I received compliments all evening.",
-            "tag": "Verified Purchase"
-          }
-        },
-        "review_2": {
-          "type": "review",
-          "settings": {
-            "name": "Emma Rosewood",
-            "rating": 5,
-            "text": "The packaging alone is worth every penny. The perfume itself is divine — delicate and truly unique.",
-            "tag": "Loyal Customer"
-          }
-        },
-        "review_3": {
-          "type": "review",
-          "settings": {
-            "name": "James Hartley",
-            "rating": 5,
-            "text": "Best online perfume shopping experience. Fast delivery and an extraordinary scent.",
-            "tag": "Verified Purchase"
-          }
-        }
-      },
-      "block_order": ["review_1", "review_2", "review_3"]
-    },
     "related_products": {
       "type": "related-products",
       "settings": {
         "label": "You May Also Like",
         "title": "Related Products",
+        "subtitle": "",
         "product_limit": 4,
         "show_view_all": true
       }
     }
   },
-  "order": ["main", "product_reviews", "related_products"]
+  "order": [
+    "main",
+    "related_products"
+  ]
 }
