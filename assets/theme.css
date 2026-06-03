@@ -4861,9 +4861,9 @@ video {
   .hero-inner {
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     text-align: center;
-    padding: var(--space-32) 0 var(--space-40);
+    padding: var(--space-80) var(--space-16) var(--space-48);
     gap: var(--space-16);
     min-height: 100svh;
     min-height: 100vh;
@@ -4913,15 +4913,15 @@ video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: var(--hero-img-pos-mobile, center top);
+    object-position: var(--hero-img-pos-mobile, right center);
   }
 
   .hero-section--has-bg .hero-overlay {
     background: linear-gradient(
-      to top,
-      rgba(10, 8, 5, 0.88) 0%,
-      rgba(10, 8, 5, 0.45) 45%,
-      rgba(10, 8, 5, 0.10) 100%
+      to bottom,
+      rgba(10, 8, 5, 0.55) 0%,
+      rgba(10, 8, 5, 0.35) 50%,
+      rgba(10, 8, 5, 0.65) 100%
     );
   }
 
@@ -5220,7 +5220,8 @@ video {
   .hero-inner {
     min-height: 100svh;
     min-height: 100vh;
-    padding: var(--space-24) 0 var(--space-32);
+    justify-content: center;
+    padding: var(--space-64) var(--space-16) var(--space-40);
     gap: var(--space-12);
   }
 
