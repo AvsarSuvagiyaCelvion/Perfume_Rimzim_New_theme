@@ -194,6 +194,19 @@
         "subtitle": "Find the fragrance family that speaks to your soul"
       }
     },
+    "17804657172db3c34c": {
+      "type": "apps",
+      "blocks": {
+        "trustwill_trustoo_text_carousel_qJgkNf": {
+          "type": "shopify://apps/trustwill-trustoo/blocks/text-carousel/c8f15077-6475-4e86-ad06-b66038d5ba2c",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "trustwill_trustoo_text_carousel_qJgkNf"
+      ],
+      "settings": {}
+    },
     "testimonials": {
       "type": "testimonials",
       "blocks": {
@@ -230,6 +243,7 @@
         "review2",
         "review3"
       ],
+      "disabled": true,
       "settings": {
         "title": "Our Customers Love Us",
         "subtitle": "Real reviews from real perfume enthusiasts"
@@ -390,6 +404,7 @@
       "settings": {
         "handle": "@therimzimperfumes",
         "follow_url": "https://www.instagram.com/therimzimperfumes/",
+        "sub_label": "Follow us on Instagram",
         "btn_label": "Follow Now"
       }
     }
@@ -401,6 +416,7 @@
     "trending_now_zBMCDg",
     "new_arrivals",
     "vibe_slider",
+    "17804657172db3c34c",
     "testimonials",
     "faq",
     "1780391773a8446b24",
