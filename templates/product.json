@@ -31,6 +31,7 @@
       "blocks": {
         "trustwill_trustoo_review_widget_XApKBD": {
           "type": "shopify://apps/trustwill-trustoo/blocks/review-widget/c8f15077-6475-4e86-ad06-b66038d5ba2c",
+          "disabled": true,
           "settings": {
             "product": ""
           }
@@ -39,6 +40,7 @@
       "block_order": [
         "trustwill_trustoo_review_widget_XApKBD"
       ],
+      "disabled": true,
       "settings": {}
     },
     "17804880526210d64b": {
