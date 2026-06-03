@@ -4891,7 +4891,7 @@ video {
   /* ── Hero: CSS grid stack — image defines height, content overlays ── */
   .hero-section {
     display: grid;
-    min-height: unset;
+    min-height: 62vh;
     width: 100%;
     overflow: hidden;
   }
@@ -4904,10 +4904,11 @@ video {
     grid-row: 1;
   }
 
-  /* Image at full width — natural height — NO cropping, bottle always visible */
+  /* Image fills full section height */
   .hero-bg {
     position: relative;
     width: 100%;
+    height: 100%;
     background: #0d0b09;
     z-index: 0;
     align-self: stretch;
@@ -4916,15 +4917,16 @@ video {
   .hero-bg picture {
     display: block;
     width: 100%;
+    height: 100%;
     line-height: 0;
   }
 
   .hero-bg-img {
     display: block;
     width: 100%;
-    height: auto;
-    object-fit: initial;
-    object-position: initial;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--hero-img-pos-mobile, right center);
   }
 
   .hero-overlay {
@@ -5272,7 +5274,7 @@ video {
 
   /* Hero — small phones: inherit grid layout, tighten padding */
   .hero-section {
-    min-height: unset;
+    min-height: 62vh;
   }
 
   .hero-inner {
