@@ -4913,7 +4913,7 @@ video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: var(--hero-img-pos-mobile, right center);
+    object-position: var(--hero-img-pos-mobile, 75% center);
   }
 
   .hero-section--has-bg .hero-overlay {
