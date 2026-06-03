@@ -5,7 +5,16 @@
       "settings": {
         "shipping_text": "Free standard delivery on orders over $50. Express delivery available at checkout. Easy 30-day returns on all orders."
       }
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {
+        "label": "You May Also Like",
+        "title": "Related Products",
+        "product_limit": 8,
+        "show_view_all": true
+      }
     }
   },
-  "order": ["main"]
+  "order": ["main", "related_products"]
 }
