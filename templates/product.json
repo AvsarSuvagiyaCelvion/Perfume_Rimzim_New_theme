@@ -15,6 +15,21 @@
         "shipping_text": "Free standard delivery on orders over $50. Express delivery available at checkout. Easy 30-day returns on all orders."
       }
     },
+    "1780499692029fdfd3": {
+      "type": "apps",
+      "blocks": {
+        "trustwill_trustoo_review_widget_hBRCKJ": {
+          "type": "shopify://apps/trustwill-trustoo/blocks/review-widget/c8f15077-6475-4e86-ad06-b66038d5ba2c",
+          "settings": {
+            "product": ""
+          }
+        }
+      },
+      "block_order": [
+        "trustwill_trustoo_review_widget_hBRCKJ"
+      ],
+      "settings": {}
+    },
     "related_products": {
       "type": "related-products",
       "settings": {
@@ -29,6 +44,7 @@
   },
   "order": [
     "main",
+    "1780499692029fdfd3",
     "related_products"
   ]
 }
