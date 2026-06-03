@@ -4891,7 +4891,7 @@ video {
   /* ── Hero: CSS grid stack — image defines height, content overlays ── */
   .hero-section {
     display: grid;
-    min-height: 62vh;
+    min-height: 75vh;
     width: 100%;
     overflow: hidden;
   }
@@ -4951,9 +4951,9 @@ video {
   .hero-inner {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
     text-align: center;
-    padding: var(--space-48) var(--space-16) var(--space-24);
+    padding: var(--space-48) var(--space-16) var(--space-40);
     gap: var(--space-12);
     min-height: unset;
     width: 100%;
@@ -5274,13 +5274,13 @@ video {
 
   /* Hero — small phones: inherit grid layout, tighten padding */
   .hero-section {
-    min-height: 62vh;
+    min-height: 75vh;
   }
 
   .hero-inner {
     min-height: unset;
-    justify-content: center;
-    padding: var(--space-40) var(--space-16) var(--space-20);
+    justify-content: flex-end;
+    padding: var(--space-40) var(--space-16) var(--space-32);
     gap: var(--space-12);
   }
 
