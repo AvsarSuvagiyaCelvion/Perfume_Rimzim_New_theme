@@ -5625,6 +5625,53 @@ video {
   border-color: #222;
 }
 
+/* Reviews badge below title */
+.pdp-reviews-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.pdp-stars {
+  position: relative;
+  display: inline-block;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.pdp-stars .stars-filled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #F5A623;
+  overflow: hidden;
+  white-space: nowrap;
+  width: var(--rating, 0%);
+}
+
+.pdp-stars .stars-empty {
+  color: #D5D5D5;
+}
+
+.pdp-reviews-count {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--duration-fast);
+}
+
+.pdp-reviews-count:hover {
+  color: var(--color-primary);
+}
+
+.pdp-reviews-count--empty {
+  text-decoration: none;
+  font-style: italic;
+}
+
 /* Price */
 .pdp-price {
   display: flex;

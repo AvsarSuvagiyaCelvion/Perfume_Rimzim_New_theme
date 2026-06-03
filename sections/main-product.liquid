@@ -246,6 +246,30 @@
           </button>
         </div>
 
+        {%- comment -%} Star rating — Judge.me badge below title {%- endcomment -%}
+        <div class="pdp-reviews-badge t-reveal" style="--td:210ms">
+          {%- assign rating_value = product.metafields.judgeme.rating.value -%}
+          {%- assign rating_count = product.metafields.judgeme.reviews_count.value -%}
+          {%- if rating_value != blank -%}
+            <div
+              class="pdp-stars"
+              role="img"
+              aria-label="{{ rating_value | round: 1 }} out of 5 stars"
+              style="--rating: {{ rating_value | divided_by: 5.0 | times: 100 }}%"
+            >
+              <span class="stars-filled" aria-hidden="true">★★★★★</span>
+              <span class="stars-empty"  aria-hidden="true">★★★★★</span>
+            </div>
+            <a href="#judgeme_product_reviews" class="pdp-reviews-count">
+              {{ rating_count | default: 0 }} {{ rating_count | pluralize: 'Review', 'Reviews' }}
+            </a>
+          {%- else -%}
+            <a href="#judgeme_product_reviews" class="pdp-reviews-count pdp-reviews-count--empty">
+              No reviews yet — be the first
+            </a>
+          {%- endif -%}
+        </div>
+
         {%- comment -%} Price {%- endcomment -%}
         <div class="pdp-price t-reveal" style="--td:260ms" id="PdpPrice">
           {%- if current_variant.compare_at_price > current_variant.price -%}
