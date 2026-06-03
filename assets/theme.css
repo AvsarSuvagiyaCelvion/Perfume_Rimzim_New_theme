@@ -2677,6 +2677,9 @@ svg {
       rgba(0, 0, 0, 0.08) 100%);
 }
 
+
+
+
 /* Content block inside overlay */
 .vibe-card-content {
   display: flex;
@@ -4885,10 +4888,62 @@ video {
     font-size: 0.8rem;
   }
 
-  /* ── Hero ── */
+  /* ── Hero: CSS grid stack — image defines height, content overlays ── */
   .hero-section {
-    min-height: 560px;
+    display: grid;
+    min-height: unset;
     width: 100%;
+    overflow: hidden;
+  }
+
+  /* Stack bg / overlay / content in the same cell */
+  .hero-bg,
+  .hero-overlay,
+  .hero-section > .container {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* Image at full width — natural height — NO cropping, bottle always visible */
+  .hero-bg {
+    position: relative;
+    width: 100%;
+    background: #0d0b09;
+    z-index: 0;
+    align-self: stretch;
+  }
+
+  .hero-bg picture {
+    display: block;
+    width: 100%;
+    line-height: 0;
+  }
+
+  .hero-bg-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: initial;
+    object-position: initial;
+  }
+
+  .hero-overlay {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 8, 5, 0.45) 0%,
+      rgba(10, 8, 5, 0.20) 50%,
+      rgba(10, 8, 5, 0.70) 100%
+    );
+  }
+
+  .hero-section > .container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
   }
 
   .hero-inner {
@@ -4896,9 +4951,10 @@ video {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--space-80) var(--space-16) var(--space-48);
-    gap: var(--space-16);
-    min-height: 560px;
+    padding: var(--space-48) var(--space-16) var(--space-24);
+    gap: var(--space-12);
+    min-height: unset;
+    width: 100%;
   }
 
   .hero-content {
@@ -4917,7 +4973,7 @@ video {
 
   .hero-description {
     max-width: 100%;
-    margin: 0 auto var(--space-32);
+    margin: 0 auto var(--space-16);
     font-size: 0.95rem;
   }
 
@@ -4925,36 +4981,6 @@ video {
     position: relative;
     align-self: center;
     animation: none;
-  }
-
-  /* Mobile: cover fills full screen, focal point from editor setting */
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .hero-bg picture {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  .hero-bg-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: var(--hero-img-pos-mobile, right center);
-  }
-
-  .hero-section--has-bg .hero-overlay {
-    background: linear-gradient(
-      to bottom,
-      rgba(10, 8, 5, 0.55) 0%,
-      rgba(10, 8, 5, 0.35) 50%,
-      rgba(10, 8, 5, 0.65) 100%
-    );
   }
 
 
@@ -5244,15 +5270,15 @@ video {
     letter-spacing: 1.5px;
   }
 
-  /* Hero — full screen on small phones */
+  /* Hero — small phones: inherit grid layout, tighten padding */
   .hero-section {
-    min-height: 520px;
+    min-height: unset;
   }
 
   .hero-inner {
-    min-height: 520px;
+    min-height: unset;
     justify-content: center;
-    padding: var(--space-64) var(--space-16) var(--space-40);
+    padding: var(--space-40) var(--space-16) var(--space-20);
     gap: var(--space-12);
   }
 
