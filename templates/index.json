@@ -407,6 +407,19 @@
         "sub_label": "Follow us on Instagram",
         "btn_label": "Follow Now"
       }
+    },
+    "parallax_bottle_Mi4qbN": {
+      "type": "parallax-bottle",
+      "name": "Parallax Bottle",
+      "settings": {
+        "bg_color": "#111111",
+        "eyebrow": "NEW ARRIVAL",
+        "heading": "Crafted for the Bold",
+        "subtext": "A fragrance that moves with you. Hover to explore the bottle.",
+        "btn_label": "Shop Now",
+        "btn_url": "",
+        "bottle_image": "shopify://shop_images/fresh-removebg-preview.png"
+      }
     }
   },
   "order": [
@@ -420,6 +433,7 @@
     "testimonials",
     "faq",
     "1780391773a8446b24",
-    "instagram_header_teghTX"
+    "instagram_header_teghTX",
+    "parallax_bottle_Mi4qbN"
   ]
 }
