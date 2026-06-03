@@ -15,36 +15,49 @@
   {%- if has_bg -%}
     <div class="hero-bg" aria-hidden="true">
       <picture>
-        {%- comment -%} Portrait / mobile-specific image (optional) {%- endcomment -%}
+
+        {%- comment -%} ── MOBILE ≤ 767px ── {%- endcomment -%}
         {%- if section.settings.hero_mobile_image != blank -%}
           {%- assign mob = section.settings.hero_mobile_image -%}
           <source
             media="(max-width: 767px)"
-            srcset="{{ mob | image_url: width: 400, format: 'webp' }} 400w,
-                    {{ mob | image_url: width: 600, format: 'webp' }} 600w,
-                    {{ mob | image_url: width: 800, format: 'webp' }} 800w"
+            srcset="{{ mob | image_url: width: 400,  format: 'webp' }} 400w,
+                    {{ mob | image_url: width: 600,  format: 'webp' }} 600w,
+                    {{ mob | image_url: width: 800,  format: 'webp' }} 800w,
+                    {{ mob | image_url: width: 1000, format: 'webp' }} 1000w"
             sizes="100vw"
           >
         {%- else -%}
-          {%- comment -%} No dedicated mobile image — serve small slices of the desktop image {%- endcomment -%}
           <source
             media="(max-width: 767px)"
-            srcset="{{ section.settings.hero_image | image_url: width: 400, format: 'webp' }} 400w,
-                    {{ section.settings.hero_image | image_url: width: 600, format: 'webp' }} 600w,
-                    {{ section.settings.hero_image | image_url: width: 800, format: 'webp' }} 800w"
+            srcset="{{ section.settings.hero_image | image_url: width: 400,  format: 'webp' }} 400w,
+                    {{ section.settings.hero_image | image_url: width: 600,  format: 'webp' }} 600w,
+                    {{ section.settings.hero_image | image_url: width: 800,  format: 'webp' }} 800w,
+                    {{ section.settings.hero_image | image_url: width: 1000, format: 'webp' }} 1000w"
             sizes="100vw"
           >
         {%- endif -%}
-        {%- comment -%} Desktop WebP srcset {%- endcomment -%}
+
+        {%- comment -%} ── TABLET 768px – 1199px ── {%- endcomment -%}
         <source
-          media="(min-width: 768px)"
+          media="(min-width: 768px) and (max-width: 1199px)"
           srcset="{{ section.settings.hero_image | image_url: width: 800,  format: 'webp' }} 800w,
                   {{ section.settings.hero_image | image_url: width: 1200, format: 'webp' }} 1200w,
-                  {{ section.settings.hero_image | image_url: width: 1600, format: 'webp' }} 1600w,
-                  {{ section.settings.hero_image | image_url: width: 2000, format: 'webp' }} 2000w"
+                  {{ section.settings.hero_image | image_url: width: 1600, format: 'webp' }} 1600w"
           sizes="100vw"
         >
-        {%- comment -%} Fallback <img> — non-WebP for legacy browsers; also carries loading/fetchpriority {%- endcomment -%}
+
+        {%- comment -%} ── DESKTOP ≥ 1200px ── {%- endcomment -%}
+        <source
+          media="(min-width: 1200px)"
+          srcset="{{ section.settings.hero_image | image_url: width: 1200, format: 'webp' }} 1200w,
+                  {{ section.settings.hero_image | image_url: width: 1600, format: 'webp' }} 1600w,
+                  {{ section.settings.hero_image | image_url: width: 2000, format: 'webp' }} 2000w,
+                  {{ section.settings.hero_image | image_url: width: 2400, format: 'webp' }} 2400w"
+          sizes="100vw"
+        >
+
+        {%- comment -%} ── FALLBACK <img> for browsers without <picture> support ── {%- endcomment -%}
         <img
           class="hero-bg-img"
           src="{{ section.settings.hero_image | image_url: width: 1600 }}"
