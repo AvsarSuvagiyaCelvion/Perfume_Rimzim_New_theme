@@ -41,16 +41,11 @@
         "trustwill_trustoo_review_widget_XApKBD"
       ],
       "settings": {}
-    },
-    "17804880526210d64b": {
-      "type": "apps",
-      "settings": {}
     }
   },
   "order": [
     "main",
     "related_products",
-    "178047682710c63a07",
-    "17804880526210d64b"
+    "178047682710c63a07"
   ]
 }
