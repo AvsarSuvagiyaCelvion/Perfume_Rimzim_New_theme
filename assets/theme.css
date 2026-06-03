@@ -4361,7 +4361,10 @@ a.pagination-page:hover {
    ============================================================ */
 html,
 body {
-  overflow-x: hidden;
+  /* clip: prevents horizontal scroll without creating a scroll container.
+     overflow: hidden would implicitly make overflow-y: auto on body,
+     turning it into a scroll container and breaking position: sticky. */
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -5500,10 +5503,23 @@ video {
 
 /* Two-column layout */
 .pdp-layout {
-  display: grid;
-  grid-template-columns: 55fr 45fr;
+  display: flex;
   gap: var(--space-64);
-  align-items: start;
+  align-items: flex-start;
+}
+
+/* Gallery column: 55 % of flex space */
+.pdp-gallery {
+  flex: 55 0 0;
+  min-width: 0;
+  align-self: flex-start;
+  will-change: transform;
+}
+
+/* Info column: 45 % of flex space */
+.pdp-info {
+  flex: 45 0 0;
+  min-width: 0;
 }
 
 .pdp-gallery-main {
@@ -6019,16 +6035,15 @@ video {
 /* ── PDP Responsive ── */
 @media (max-width: 900px) {
   .pdp-layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: var(--space-32);
   }
 
-  .pdp-gallery {
-    position: static;
-  }
-
-  .pdp-gallery-main {
+  .pdp-gallery,
+  .pdp-info {
+    flex: 0 0 auto;
     width: 100%;
+    position: static;
   }
 }
 
@@ -6936,6 +6951,5 @@ body {
   .policy-hero {
     height: clamp(180px, 40vw, 280px);
   }
-}
 }
 

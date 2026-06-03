@@ -1404,6 +1404,57 @@
   }
 
   /* --------------------------------------------------------
+     Sticky gallery (desktop only)
+     CSS position:sticky is unreliable when ancestors have
+     overflow or transform. JS approach works universally.
+  -------------------------------------------------------- */
+  function initPdpStickyGallery() {
+    if (window.matchMedia('(max-width: 900px)').matches) return;
+
+    var gallery = document.querySelector('.pdp-gallery');
+    var info    = document.querySelector('.pdp-info');
+    if (!gallery || !info) return;
+
+    var headerH   = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue('--header-h')
+    ) || 72;
+    var topOffset = headerH + 24;
+    var naturalTop = 0;
+    var lastY = -1;
+
+    function measure() {
+      gallery.style.transform = '';
+      naturalTop = gallery.getBoundingClientRect().top + window.scrollY;
+    }
+
+    function update() {
+      var y = window.scrollY;
+      if (y === lastY) return;
+      lastY = y;
+
+      var galleryH     = gallery.offsetHeight;
+      var infoH        = info.offsetHeight;
+      var maxTranslate = Math.max(0, infoH - galleryH);
+      var scrolledPast = Math.max(0, y - (naturalTop - topOffset));
+      var translate    = Math.min(scrolledPast, maxTranslate);
+
+      gallery.style.transform = translate > 0
+        ? 'translateY(' + translate + 'px)'
+        : '';
+    }
+
+    /* Measure after fonts + images settle */
+    window.addEventListener('load', function () { measure(); update(); });
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', function () { measure(); update(); });
+
+    /* Double rAF: wait two frames for initial layout */
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { measure(); update(); });
+    });
+  }
+
+  /* --------------------------------------------------------
      Boot PDP functions
   -------------------------------------------------------- */
   if (document.getElementById('ProductSection')) {
@@ -1412,6 +1463,7 @@
       initPdpVariants();
       initPdpQty();
       initPdpAccordion();
+      initPdpStickyGallery();
     });
   }
 
@@ -1487,7 +1539,7 @@
       ['.footer-col',                               'up',    70],
 
       /* ── Two-column reveal ── */
-      ['.pdp-gallery',                              'left',  0],
+      /* .pdp-gallery excluded: position:sticky + transform on same element breaks sticky in Safari */
       ['.pdp-info',                                 'right', 0],
       ['.contact-form-col',                         'left',  0],
       ['.contact-info-col',                         'right', 120],
