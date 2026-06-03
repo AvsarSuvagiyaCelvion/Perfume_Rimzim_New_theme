@@ -1712,14 +1712,14 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-8);
+  gap: 4px;
   width: 100%;
   padding: 14px var(--space-16);
   background: rgba(20, 18, 14, 0.88);
   color: #fff;
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 0;
   text-transform: uppercase;
   cursor: pointer;
   border: none;
@@ -2258,7 +2258,7 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 4px;
   width: 100%;
   padding: 9px 12px;
   margin-top: 4px;
@@ -2268,7 +2268,7 @@ svg {
   border-radius: var(--radius-sm);
   font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   text-transform: uppercase;
   cursor: pointer;
   transition: background var(--duration-fast), box-shadow var(--duration-fast);
@@ -5717,7 +5717,7 @@ video {
 .pdp-select-hint {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   font-size: 0.78rem;
   color: #C0392B;
   font-weight: 500;
@@ -5727,6 +5727,11 @@ video {
   border-radius: var(--radius-sm);
   border-left: 3px solid #C0392B;
   transition: opacity 0.3s ease;
+}
+
+.pdp-select-hint svg {
+  flex-shrink: 0;
+  margin: 0;
 }
 
 .pdp-select-hint.is-hidden {

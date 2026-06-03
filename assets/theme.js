@@ -1252,6 +1252,32 @@
       btn.addEventListener('click', function () {
         var optEl = btn.closest('.pdp-option');
         var idx   = parseInt(optEl.dataset.optionIndex, 10);
+        var isAlreadyActive = btn.classList.contains('active');
+
+        /* Toggle: clicking the active variant deselects it */
+        if (isAlreadyActive) {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-pressed', 'false');
+          delete selected[idx];
+
+          var label = optEl.querySelector('.pdp-option-value');
+          if (label) label.textContent = '';
+
+          var idInput = document.getElementById('PdpVariantId');
+          if (idInput) idInput.value = '';
+
+          var atcBtn = document.getElementById('PdpATC');
+          var hint   = document.getElementById('PdpSelectHint');
+          if (atcBtn) {
+            atcBtn.disabled = true;
+            atcBtn.setAttribute('data-awaiting-selection', '');
+          }
+          if (hint) hint.classList.remove('is-hidden');
+
+          var avail = document.getElementById('PdpAvailability');
+          if (avail) avail.innerHTML = '';
+          return;
+        }
 
         /* Update active state */
         optEl.querySelectorAll('.pdp-option-btn').forEach(function (b) {
