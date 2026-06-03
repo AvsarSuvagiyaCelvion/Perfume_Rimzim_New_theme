@@ -5506,12 +5506,6 @@ video {
   align-items: start;
 }
 
-/* ── Gallery ── */
-.pdp-gallery {
-  position: sticky;
-  top: calc(var(--header-h) + 24px);
-}
-
 .pdp-gallery-main {
   position: relative;
   border-radius: var(--radius-xl);
@@ -5522,7 +5516,7 @@ video {
 
 .pdp-main-img {
   width: 100%;
-  height: 50%;
+  height: auto;
   display: block;
   transition: opacity var(--duration-base);
 }
