@@ -18,15 +18,13 @@
     "1780500550e6ae8c9b": {
       "type": "apps",
       "blocks": {
-        "trustwill_trustoo_review_widget_W7LrbT": {
-          "type": "shopify://apps/trustwill-trustoo/blocks/review-widget/c8f15077-6475-4e86-ad06-b66038d5ba2c",
-          "settings": {
-            "product": "kobra-copy"
-          }
+        "trustwill_trustoo_buyers_shows_c7FKCW": {
+          "type": "shopify://apps/trustwill-trustoo/blocks/buyers-shows/c8f15077-6475-4e86-ad06-b66038d5ba2c",
+          "settings": {}
         }
       },
       "block_order": [
-        "trustwill_trustoo_review_widget_W7LrbT"
+        "trustwill_trustoo_buyers_shows_c7FKCW"
       ],
       "settings": {}
     },
