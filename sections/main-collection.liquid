@@ -124,9 +124,7 @@
 
             {%- comment -%} ── Info ── {%- endcomment -%}
             <div class="product-card-body">
-              {%- if product.vendor != blank -%}
-                <p class="product-card-vendor">{{ product.vendor }}</p>
-              {%- endif -%}
+              
               <h3 class="product-card-title">
                 <a href="{{ product.url }}">{{ product.title }}</a>
               </h3>
@@ -134,7 +132,7 @@
                 {%- if product.compare_at_price > product.price -%}
                   <s class="product-price-compare">{{ product.compare_at_price | money }}</s>
                 {%- endif -%}
-                {%- if product.price_varies -%}<span class="product-price-from">from </span>{%- endif -%}
+                {%- if product.price_varies -%}{%- endif -%}
                 <span class="product-price-current {%- if product.compare_at_price > product.price %} price-sale{%- endif -%}">
                   {{- product.price | money -}}
                 </span>

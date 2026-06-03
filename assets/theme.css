@@ -1996,7 +1996,7 @@ svg {
 }
 
 .product-card:hover .product-price-current {
-  color: var(--color-primary);
+  color: inherit;
 }
 
 /* Swatches: staggered pop-up on hover */
@@ -2046,9 +2046,9 @@ svg {
   transition: color var(--duration-fast);
 }
 
-.product-card:hover .product-card-vendor {
+/* .product-card:hover .product-card-vendor {
   color: var(--color-text-mid);
-}
+} */
 
 /* Image: smooth zoom fallback for single-image products */
 .product-card-img:not(.product-card-img--hover) {
@@ -2473,7 +2473,7 @@ svg {
 }
 
 .new-arrivals-section .product-card:hover .product-price-current {
-  color: #000;
+  color: inherit;
 }
 
 /* ============================================================
