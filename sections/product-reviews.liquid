@@ -1,0 +1,311 @@
+<section class="product-reviews-section" id="ProductReviews">
+  <div class="container">
+
+    <div class="product-reviews-header animate-on-scroll">
+      <div class="product-reviews-summary">
+        <span class="section-label">Reviews</span>
+        <h2 class="section-title">{{ section.settings.title | default: 'What Our Customers Say' }}</h2>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+      <a href="#trustoo-widget" class="btn btn-outline-gold product-reviews-cta">
+        Write a Review
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="15" height="15" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/>
+        </svg>
+      </a>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="product-reviews-grid">
+        {%- for block in section.blocks -%}
+          {%- assign rating = block.settings.rating | default: 5 -%}
+          <div
+            class="product-review-card animate-on-scroll"
+            data-delay="{{ forloop.index0 | times: 100 }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="product-review-card-quote" aria-hidden="true">"</div>
+
+            <div class="product-review-card-thumb">
+              {%- if block.settings.avatar != blank -%}
+                <img
+                  src="{{ block.settings.avatar | image_url: width: 96 }}"
+                  alt="{{ block.settings.name | escape }}"
+                  width="48" height="48" loading="lazy"
+                >
+              {%- elsif product.featured_image != blank -%}
+                <img
+                  src="{{ product.featured_image | image_url: width: 96, format: 'webp' }}"
+                  alt="{{ product.title | escape }}"
+                  width="48" height="48" loading="lazy"
+                >
+              {%- else -%}
+                <span class="product-review-card-initial">{{ block.settings.name | default: 'A' | slice: 0 | upcase }}</span>
+              {%- endif -%}
+            </div>
+
+            <blockquote class="product-review-card-text">
+              {{ block.settings.text | default: 'Amazing fragrance. Truly a luxury experience.' }}
+            </blockquote>
+
+            <div class="product-review-card-stars" role="img" aria-label="{{ rating }} out of 5 stars">
+              {%- for i in (1..5) -%}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" style="{%- if i > rating -%}opacity:.25{%- endif -%}">
+                  <path fill="currentColor" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              {%- endfor -%}
+            </div>
+
+            <p class="product-review-card-name">{{ block.settings.name | default: 'Happy Customer' }}</p>
+            <p class="product-review-card-tag">{{ block.settings.tag | default: 'Verified Purchase' }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+
+  {%- comment -%} TrustWILL full review widget anchored here {%- endcomment -%}
+  <div id="trustoo-widget" class="container product-reviews-app">
+    {{ section.blocks | where: 'type', '@app' | map: 'shopify_attributes' }}
+  </div>
+
+</section>
+
+{% stylesheet %}
+.product-reviews-section {
+  padding: var(--space-80) 0;
+}
+
+.product-reviews-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-24);
+  margin-bottom: var(--space-48);
+  flex-wrap: wrap;
+}
+
+.product-reviews-header .section-title {
+  margin-bottom: 0;
+}
+
+.product-reviews-cta {
+  flex-shrink: 0;
+}
+
+.product-reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-24);
+}
+
+.product-review-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-xl);
+  padding: var(--space-32) var(--space-24) var(--space-24);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-12);
+  position: relative;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.product-review-card:hover {
+  border-color: rgba(201,169,110,0.3);
+  background: rgba(201,169,110,0.04);
+}
+
+.product-review-card-quote {
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--color-primary);
+  font-family: Georgia, serif;
+  position: absolute;
+  top: var(--space-12);
+  left: var(--space-20);
+  opacity: 0.6;
+}
+
+.product-review-card-thumb {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(201,169,110,0.4);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(201,169,110,0.1);
+  margin-top: var(--space-8);
+}
+
+.product-review-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-review-card-initial {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.product-review-card-text {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.75);
+  margin: 0;
+}
+
+.product-review-card-stars {
+  display: flex;
+  gap: 2px;
+  color: var(--color-primary);
+}
+
+.product-review-card-name {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.product-review-card-tag {
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.product-reviews-app {
+  margin-top: var(--space-64);
+}
+
+@media (max-width: 768px) {
+  .product-reviews-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-reviews-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .product-reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product Reviews",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review Card",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review text",
+          "default": "Amazing fragrance and long-lasting scent. Truly a luxury experience worth every penny."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Happy Customer"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Badge text",
+          "default": "Verified Purchase"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Customer photo (optional)",
+          "info": "Leave blank to use the product image."
+        }
+      ]
+    },
+    { "type": "@app" }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Product Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "name": "Sophia Laurent",
+            "rating": 5,
+            "text": "Absolutely breathtaking fragrance. The longevity is incredible — I received compliments all evening.",
+            "tag": "Verified Purchase"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "Emma Rosewood",
+            "rating": 5,
+            "text": "The packaging alone is worth every penny. The perfume itself is divine — delicate and truly unique.",
+            "tag": "Loyal Customer"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "name": "James Hartley",
+            "rating": 5,
+            "text": "Best online perfume shopping experience I have ever had. Fast delivery and an extraordinary scent.",
+            "tag": "Verified Purchase"
+          }
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}
