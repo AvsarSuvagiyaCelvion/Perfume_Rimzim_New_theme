@@ -565,6 +565,18 @@
           var btn = e.target.closest('.variant-option-btn');
           if (!btn) return;
           var idx = parseInt(btn.dataset.optIndex, 10);
+          var atcBtn = document.getElementById('VariantModalATC');
+
+          /* Toggle: clicking active variant deselects it */
+          if (btn.classList.contains('active')) {
+            btn.classList.remove('active');
+            delete selectedOptions[idx];
+            atcBtn.disabled = true;
+            atcBtn.textContent = 'Select Options';
+            delete atcBtn.dataset.variantId;
+            return;
+          }
+
           optionsEl.querySelectorAll('.variant-option-btn[data-opt-index="' + idx + '"]').forEach(function (b) { b.classList.remove('active'); });
           btn.classList.add('active');
           selectedOptions[idx] = btn.dataset.optVal;
@@ -575,7 +587,6 @@
             });
           });
 
-          var atcBtn = document.getElementById('VariantModalATC');
           if (Object.keys(selectedOptions).length === product.options.length && match) {
             atcBtn.disabled = !match.available;
             atcBtn.textContent = match.available ? 'Add to Cart' : 'Sold Out';
