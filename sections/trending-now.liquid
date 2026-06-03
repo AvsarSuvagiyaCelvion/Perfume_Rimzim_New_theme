@@ -35,6 +35,8 @@
 
         <div class="tcard animate-on-scroll" data-delay="{{ forloop.index0 | times: 60 }}">
 
+          <a href="{{ product.url }}" class="tcard-full-link" aria-label="{{ product.title | escape }}"></a>
+
           {%- comment -%} ── Image ── {%- endcomment -%}
           <div class="tcard-media">
             <a href="{{ product.url }}" class="tcard-img-link" tabindex="-1" aria-hidden="true">

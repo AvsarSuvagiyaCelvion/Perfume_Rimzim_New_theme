@@ -36,6 +36,8 @@
 
         <div class="product-card animate-on-scroll" data-delay="{{ forloop.index0 | times: 80 }}">
 
+          <a href="{{ product.url }}" class="product-card-full-link" aria-label="{{ product.title | escape }}"></a>
+
           {%- comment -%} ── Media ── {%- endcomment -%}
           <div class="product-card-media">
             <a href="{{ product.url }}" class="product-card-img-link" tabindex="-1" aria-hidden="true">

@@ -1553,9 +1553,26 @@ svg {
   border-radius: var(--radius-md);
   overflow: hidden;
   position: relative;
+  cursor: pointer;
   transition: box-shadow var(--duration-base) var(--ease-out),
     transform var(--duration-base) var(--ease-out),
     filter var(--duration-base) var(--ease-out);
+}
+
+/* Full-card clickable link — sits beneath interactive elements */
+.product-card-full-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Keep wishlist, quick-add, title link above the full-card link */
+.product-card-wishlist,
+.product-quick-add,
+.product-card-title a,
+.product-card-swatches {
+  position: relative;
+  z-index: 2;
 }
 
 .product-card::after {
@@ -2161,6 +2178,23 @@ svg {
   transition: transform var(--duration-base), box-shadow var(--duration-base);
   display: flex;
   flex-direction: column;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Full-card clickable link */
+.tcard-full-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* Keep wishlist, quick-add, name link above the full-card link */
+.tcard-wishlist,
+.tcard-quick-add,
+.tcard-name {
+  position: relative;
+  z-index: 2;
 }
 
 .tcard:hover {
@@ -4853,8 +4887,7 @@ video {
 
   /* ── Hero ── */
   .hero-section {
-    min-height: 100svh;
-    min-height: 100vh; /* fallback for older browsers */
+    min-height: 560px;
     width: 100%;
   }
 
@@ -4865,8 +4898,7 @@ video {
     text-align: center;
     padding: var(--space-80) var(--space-16) var(--space-48);
     gap: var(--space-16);
-    min-height: 100svh;
-    min-height: 100vh;
+    min-height: 560px;
   }
 
   .hero-content {
@@ -4913,7 +4945,7 @@ video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: var(--hero-img-pos-mobile, 75% center);
+    object-position: var(--hero-img-pos-mobile, right center);
   }
 
   .hero-section--has-bg .hero-overlay {
@@ -4984,14 +5016,15 @@ video {
     gap: var(--space-12);
   }
 
-  /* Show ~1.1 cards — enough peek to signal scrollability without showing previous card border */
+  /* Square cards on mobile — bigger size */
   .vibe-card {
-    flex: 0 0 68vw;
+    flex: 0 0 78vw;
     scroll-snap-align: start;
   }
 
   .vibe-card-frame {
     aspect-ratio: 1/1;
+    min-height: 78vw;
   }
 
   /* Show "Explore" CTA always on mobile (no hover state on touch) */
@@ -5213,13 +5246,11 @@ video {
 
   /* Hero — full screen on small phones */
   .hero-section {
-    min-height: 100svh;
-    min-height: 100vh;
+    min-height: 520px;
   }
 
   .hero-inner {
-    min-height: 100svh;
-    min-height: 100vh;
+    min-height: 520px;
     justify-content: center;
     padding: var(--space-64) var(--space-16) var(--space-40);
     gap: var(--space-12);
@@ -5284,7 +5315,12 @@ video {
 
   /* Vibe slider — small phones */
   .vibe-card {
-    flex: 0 0 72vw;
+    flex: 0 0 82vw;
+  }
+
+  .vibe-card-frame {
+    aspect-ratio: 1/1;
+    min-height: 82vw;
   }
 
   .vibe-card-name {
