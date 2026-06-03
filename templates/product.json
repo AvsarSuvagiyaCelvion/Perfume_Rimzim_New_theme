@@ -25,25 +25,10 @@
         "show_view_all": true,
         "view_all_url": ""
       }
-    },
-    "1780500547f6d9ee96": {
-      "type": "apps",
-      "blocks": {
-        "trustwill_trustoo_text_carousel_dcyWrU": {
-          "type": "shopify://apps/trustwill-trustoo/blocks/text-carousel/c8f15077-6475-4e86-ad06-b66038d5ba2c",
-          "disabled": true,
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "trustwill_trustoo_text_carousel_dcyWrU"
-      ],
-      "settings": {}
     }
   },
   "order": [
     "main",
-    "related_products",
-    "1780500547f6d9ee96"
+    "related_products"
   ]
 }
