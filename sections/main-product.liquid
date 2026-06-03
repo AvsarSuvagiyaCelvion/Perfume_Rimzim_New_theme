@@ -263,10 +263,6 @@
             <a href="#judgeme_product_reviews" class="pdp-reviews-count">
               {{ rating_count | default: 0 }} {{ rating_count | pluralize: 'Review', 'Reviews' }}
             </a>
-          {%- else -%}
-            <a href="#judgeme_product_reviews" class="pdp-reviews-count pdp-reviews-count--empty">
-              No reviews yet — be the first
-            </a>
           {%- endif -%}
         </div>
 
