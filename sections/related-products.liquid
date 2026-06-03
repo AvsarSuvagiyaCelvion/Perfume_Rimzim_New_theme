@@ -29,8 +29,10 @@
     </div>
 
     <div class="products-grid">
-      {%- for product in related_collection.products limit: product_limit -%}
+      {%- assign shown_count = 0 -%}
+      {%- for product in related_collection.products limit: 20 -%}
         {%- if product.handle == current_product.handle -%}{%- continue -%}{%- endif -%}
+        {%- if shown_count >= 4 -%}{%- break -%}{%- endif -%}
         {%- liquid
           assign first_variant = product.selected_or_first_available_variant
           assign colour_index = -1
@@ -176,6 +178,7 @@
           </div>
 
         </div>
+        {%- assign shown_count = shown_count | plus: 1 -%}
       {%- endfor -%}
     </div>
 
