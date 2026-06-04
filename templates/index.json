@@ -218,7 +218,7 @@
             "arrows_position": "sides",
             "max_width": 1100,
             "corner_styling": "round",
-            "header_text_color": "#ffffff",
+            "header_text_color": "#000000",
             "text_color": "#ffffff",
             "card_color": "#000000",
             "stars_color": "#fffc00",
