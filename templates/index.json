@@ -197,6 +197,34 @@
     "17804657172db3c34c": {
       "type": "apps",
       "blocks": {
+        "judge_me_reviews_reviews_grid_widget_pndYPk": {
+          "type": "shopify://apps/judge-me-reviews/blocks/reviews_grid_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_sample_reviews": false,
+            "review_selection": "all",
+            "products": [],
+            "show_media_only": false,
+            "display_order": "media_first",
+            "card_grouping": "per_media",
+            "columns_desktop": 3,
+            "rows_desktop": 1,
+            "columns_mobile": "2",
+            "rows_mobile": 6,
+            "show_stars": true,
+            "show_reviewer_name": true,
+            "show_review_title_on_hover_desktop": true,
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "card_spacing": "medium",
+            "header_text_color": "#3a3333",
+            "star_and_reviewer_name_color": "#fffc00",
+            "drop_shadow_color": "#000000",
+            "overlay_and_background_color": "#000000",
+            "content_color": "#F9F9F9",
+            "header_text": "From our customers",
+            "show_average_rating": true
+          }
+        },
         "judge_me_reviews_cards_carousel_wARJT8": {
           "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
           "settings": {
@@ -228,35 +256,6 @@
             "show_average_rating": true
           }
         },
-        "judge_me_reviews_reviews_grid_widget_C44mBj": {
-          "type": "shopify://apps/judge-me-reviews/blocks/reviews_grid_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "disabled": true,
-          "settings": {
-            "show_sample_reviews": false,
-            "review_selection": "product_reviews",
-            "products": [],
-            "show_media_only": false,
-            "display_order": "media_first",
-            "card_grouping": "per_media",
-            "columns_desktop": 3,
-            "rows_desktop": 3,
-            "columns_mobile": "2",
-            "rows_mobile": 6,
-            "show_stars": true,
-            "show_reviewer_name": true,
-            "show_review_title_on_hover_desktop": true,
-            "max_width": 1100,
-            "corner_styling": "soft",
-            "card_spacing": "medium",
-            "header_text_color": "#d5c2c2",
-            "star_and_reviewer_name_color": "#F9F9F9",
-            "drop_shadow_color": "#000000",
-            "overlay_and_background_color": "#000000",
-            "content_color": "#F9F9F9",
-            "header_text": "From our customers",
-            "show_average_rating": true
-          }
-        },
         "trustwill_trustoo_text_carousel_qJgkNf": {
           "type": "shopify://apps/trustwill-trustoo/blocks/text-carousel/c8f15077-6475-4e86-ad06-b66038d5ba2c",
           "disabled": true,
@@ -264,8 +263,8 @@
         }
       },
       "block_order": [
+        "judge_me_reviews_reviews_grid_widget_pndYPk",
         "judge_me_reviews_cards_carousel_wARJT8",
-        "judge_me_reviews_reviews_grid_widget_C44mBj",
         "trustwill_trustoo_text_carousel_qJgkNf"
       ],
       "settings": {}
