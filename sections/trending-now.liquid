@@ -150,6 +150,14 @@
   </div>
 </section>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (window.jdgm && jdgm.customWidgetsLoader) {
+      jdgm.customWidgetsLoader.init();
+    }
+  });
+</script>
+
 {% schema %}
 {
   "name": "Trending Now",
