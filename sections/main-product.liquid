@@ -248,8 +248,8 @@
 
         {%- comment -%} Star rating — Shopify Product Reviews {%- endcomment -%}
         <div class="pdp-reviews-badge t-reveal" style="--td:210ms">
-          {%- assign rating_value = product.metafields.judgeme.rating.value -%}
-          {%- assign rating_count = product.metafields.judgeme.reviews_count.value -%}
+          {%- assign rating_value = product.metafields.judgeme.rating -%}
+          {%- assign rating_count = product.metafields.judgeme.reviews_count -%}
           {%- if rating_value != blank -%}
             <div
               class="pdp-stars"
