@@ -33,7 +33,7 @@
 
           <a href="{{ product.url }}" class="tcard-full-link" aria-label="{{ product.title | escape }}"></a>
 
-          {%- comment -%} ── Image ── {%- endcomment -%}
+          {%- comment -%} -- Image -- {%- endcomment -%}
           <div class="tcard-media">
             <a href="{{ product.url }}" class="tcard-img-link" tabindex="-1" aria-hidden="true">
               {%- if product.featured_image != blank -%}
@@ -65,7 +65,7 @@
             {%- comment -%} Badge {%- endcomment -%}
             <span class="tcard-badge">{{ badge_label }}</span>
 
-            {%- comment -%} Wishlist — always visible top-right {%- endcomment -%}
+            {%- comment -%} Wishlist -- always visible top-right {%- endcomment -%}
             <button
               class="tcard-wishlist product-card-wishlist"
               aria-label="Add {{ product.title | escape }} to wishlist"
@@ -83,15 +83,22 @@
             {%- endunless -%}
           </div>
 
-          {%- comment -%} ── Info ── {%- endcomment -%}
+          {%- comment -%} -- Info -- {%- endcomment -%}
           <div class="tcard-body">
             <a href="{{ product.url }}" class="tcard-name">{{ product.title }}</a>
 
             <div class="tcard-reviews">
-              {%- if product.metafields.judgeme.badge != blank -%}
+              {%- assign jdgm_count = product.metafields.judgeme.reviews_count.value | plus: 0 -%}
+              {%- if product.metafields.judgeme.badge != blank and jdgm_count > 0 -%}
                 <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-auto-install="false">
                   {{ product.metafields.judgeme.badge }}
                 </div>
+              {%- else -%}
+                <div class="tcard-stars" role="img" aria-label="No reviews yet" style="--rating: 0%">
+                  <span class="stars-filled" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <span class="stars-empty" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                </div>
+                <span class="tcard-review-count">0 reviews</span>
               {%- endif -%}
             </div>
 

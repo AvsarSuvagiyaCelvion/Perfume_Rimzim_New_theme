@@ -6,7 +6,7 @@
 
 <div class="search-page">
 
-  {%- comment -%} ── Hero bar ── {%- endcomment -%}
+  {%- comment -%} -- Hero bar -- {%- endcomment -%}
   <div class="search-page-hero">
     <div class="container">
       <form action="{{ routes.search_url }}" method="get" class="search-page-form" role="search">
@@ -129,10 +129,17 @@
                 <a href="{{ item.url }}" class="tcard-name">{{ item.title }}</a>
 
                 <div class="tcard-reviews">
-                  {%- if item.metafields.judgeme.badge != blank -%}
+                  {%- assign jdgm_count = item.metafields.judgeme.reviews_count.value | plus: 0 -%}
+                  {%- if item.metafields.judgeme.badge != blank and jdgm_count > 0 -%}
                     <div class="jdgm-widget jdgm-preview-badge" data-id="{{ item.id }}" data-auto-install="false">
                       {{ item.metafields.judgeme.badge }}
                     </div>
+                  {%- else -%}
+                    <div class="tcard-stars" role="img" aria-label="No reviews yet" style="--rating: 0%">
+                      <span class="stars-filled" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                      <span class="stars-empty" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    </div>
+                    <span class="tcard-review-count">0 reviews</span>
                   {%- endif -%}
                 </div>
 
@@ -190,7 +197,7 @@
 
 {% style %}
 
-/* ── Search Page ── */
+/* -- Search Page -- */
 .search-page {
   min-height: 70vh;
   background: var(--color-bg);

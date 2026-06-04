@@ -107,10 +107,17 @@
             <a href="{{ product.url }}" class="tcard-name">{{ product.title }}</a>
 
             <div class="tcard-reviews">
-              {%- if product.metafields.judgeme.badge != blank -%}
+              {%- assign jdgm_count = product.metafields.judgeme.reviews_count.value | plus: 0 -%}
+              {%- if product.metafields.judgeme.badge != blank and jdgm_count > 0 -%}
                 <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-auto-install="false">
                   {{ product.metafields.judgeme.badge }}
                 </div>
+              {%- else -%}
+                <div class="tcard-stars" role="img" aria-label="No reviews yet" style="--rating: 0%">
+                  <span class="stars-filled" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <span class="stars-empty" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                </div>
+                <span class="tcard-review-count">0 reviews</span>
               {%- endif -%}
             </div>
 
@@ -212,7 +219,7 @@
     {
       "type": "url",
       "id": "view_all_url",
-      "label": "View All — link to collection",
+      "label": "View All -- link to collection",
       "info": "Set this to the exact collection URL you want. Leave blank to auto-detect."
     }
   ],
