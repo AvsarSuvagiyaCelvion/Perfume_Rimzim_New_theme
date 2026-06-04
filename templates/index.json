@@ -199,6 +199,7 @@
       "blocks": {
         "trustwill_trustoo_text_carousel_qJgkNf": {
           "type": "shopify://apps/trustwill-trustoo/blocks/text-carousel/c8f15077-6475-4e86-ad06-b66038d5ba2c",
+          "disabled": true,
           "settings": {}
         }
       },
