@@ -1043,22 +1043,38 @@
     products.forEach(function (p) {
       if (!p || !p.handle) return;
       var img          = p.featured_image ? p.featured_image : '';
+      var img2         = p.images && p.images.length > 1 ? p.images[1] : '';
       var price        = moneyFormat(p.price_min);
-      var comparePrice = p.compare_at_price_min > p.price_min ? '<s>' + moneyFormat(p.compare_at_price_min) + '</s> ' : '';
+      var comparePrice = p.compare_at_price_min > p.price_min
+        ? '<s class="tcard-price-compare">' + moneyFormat(p.compare_at_price_min) + '</s>'
+        : '';
       var available    = p.available;
-      html += '<div class="wishlist-card" data-handle="' + p.handle + '">'
-        + '<div class="wishlist-card-media">'
-        + (img ? '<a href="/products/' + p.handle + '"><img class="wishlist-card-img" src="' + img + '" alt="' + p.title + '" loading="lazy"></a>' : '')
-        + '<button class="wishlist-card-remove" data-handle="' + p.handle + '" aria-label="Remove from wishlist">'
-        + '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>'
-        + '</button></div>'
-        + '<div class="wishlist-card-info">'
-        + (p.vendor ? '<p class="wishlist-card-vendor">' + p.vendor + '</p>' : '')
-        + '<h3 class="wishlist-card-title"><a href="/products/' + p.handle + '">' + p.title + '</a></h3>'
-        + '<p class="wishlist-card-price">' + comparePrice + '<span' + (comparePrice ? ' class="price-sale"' : '') + '>$' + price + '</span></p>'
+      var hasVariants  = p.variants && p.variants.length > 1 ? p.variants.length - 1 : 0;
+      html += '<div class="tcard wishlist-card" data-handle="' + p.handle + '">'
+        + '<a href="/products/' + p.handle + '" class="tcard-full-link" aria-label="' + p.title + '"></a>'
+        + '<div class="tcard-media">'
+        + (img
+          ? '<a href="/products/' + p.handle + '" class="tcard-img-link" tabindex="-1" aria-hidden="true">'
+            + '<img class="tcard-img" src="' + img + '" alt="' + p.title + '" loading="lazy" width="480" height="480">'
+            + (img2 ? '<img class="tcard-img tcard-img--hover" src="' + img2 + '" alt="' + p.title + '" loading="lazy" width="480" height="480" aria-hidden="true">' : '')
+            + '</a>'
+          : '')
+        + '<button class="tcard-wishlist wishlist-card-remove" data-handle="' + p.handle + '" aria-label="Remove from wishlist">'
+        + '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>'
+        + '</button>'
+        + '</div>'
+        + '<div class="tcard-body">'
+        + '<a href="/products/' + p.handle + '" class="tcard-name">' + p.title + '</a>'
+        + '<div class="tcard-price"><span class="tcard-price-current">' + price + '</span>' + comparePrice + '</div>'
         + (available
-          ? '<button class="btn btn-primary wishlist-card-atc" data-variant-id="' + p.variants[0].id + '" data-title="' + p.title + '">Add to Cart</button>'
-          : '<button class="btn btn-primary wishlist-card-atc" disabled>Sold Out</button>')
+          ? '<button class="tcard-quick-add wishlist-card-atc" type="button"'
+            + ' data-variant-id="' + p.variants[0].id + '"'
+            + ' data-has-variants="' + hasVariants + '"'
+            + ' data-handle="' + p.handle + '"'
+            + ' data-title="' + p.title + '">'
+            + '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" width="14" height="14" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>'
+            + 'Quick Add</button>'
+          : '<span class="tcard-soldout-btn">Sold Out</span>')
         + '</div></div>';
     });
     html += '</div>';
@@ -1554,7 +1570,7 @@
       ['.about-hero .container',                    'up',    0],
       ['.footer-brand',                             'up',    0],
       ['.vibe-section .section-header',             'up',    0],
-      ['.wishlist-grid > .wishlist-card',           'up',    60],
+      ['.wishlist-grid > .tcard',                    'up',    60],
 
       /* ── PDP detail ── */
       ['.pdp-trust',                                'up',    0],
