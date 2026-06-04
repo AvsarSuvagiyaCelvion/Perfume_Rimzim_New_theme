@@ -18,6 +18,15 @@
     "17805024549051a4ad": {
       "type": "apps",
       "blocks": {
+        "judge_me_reviews_review_widget_DeJyjd": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": true,
+            "empty_state": "empty_widget"
+          }
+        },
         "trustwill_trustoo_review_widget_VAbJ6J": {
           "type": "shopify://apps/trustwill-trustoo/blocks/review-widget/c8f15077-6475-4e86-ad06-b66038d5ba2c",
           "settings": {
@@ -26,6 +35,7 @@
         }
       },
       "block_order": [
+        "judge_me_reviews_review_widget_DeJyjd",
         "trustwill_trustoo_review_widget_VAbJ6J"
       ],
       "settings": {}
