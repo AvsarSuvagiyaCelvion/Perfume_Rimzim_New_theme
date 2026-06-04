@@ -2379,7 +2379,7 @@ svg {
 .tcard-stars {
   position: relative;
   display: inline-block;
-  font-size: 0.78rem;
+  font-size: 1rem;
   letter-spacing: 1px;
   line-height: 1;
 }
@@ -2388,7 +2388,7 @@ svg {
   position: absolute;
   top: 0;
   left: 0;
-  color: #F5A623;
+  color: #f9dd07;
   overflow: hidden;
   white-space: nowrap;
   width: var(--rating, 0%);
@@ -2396,6 +2396,7 @@ svg {
 
 .tcard-stars .stars-empty {
   color: #D5D5D5;
+
 }
 
 .tcard-reviews {
@@ -2417,7 +2418,7 @@ svg {
 }
 
 .tcard-review-count {
-  font-size: 0.72rem;
+  font-size: 1rem;
   color: black;
 }
 
