@@ -246,10 +246,10 @@
           </button>
         </div>
 
-        {%- comment -%} Star rating — Judge.me badge below title {%- endcomment -%}
+        {%- comment -%} Star rating — Shopify Product Reviews {%- endcomment -%}
         <div class="pdp-reviews-badge t-reveal" style="--td:210ms">
-          {%- assign rating_value = product.metafields.judgeme.rating.value -%}
-          {%- assign rating_count = product.metafields.judgeme.reviews_count.value -%}
+          {%- assign rating_value = product.metafields.reviews.rating.value -%}
+          {%- assign rating_count = product.metafields.reviews.rating_count.value -%}
           {%- if rating_value != blank -%}
             <div
               class="pdp-stars"
@@ -260,7 +260,7 @@
               <span class="stars-filled" aria-hidden="true">★★★★★</span>
               <span class="stars-empty"  aria-hidden="true">★★★★★</span>
             </div>
-            <a href="#judgeme_product_reviews" class="pdp-reviews-count">
+            <a href="#ProductReviews" class="pdp-reviews-count">
               {{ rating_count | default: 0 }} {{ rating_count | pluralize: 'Review', 'Reviews' }}
             </a>
           {%- endif -%}

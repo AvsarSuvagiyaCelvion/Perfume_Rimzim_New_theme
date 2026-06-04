@@ -23,12 +23,8 @@
       {%- for product in trending_col.products limit: product_limit -%}
         {%- liquid
           assign first_variant   = product.selected_or_first_available_variant
-          assign rating_mod      = product.id | modulo: 9
-          assign fallback_rating = rating_mod | plus: 41 | times: 0.1 | round: 1
-          assign count_mod       = product.id | modulo: 7
-          assign fallback_count  = count_mod | times: 23 | plus: 84
-          assign rating_value    = product.metafields.judgeme.rating.value | default: fallback_rating
-          assign rating_count    = product.metafields.judgeme.reviews_count.value | default: fallback_count
+          assign rating_value    = product.metafields.reviews.rating.value
+          assign rating_count    = product.metafields.reviews.rating_count.value
           assign badge_index = forloop.index0 | modulo: 8
           assign badge_label = badge_labels[badge_index]
         -%}
