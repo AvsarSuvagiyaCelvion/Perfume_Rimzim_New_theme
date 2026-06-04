@@ -88,7 +88,7 @@
             <a href="{{ product.url }}" class="tcard-name">{{ product.title }}</a>
 
             <div class="tcard-reviews">
-              <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+              <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-handle="{{ product.handle }}"></div>
             </div>
 
             <div class="tcard-price">
@@ -151,11 +151,18 @@
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.jdgm && jdgm.customWidgetsLoader) {
-      jdgm.customWidgetsLoader.init();
+(function() {
+  var attempts = 0;
+  function initJdgm() {
+    if (window.jdgm && window.jdgm.customWidgetsLoader) {
+      window.jdgm.customWidgetsLoader.init();
+    } else if (attempts < 30) {
+      attempts++;
+      setTimeout(initJdgm, 300);
     }
-  });
+  }
+  initJdgm();
+})();
 </script>
 
 {% schema %}

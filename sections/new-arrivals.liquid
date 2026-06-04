@@ -21,6 +21,8 @@
       {%- for product in featured_col.products limit: product_limit -%}
         {%- liquid
           assign first_variant = product.selected_or_first_available_variant
+          assign rating_value  = product.metafields.judgeme.rating
+          assign rating_count  = product.metafields.judgeme.reviews_count
           assign colour_index = -1
           assign size_index   = -1
           for opt in product.options
@@ -108,6 +110,10 @@
               <a href="{{ product.url }}">{{ product.title }}</a>
             </h3>
 
+            <div class="product-card-reviews">
+              <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-handle="{{ product.handle }}"></div>
+            </div>
+
             <p class="product-card-price">
               {%- if product.price_varies -%}{%- endif -%}
               <span class="product-price-current">{{- product.price | money -}}</span>
@@ -115,10 +121,6 @@
                 <s class="product-price-compare">{{ product.compare_at_price | money }}</s>
               {%- endif -%}
             </p>
-
-            <div class="product-card-reviews">
-              <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
-            </div>
 
             {%- if colour_index >= 0 -%}
               {%- assign seen_c = '' -%}
@@ -200,14 +202,19 @@
 </section>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (window.jdgm && jdgm.customWidgetsLoader) {
-      jdgm.customWidgetsLoader.init();
+(function() {
+  var attempts = 0;
+  function initJdgm() {
+    if (window.jdgm && window.jdgm.customWidgetsLoader) {
+      window.jdgm.customWidgetsLoader.init();
+    } else if (attempts < 30) {
+      attempts++;
+      setTimeout(initJdgm, 300);
     }
-  });
+  }
+  initJdgm();
+})();
 </script>
-
-
 
 {% schema %}
 {
