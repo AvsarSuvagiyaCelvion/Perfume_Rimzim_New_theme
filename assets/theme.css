@@ -2683,6 +2683,9 @@ svg {
 
 
 
+}
+
+
 
 /* Content block inside overlay */
 .vibe-card-content {
@@ -5348,11 +5351,14 @@ video {
   /* Vibe slider — small phones */
   .vibe-card {
     flex: 0 0 82vw;
+    width: 300px;
   }
 
   .vibe-card-frame {
     aspect-ratio: 1/1;
     min-height: 82vw;
+    width: 250px;
+    height: 300px;
   }
 
   .vibe-card-name {
