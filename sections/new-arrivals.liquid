@@ -116,24 +116,9 @@
               {%- endif -%}
             </p>
 
-            {%- assign rating_value = product.metafields.judgeme.rating -%}
-            {%- assign rating_count = product.metafields.judgeme.reviews_count -%}
-            {%- if rating_value != blank and rating_value != '0' -%}
-              <div class="product-card-reviews">
-                <div
-                  class="product-card-stars"
-                  role="img"
-                  aria-label="{{ rating_value | round: 1 }} out of 5 stars"
-                  style="--rating: {{ rating_value | divided_by: 5.0 | times: 100 }}%"
-                >
-                  <span class="stars-filled" aria-hidden="true">★★★★★</span>
-                  <span class="stars-empty" aria-hidden="true">★★★★★</span>
-                </div>
-                <span class="product-card-rating-value">{{ rating_value | round: 1 }}</span>
-                <span class="product-card-review-sep" aria-hidden="true">|</span>
-                <span class="product-card-review-count">{{ rating_count }} {{ rating_count | pluralize: 'review', 'reviews' }}</span>
-              </div>
-            {%- endif -%}
+            <div class="product-card-reviews">
+              <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}"></div>
+            </div>
 
             {%- if colour_index >= 0 -%}
               {%- assign seen_c = '' -%}
