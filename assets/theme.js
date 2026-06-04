@@ -1781,4 +1781,17 @@
     initSectionDividers();
   });
 
+  /* --------------------------------------------------------
+     Judge.me preview badge init — runs after all async
+     scripts (including Judge.me's app embed) have loaded
+  -------------------------------------------------------- */
+  window.addEventListener('load', function () {
+    if (!window.jdgm) return;
+    if (jdgm.customWidgetsLoader) {
+      jdgm.customWidgetsLoader.init();
+    } else if (jdgm.loadFromScratch) {
+      jdgm.loadFromScratch();
+    }
+  });
+
 })();

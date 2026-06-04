@@ -111,7 +111,17 @@
             </h3>
 
             <div class="product-card-reviews">
-              <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-handle="{{ product.handle }}"></div>
+              {%- if product.metafields.judgeme.badge != blank -%}
+                <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-auto-install="false">
+                  {{ product.metafields.judgeme.badge }}
+                </div>
+              {%- else -%}
+                <div class="product-card-stars" role="img" aria-label="No reviews yet" style="--rating: 0%">
+                  <span class="stars-filled" aria-hidden="true">★★★★★</span>
+                  <span class="stars-empty" aria-hidden="true">★★★★★</span>
+                </div>
+                <span class="product-card-review-count">0 reviews</span>
+              {%- endif -%}
             </div>
 
             <p class="product-card-price">
@@ -201,20 +211,6 @@
   </div>
 </section>
 
-<script>
-(function() {
-  var attempts = 0;
-  function initJdgm() {
-    if (window.jdgm && window.jdgm.customWidgetsLoader) {
-      window.jdgm.customWidgetsLoader.init();
-    } else if (attempts < 30) {
-      attempts++;
-      setTimeout(initJdgm, 300);
-    }
-  }
-  initJdgm();
-})();
-</script>
 
 {% schema %}
 {
