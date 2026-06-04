@@ -18,8 +18,9 @@
     </div>
 
     {%- assign na_badge_labels = 'New,Just In,Fresh Drop,New Arrival,Latest,Now In,New In,Fresh' | split: ',' -%}
+    {%- assign na_sorted_products = featured_col.products | sort: 'created_at' | reverse -%}
     <div class="trending-grid">
-      {%- for product in featured_col.products limit: product_limit -%}
+      {%- for product in na_sorted_products limit: product_limit -%}
         {%- liquid
           assign first_variant = product.selected_or_first_available_variant
           assign badge_index   = forloop.index0 | modulo: 8
