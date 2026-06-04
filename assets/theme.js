@@ -1326,6 +1326,7 @@
         var allSelected  = Object.keys(selected).length >= totalOptions;
         if (atcBtn) {
           if (allSelected) {
+            atcBtn.dataset.variantId = match.id;
             atcBtn.disabled = !match.available;
             atcBtn.removeAttribute('data-awaiting-selection');
             if (hint) hint.classList.add('is-hidden');
