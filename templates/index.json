@@ -216,7 +216,7 @@
             "max_width": 1100,
             "corner_styling": "soft",
             "card_spacing": "medium",
-            "header_text_color": "#e14242",
+            "header_text_color": "#d5c2c2",
             "star_and_reviewer_name_color": "#F9F9F9",
             "drop_shadow_color": "#000000",
             "overlay_and_background_color": "#000000",
