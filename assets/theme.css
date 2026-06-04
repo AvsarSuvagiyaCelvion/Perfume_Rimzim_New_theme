@@ -5791,9 +5791,7 @@ video {
   color: var(--color-text);
 }
 
-.pdp-price-sale {
-  color: #C0392B;
-}
+
 
 .pdp-price-compare {
   font-size: 1.1rem;
