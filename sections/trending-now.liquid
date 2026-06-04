@@ -23,8 +23,8 @@
       {%- for product in trending_col.products limit: product_limit -%}
         {%- liquid
           assign first_variant   = product.selected_or_first_available_variant
-          assign rating_value    = product.metafields.reviews.rating.value
-          assign rating_count    = product.metafields.reviews.rating_count.value
+          assign rating_value    = product.metafields.judgeme.rating.value
+          assign rating_count    = product.metafields.judgeme.reviews_count.value
           assign badge_index = forloop.index0 | modulo: 8
           assign badge_label = badge_labels[badge_index]
         -%}
