@@ -48,7 +48,7 @@
       {%- assign shown_count = 0 -%}
       {%- for product in related_collection.products limit: 20 -%}
         {%- if product.handle == current_product.handle -%}{%- continue -%}{%- endif -%}
-        {%- if shown_count >= 4 -%}{%- break -%}{%- endif -%}
+        {%- if shown_count >= product_limit -%}{%- break -%}{%- endif -%}
         {%- liquid
           assign first_variant = product.selected_or_first_available_variant
           assign badge_index   = shown_count | modulo: 8
@@ -81,7 +81,8 @@
                   >
                 {%- endif -%}
               {%- else -%}
-                {{- 'product-' | append: shown_count | placeholder_svg_tag: 'tcard-img' -}}
+                {%- assign ph_idx = shown_count | modulo: 6 | plus: 1 -%}
+                {{- 'product-' | append: ph_idx | placeholder_svg_tag: 'tcard-img' -}}
               {%- endif -%}
             </a>
 

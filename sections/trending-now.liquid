@@ -57,7 +57,8 @@
                   >
                 {%- endif -%}
               {%- else -%}
-                {{- 'product-' | append: forloop.index | placeholder_svg_tag: 'tcard-img' -}}
+                {%- assign ph_idx = forloop.index0 | modulo: 6 | plus: 1 -%}
+                {{- 'product-' | append: ph_idx | placeholder_svg_tag: 'tcard-img' -}}
               {%- endif -%}
             </a>
 
@@ -134,7 +135,8 @@
         {%- for i in (1..8) -%}
           <div class="tcard animate-on-scroll" data-delay="{{ forloop.index0 | times: 60 }}">
             <div class="tcard-media">
-              {{- 'product-' | append: forloop.index | placeholder_svg_tag: 'tcard-img' -}}
+              {%- assign ph_idx = forloop.index0 | modulo: 6 | plus: 1 -%}
+              {{- 'product-' | append: ph_idx | placeholder_svg_tag: 'tcard-img' -}}
               <span class="tcard-badge">Trending</span>
             </div>
             <div class="tcard-body">
