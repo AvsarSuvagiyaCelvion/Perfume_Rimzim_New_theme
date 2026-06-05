@@ -3,10 +3,27 @@
     <div class="psc-layout">
 
       <!-- ══════════════════════════════
-           LEFT — Niche Display Cabinet
+           LEFT — Display Cabinet
       ══════════════════════════════ -->
       <div class="psc-left">
-        <div class="psc-cabinet" aria-live="polite" aria-label="Perfume display cabinet">
+        <div
+          class="psc-cabinet{% if section.settings.cabinet_bg %} psc-cabinet--has-bg{% endif %}"
+          aria-live="polite"
+          aria-label="Perfume display cabinet"
+        >
+
+          {%- if section.settings.cabinet_bg -%}
+            <!-- Background shelf image -->
+            <div class="psc-cabinet-bg" aria-hidden="true">
+              <img
+                src="{{ section.settings.cabinet_bg | image_url: width: 900, format: 'webp' }}"
+                alt=""
+                loading="lazy"
+                width="900"
+                height="900"
+              >
+            </div>
+          {%- endif -%}
 
           <div class="psc-shelf-sets">
             {%- for block in section.blocks -%}
@@ -20,52 +37,70 @@
                 aria-label="{{ block_label | escape }} display"
                 {{ block.shopify_attributes }}
               >
-                <div class="psc-niche-wrap">
 
-                  <!-- Row 1 — three small top niches -->
-                  <div class="psc-niche-row psc-niche-row--top">
-                    <div class="psc-niche psc-niche--sm"></div>
-                    <div class="psc-niche psc-niche--sm"></div>
-                    <div class="psc-niche psc-niche--sm"></div>
+                {%- if section.settings.cabinet_bg -%}
+
+                  <!-- ── BG IMAGE MODE: bottle floating on photo ── -->
+                  <div class="psc-bottle-on-bg">
+                    {%- if p != blank and p.featured_image != blank -%}
+                      <a href="{{ p.url }}" tabindex="-1" aria-label="{{ p.title | escape }}">
+                        <img
+                          src="{{ p.featured_image | image_url: width: 480, format: 'webp' }}"
+                          alt="{{ p.featured_image.alt | default: p.title | escape }}"
+                          loading="lazy"
+                          width="200" height="300"
+                        >
+                      </a>
+                    {%- else -%}
+                      <div class="psc-ghost-bottle" aria-hidden="true"></div>
+                    {%- endif -%}
                   </div>
 
-                  <!-- Row 2 — side columns + featured centre niche -->
-                  <div class="psc-niche-row psc-niche-row--mid">
+                {%- else -%}
 
-                    <div class="psc-niche-col">
-                      <div class="psc-niche psc-niche--side"></div>
-                      <div class="psc-niche psc-niche--side"></div>
+                  <!-- ── CSS NICHE MODE: dark wood cabinet ── -->
+                  <div class="psc-niche-wrap">
+
+                    <div class="psc-niche-row psc-niche-row--top">
+                      <div class="psc-niche psc-niche--sm"></div>
+                      <div class="psc-niche psc-niche--sm"></div>
+                      <div class="psc-niche psc-niche--sm"></div>
                     </div>
 
-                    <div class="psc-niche psc-niche--center">
-                      {%- if p != blank and p.featured_image != blank -%}
-                        <a href="{{ p.url }}" tabindex="-1" aria-label="{{ p.title | escape }}">
-                          <img
-                            src="{{ p.featured_image | image_url: width: 480, format: 'webp' }}"
-                            alt="{{ p.featured_image.alt | default: p.title | escape }}"
-                            loading="lazy"
-                            width="200" height="300"
-                          >
-                        </a>
-                      {%- else -%}
-                        <div class="psc-ghost-bottle" aria-hidden="true"></div>
-                      {%- endif -%}
+                    <div class="psc-niche-row psc-niche-row--mid">
+                      <div class="psc-niche-col">
+                        <div class="psc-niche psc-niche--side"></div>
+                        <div class="psc-niche psc-niche--side"></div>
+                      </div>
+                      <div class="psc-niche psc-niche--center">
+                        {%- if p != blank and p.featured_image != blank -%}
+                          <a href="{{ p.url }}" tabindex="-1" aria-label="{{ p.title | escape }}">
+                            <img
+                              src="{{ p.featured_image | image_url: width: 480, format: 'webp' }}"
+                              alt="{{ p.featured_image.alt | default: p.title | escape }}"
+                              loading="lazy"
+                              width="200" height="300"
+                            >
+                          </a>
+                        {%- else -%}
+                          <div class="psc-ghost-bottle" aria-hidden="true"></div>
+                        {%- endif -%}
+                      </div>
+                      <div class="psc-niche-col">
+                        <div class="psc-niche psc-niche--side"></div>
+                        <div class="psc-niche psc-niche--side"></div>
+                      </div>
                     </div>
 
-                    <div class="psc-niche-col">
-                      <div class="psc-niche psc-niche--side"></div>
-                      <div class="psc-niche psc-niche--side"></div>
+                    <div class="psc-niche-row psc-niche-row--bot">
+                      <div class="psc-niche psc-niche--bot"></div>
+                      <div class="psc-niche psc-niche--bot psc-niche--bot-wide"></div>
                     </div>
 
                   </div>
 
-                  <!-- Row 3 — two bottom niches -->
-                  <div class="psc-niche-row psc-niche-row--bot">
-                    <div class="psc-niche psc-niche--bot"></div>
-                    <div class="psc-niche psc-niche--bot psc-niche--bot-wide"></div>
-                  </div>
+                {%- endif -%}
 
-                </div>
               </div>
             {%- endfor -%}
           </div>
@@ -128,19 +163,18 @@
 
 {% style %}
 
-/* ── Root tokens ── */
 #PerfumeShelfCollections-{{ section.id }} {
-  --psc-gold:        #c5a059;
-  --psc-dark:        #1a1a1a;
-  --psc-cream:       #f9f7f2;
-  --psc-wood:        #150d06;
-  --psc-wood-mid:    #1f1408;
-  --psc-niche-wall:  #cfc4ae;
-  --psc-niche-gap:   12px;
-  --psc-spot:        255, 210, 120;
+  --psc-gold:       #c5a059;
+  --psc-dark:       #1a1a1a;
+  --psc-cream:      #f9f7f2;
+  --psc-wood:       #150d06;
+  --psc-wood-mid:   #1f1408;
+  --psc-niche-wall: #cfc4ae;
+  --psc-niche-gap:  12px;
+  --psc-spot:       255, 210, 120;
+  --psc-bottle-y:   {{ section.settings.bottle_position }}%;
 }
 
-/* ── Section wrapper ── */
 .psc-section {
   background: var(--psc-cream);
   padding: 80px 0;
@@ -153,7 +187,6 @@
   padding: 0 40px;
 }
 
-/* ── Two-column layout ── */
 .psc-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -162,38 +195,82 @@
 }
 
 /* ════════════════════════════
-   DARK WOOD CABINET FRAME
+   CABINET — BASE
 ════════════════════════════ */
-.psc-left {
-  position: relative;
-}
+.psc-left { position: relative; }
 
 .psc-cabinet {
   background: var(--psc-wood);
   padding: var(--psc-niche-gap);
   box-shadow:
     inset 0 0 0 4px var(--psc-wood-mid),
-    0 40px 80px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(255, 200, 100, 0.08);
+    0 40px 80px rgba(0, 0, 0, 0.5);
   position: relative;
 }
 
-/* Subtle wood grain on outer frame */
-.psc-cabinet::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    92deg,
-    transparent,
-    transparent 18px,
-    rgba(255, 255, 255, 0.015) 18px,
-    rgba(255, 255, 255, 0.015) 19px
-  );
-  pointer-events: none;
+/* ════════════════════════════
+   CABINET — BACKGROUND IMAGE MODE
+════════════════════════════ */
+.psc-cabinet--has-bg {
+  padding: 0;
+  background: #111;
+  overflow: hidden;
 }
 
-/* ── Shelf-set stacking ── */
+.psc-cabinet-bg {
+  display: block;
+  line-height: 0;
+}
+
+.psc-cabinet-bg img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Shelf sets sit on top of the photo */
+.psc-cabinet--has-bg .psc-shelf-sets {
+  position: absolute;
+  inset: 0;
+}
+
+.psc-cabinet--has-bg .psc-shelf-set {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: var(--psc-bottle-y);
+}
+
+/* Bottle floating on shelf photo */
+.psc-bottle-on-bg {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.psc-bottle-on-bg a { display: block; }
+
+.psc-bottle-on-bg img {
+  width: auto;
+  height: 220px;
+  max-width: 160px;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.55));
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.psc-bottle-on-bg img:hover {
+  transform: translateY(-8px) scale(1.05);
+  filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.5));
+}
+
+/* ════════════════════════════
+   SHELF-SET STACKING (both modes)
+════════════════════════════ */
 .psc-shelf-sets {
   display: grid;
   grid-template-areas: "stack";
@@ -212,7 +289,7 @@
 }
 
 /* ════════════════════════════
-   NICHE GRID LAYOUT
+   CSS NICHE MODE — DARK WOOD
 ════════════════════════════ */
 .psc-niche-wrap {
   display: flex;
@@ -225,16 +302,12 @@
   gap: var(--psc-niche-gap);
 }
 
-/* Top row — 3 equal small niches */
 .psc-niche-row--top .psc-niche--sm {
   flex: 1;
   height: 72px;
 }
 
-/* Middle row — side cols + centre */
-.psc-niche-row--mid {
-  align-items: stretch;
-}
+.psc-niche-row--mid { align-items: stretch; }
 
 .psc-niche-col {
   flex: 0 0 22%;
@@ -243,10 +316,7 @@
   gap: var(--psc-niche-gap);
 }
 
-.psc-niche-col .psc-niche--side {
-  flex: 1;
-  min-height: 90px;
-}
+.psc-niche-col .psc-niche--side { flex: 1; min-height: 90px; }
 
 .psc-niche--center {
   flex: 1;
@@ -257,78 +327,54 @@
   padding-bottom: 18px;
 }
 
-/* Bottom row */
-.psc-niche-row--bot .psc-niche--bot {
-  flex: 1;
-  height: 68px;
-}
+.psc-niche-row--bot .psc-niche--bot { flex: 1; height: 68px; }
+.psc-niche--bot-wide { flex: 1.5 !important; }
 
-.psc-niche--bot-wide {
-  flex: 1.5 !important;
-}
-
-/* ════════════════════════════
-   INDIVIDUAL NICHE
-════════════════════════════ */
+/* Individual niche */
 .psc-niche {
   background: var(--psc-niche-wall);
   position: relative;
   overflow: hidden;
 }
 
-/* Warm spotlight from top */
 .psc-niche::before {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(
-      ellipse 85% 55% at 50% -8%,
-      rgba(var(--psc-spot), 0.88) 0%,
-      rgba(var(--psc-spot), 0.38) 38%,
-      transparent 68%
-    );
+  background: radial-gradient(
+    ellipse 85% 55% at 50% -8%,
+    rgba(var(--psc-spot), 0.88) 0%,
+    rgba(var(--psc-spot), 0.38) 38%,
+    transparent 68%
+  );
   pointer-events: none;
   z-index: 1;
 }
 
-/* Depth shadow at bottom */
 .psc-niche::after {
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 50%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.28) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(0,0,0,0.28) 0%, transparent 100%);
   pointer-events: none;
   z-index: 1;
 }
 
-/* Inner side-wall depth on centre niche */
 .psc-niche--center {
-  background: linear-gradient(
-    to bottom,
-    #c0b49c 0%,
-    #cec3ad 20%,
-    #d4c9b3 60%,
-    #bfb49d 100%
-  );
+  background: linear-gradient(to bottom, #c0b49c 0%, #cec3ad 20%, #d4c9b3 60%, #bfb49d 100%);
   box-shadow: inset 4px 0 12px rgba(0,0,0,0.15), inset -4px 0 12px rgba(0,0,0,0.15);
 }
 
-/* Spotlight on centre niche — more intense */
 .psc-niche--center::before {
-  background:
-    radial-gradient(
-      ellipse 70% 60% at 50% -5%,
-      rgba(var(--psc-spot), 1) 0%,
-      rgba(var(--psc-spot), 0.55) 35%,
-      transparent 65%
-    );
+  background: radial-gradient(
+    ellipse 70% 60% at 50% -5%,
+    rgba(var(--psc-spot), 1) 0%,
+    rgba(var(--psc-spot), 0.55) 35%,
+    transparent 65%
+  );
 }
 
-/* ════════════════════════════
-   BOTTLE IN CENTRE NICHE
-════════════════════════════ */
 .psc-niche--center a {
   display: flex;
   align-items: flex-end;
@@ -343,9 +389,7 @@
   max-width: 140px;
   object-fit: contain;
   object-position: bottom center;
-  filter:
-    drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45))
-    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.45)) drop-shadow(0 2px 4px rgba(0,0,0,0.3));
   transition: transform 0.4s ease, filter 0.4s ease;
   position: relative;
   z-index: 2;
@@ -353,12 +397,9 @@
 
 .psc-niche--center img:hover {
   transform: translateY(-8px) scale(1.05);
-  filter:
-    drop-shadow(0 18px 28px rgba(0, 0, 0, 0.5))
-    drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 18px 28px rgba(0,0,0,0.5));
 }
 
-/* Ghost bottle when no product image */
 .psc-ghost-bottle {
   width: 60px;
   height: 180px;
@@ -379,13 +420,8 @@
 /* ════════════════════════════
    RIGHT PANEL — TABS
 ════════════════════════════ */
-.psc-right {
-  padding: 10px 0;
-}
-
-.psc-right-inner {
-  max-width: 440px;
-}
+.psc-right { padding: 10px 0; }
+.psc-right-inner { max-width: 440px; }
 
 .psc-eyebrow {
   font-family: 'Philosopher', sans-serif;
@@ -427,9 +463,7 @@
   outline-offset: 2px;
 }
 
-.psc-tab--active {
-  border-left-color: var(--psc-dark);
-}
+.psc-tab--active { border-left-color: var(--psc-dark); }
 
 .psc-tab-name {
   font-family: 'Philosopher', serif;
@@ -441,10 +475,7 @@
   user-select: none;
 }
 
-.psc-tab--active .psc-tab-name {
-  color: var(--psc-dark);
-  font-weight: 700;
-}
+.psc-tab--active .psc-tab-name { color: var(--psc-dark); font-weight: 700; }
 
 .psc-tab-body {
   max-height: 0;
@@ -453,10 +484,7 @@
   transition: max-height 0.4s ease, opacity 0.35s ease;
 }
 
-.psc-tab--active .psc-tab-body {
-  max-height: 200px;
-  opacity: 1;
-}
+.psc-tab--active .psc-tab-body { max-height: 200px; opacity: 1; }
 
 .psc-tab-desc {
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -481,69 +509,33 @@
   transition: color 0.3s ease, gap 0.3s ease;
 }
 
-.psc-tab-cta:hover {
-  color: var(--psc-gold);
-  gap: 15px;
-}
+.psc-tab-cta:hover { color: var(--psc-gold); gap: 15px; }
 
 /* ════════════════════════════
    RESPONSIVE
 ════════════════════════════ */
 @media (max-width: 990px) {
-  .psc-layout {
-    grid-template-columns: 1fr;
-    gap: 44px;
-  }
-  .psc-right-inner {
-    max-width: 100%;
-  }
-  .psc-heading {
-    margin-bottom: 30px;
-  }
-  .psc-niche--center {
-    min-height: 210px;
-  }
-  .psc-niche--center img {
-    height: 160px;
-  }
-  .psc-niche-row--top .psc-niche--sm {
-    height: 54px;
-  }
-  .psc-niche-row--bot .psc-niche--bot {
-    height: 50px;
-  }
+  .psc-layout { grid-template-columns: 1fr; gap: 44px; }
+  .psc-right-inner { max-width: 100%; }
+  .psc-heading { margin-bottom: 30px; }
+  .psc-bottle-on-bg img { height: 170px; }
+  .psc-niche--center { min-height: 210px; }
+  .psc-niche--center img { height: 160px; }
+  .psc-niche-row--top .psc-niche--sm { height: 54px; }
+  .psc-niche-row--bot .psc-niche--bot { height: 50px; }
 }
 
 @media (max-width: 699px) {
-  .psc-section {
-    padding: 50px 0;
-  }
-  .psc-container {
-    padding: 0 16px;
-  }
-  --psc-niche-gap: 8px;
-  .psc-niche-col {
-    flex-basis: 18%;
-  }
-  .psc-niche--center {
-    min-height: 175px;
-    padding-bottom: 12px;
-  }
-  .psc-niche--center img {
-    height: 130px;
-  }
-  .psc-niche-row--top .psc-niche--sm {
-    height: 42px;
-  }
-  .psc-niche-col .psc-niche--side {
-    min-height: 65px;
-  }
-  .psc-niche-row--bot .psc-niche--bot {
-    height: 40px;
-  }
-  .psc-tab-name {
-    font-size: 20px;
-  }
+  .psc-section { padding: 50px 0; }
+  .psc-container { padding: 0 16px; }
+  .psc-bottle-on-bg img { height: 130px; }
+  .psc-niche-col { flex-basis: 18%; }
+  .psc-niche--center { min-height: 175px; padding-bottom: 12px; }
+  .psc-niche--center img { height: 130px; }
+  .psc-niche-row--top .psc-niche--sm { height: 42px; }
+  .psc-niche-col .psc-niche--side { min-height: 65px; }
+  .psc-niche-row--bot .psc-niche--bot { height: 40px; }
+  .psc-tab-name { font-size: 20px; }
 }
 
 {% endstyle %}
@@ -580,7 +572,6 @@
     const target = section.querySelector('.psc-shelf-set[data-shelf="' + id + '"]');
     if (target) target.classList.add('psc-shelf-set--active');
 
-    /* Mobile: scroll shelf into view after switching */
     if (scrollToShelf && cabinet && window.innerWidth <= 990) {
       setTimeout(function () {
         cabinet.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -589,9 +580,7 @@
   }
 
   tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      activate(tab, true);
-    });
+    tab.addEventListener('click', function () { activate(tab, true); });
     tab.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -627,6 +616,26 @@
       "id": "title",
       "label": "Heading",
       "default": "Discover The Beauty Of Our Fragrance Collection"
+    },
+    {
+      "type": "header",
+      "content": "Cabinet Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "cabinet_bg",
+      "label": "Cabinet background image",
+      "info": "Upload a shelf/cabinet photo. Your product bottle will appear on top of it. Leave blank to use the built-in CSS cabinet design."
+    },
+    {
+      "type": "range",
+      "id": "bottle_position",
+      "label": "Bottle vertical position",
+      "info": "How far from the bottom the bottle sits on the shelf image (%).",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "default": 18
     }
   ],
   "blocks": [
@@ -638,7 +647,7 @@
           "type": "product",
           "id": "product",
           "label": "Product",
-          "info": "This product's image appears as the featured bottle in the cabinet."
+          "info": "This product's image appears as the featured bottle."
         },
         {
           "type": "text",
