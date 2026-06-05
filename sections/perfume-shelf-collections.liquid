@@ -1,0 +1,639 @@
+<section class="psc-section" id="PerfumeShelfCollections-{{ section.id }}">
+  <div class="psc-container">
+    <div class="psc-layout">
+
+      <!-- ══════════════════════════════
+           LEFT — Illuminated Shelf
+      ══════════════════════════════ -->
+      <div class="psc-left">
+        <div class="psc-cabinet" aria-live="polite">
+
+          <div class="psc-shelf-sets">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign gc          = collections[block.settings.collection]
+                assign block_label = block.settings.title | default: gc.title
+              -%}
+              <div
+                class="psc-shelf-set{% if forloop.first %} psc-shelf-set--active{% endif %}"
+                data-shelf="{{ block.id }}"
+                aria-label="{{ block_label | escape }} shelf"
+                {{ block.shopify_attributes }}
+              >
+                <!-- Top cabinet frame glow -->
+                <div class="psc-frame-top"></div>
+
+                <!-- ── Tier 1: products 1–3 ── -->
+                <div class="psc-tier">
+                  <div class="psc-tier-products">
+                    {%- for product in gc.products limit: 3 -%}
+                      <div class="psc-slot">
+                        {%- if product.featured_image != blank -%}
+                          <img
+                            src="{{ product.featured_image | image_url: width: 240, format: 'webp' }}"
+                            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                            loading="lazy"
+                            width="120" height="160"
+                          >
+                        {%- else -%}
+                          <div class="psc-slot-empty"></div>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                  <div class="psc-plank"></div>
+                </div>
+
+                <!-- ── Tier 2: products 4–6 ── -->
+                <div class="psc-tier">
+                  <div class="psc-tier-products">
+                    {%- for product in gc.products limit: 3 offset: 3 -%}
+                      <div class="psc-slot">
+                        {%- if product.featured_image != blank -%}
+                          <img
+                            src="{{ product.featured_image | image_url: width: 240, format: 'webp' }}"
+                            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                            loading="lazy"
+                            width="120" height="160"
+                          >
+                        {%- else -%}
+                          <div class="psc-slot-empty"></div>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                  <div class="psc-plank"></div>
+                </div>
+
+                <!-- ── Tier 3: products 7–9 ── -->
+                <div class="psc-tier">
+                  <div class="psc-tier-products">
+                    {%- for product in gc.products limit: 3 offset: 6 -%}
+                      <div class="psc-slot">
+                        {%- if product.featured_image != blank -%}
+                          <img
+                            src="{{ product.featured_image | image_url: width: 240, format: 'webp' }}"
+                            alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                            loading="lazy"
+                            width="120" height="160"
+                          >
+                        {%- else -%}
+                          <div class="psc-slot-empty"></div>
+                        {%- endif -%}
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                  <div class="psc-plank psc-plank--last"></div>
+                </div>
+
+              </div>
+            {%- endfor -%}
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════
+           RIGHT — Category Tabs
+      ══════════════════════════════ -->
+      <div class="psc-right">
+        <div class="psc-right-inner">
+
+          {%- if section.settings.eyebrow != blank -%}
+            <span class="psc-eyebrow">{{ section.settings.eyebrow }}</span>
+          {%- endif -%}
+
+          <h2 class="psc-heading">{{ section.settings.title }}</h2>
+
+          <div class="psc-tabs" role="tablist">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign gc        = collections[block.settings.collection]
+                assign tab_title = block.settings.title | default: gc.title
+                assign tab_desc  = block.settings.description | default: gc.description | strip_html | truncate: 180
+                assign tab_url   = gc.url | default: block.settings.collection_url | default: routes.all_products_collection_url
+              -%}
+              <div
+                class="psc-tab{% if forloop.first %} psc-tab--active{% endif %}"
+                data-tab="{{ block.id }}"
+                role="tab"
+                tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              >
+                <h3 class="psc-tab-name">{{ tab_title }}</h3>
+                <div class="psc-tab-body">
+                  {%- if tab_desc != blank -%}
+                    <p class="psc-tab-desc">{{ tab_desc }}</p>
+                  {%- endif -%}
+                  <a href="{{ tab_url }}" class="psc-tab-cta" tabindex="-1">
+                    Explore Collection
+                    <svg width="16" height="8" viewBox="0 0 16 8" fill="none" aria-hidden="true">
+                      <path d="M12 1L15 4M15 4L12 7M15 4H1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% style %}
+
+/* ── Root tokens ── */
+#PerfumeShelfCollections-{{ section.id }} {
+  --psc-gold:       #c5a059;
+  --psc-dark:       #1a1a1a;
+  --psc-cream:      #f9f7f2;
+  --psc-shelf-bg:   #1c1c1c;
+  --psc-frame:      #e4e4e4;
+  --psc-plank:      #dedede;
+  --psc-led-color:  255, 200, 80;
+}
+
+/* ── Section wrapper ── */
+.psc-section {
+  background: var(--psc-cream);
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+.psc-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* ── Two-column layout ── */
+.psc-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: center;
+}
+
+/* ════════════════════════════
+   SHELF CABINET
+════════════════════════════ */
+.psc-left {
+  position: relative;
+}
+
+.psc-cabinet {
+  background: var(--psc-shelf-bg);
+  border: 14px solid var(--psc-frame);
+  box-shadow:
+    0 0 0 1px #c8c8c8,
+    0 40px 80px rgba(0, 0, 0, 0.25),
+    inset 0 0 40px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+/* Stack all shelf sets on top of each other */
+.psc-shelf-sets {
+  display: grid;
+  grid-template-areas: "stack";
+}
+
+.psc-shelf-set {
+  grid-area: stack;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.55s ease;
+}
+
+.psc-shelf-set--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Top frame — subtle LED strip facing down */
+.psc-frame-top {
+  height: 10px;
+  background: linear-gradient(to bottom, #e8e8e8, #d2d2d2);
+  position: relative;
+}
+
+.psc-frame-top::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 8%; right: 8%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(var(--psc-led-color), 0.9) 20%,
+    rgba(var(--psc-led-color), 1)   50%,
+    rgba(var(--psc-led-color), 0.9) 80%,
+    transparent
+  );
+  box-shadow:
+    0 0 8px 3px  rgba(var(--psc-led-color), 0.6),
+    0 0 20px 8px rgba(var(--psc-led-color), 0.25);
+}
+
+/* ── Tier ── */
+.psc-tier {
+  position: relative;
+}
+
+/* Products row */
+.psc-tier-products {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  padding: 28px 24px 12px;
+  min-height: 155px;
+  position: relative;
+  z-index: 2;
+  /* Warm ambient glow from the shelf below */
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 110%,
+    rgba(var(--psc-led-color), 0.07),
+    transparent 70%
+  );
+}
+
+/* Product slot */
+.psc-slot {
+  flex: 1;
+  max-width: 90px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.psc-slot img {
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  object-position: bottom center;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.psc-slot img:hover {
+  transform: translateY(-4px) scale(1.04);
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
+}
+
+.psc-slot-empty {
+  width: 55px;
+  height: 110px;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+/* ── Shelf plank ── */
+.psc-plank {
+  height: 10px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, var(--psc-plank) 60%, #c4c4c4 100%);
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* LED strip on underside of plank */
+.psc-plank::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 8%; right: 8%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(var(--psc-led-color), 0.9) 20%,
+    rgba(var(--psc-led-color), 1)   50%,
+    rgba(var(--psc-led-color), 0.9) 80%,
+    transparent
+  );
+  box-shadow:
+    0 0 6px 2px  rgba(var(--psc-led-color), 0.7),
+    0 0 16px 6px rgba(var(--psc-led-color), 0.3);
+}
+
+/* Warm glow spreading downward from LED */
+.psc-plank::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -2%; right: -2%;
+  height: 65px;
+  background: radial-gradient(
+    ellipse 90% 100% at 50% 0%,
+    rgba(var(--psc-led-color), 0.38) 0%,
+    rgba(var(--psc-led-color), 0.12) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Bottom plank — no glow needed below it */
+.psc-plank--last::after {
+  display: none;
+}
+
+/* ════════════════════════════
+   RIGHT PANEL — TABS
+════════════════════════════ */
+.psc-right {
+  padding: 10px 0;
+}
+
+.psc-right-inner {
+  max-width: 440px;
+}
+
+.psc-eyebrow {
+  font-family: 'Philosopher', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #999;
+  display: block;
+  margin-bottom: 18px;
+}
+
+.psc-heading {
+  font-family: 'Philosopher', serif;
+  font-size: clamp(26px, 2.8vw, 42px);
+  font-weight: 400;
+  color: var(--psc-dark);
+  line-height: 1.25;
+  margin: 0 0 44px;
+}
+
+/* ── Tab list ── */
+.psc-tabs {
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid #e6e2d8;
+}
+
+/* ── Individual tab ── */
+.psc-tab {
+  padding: 14px 0 14px 26px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  margin-left: -2px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.psc-tab:focus-visible {
+  border-left-color: var(--psc-gold);
+  outline: 2px solid var(--psc-gold);
+  outline-offset: 2px;
+}
+
+.psc-tab--active {
+  border-left-color: var(--psc-dark);
+}
+
+.psc-tab-name {
+  font-family: 'Philosopher', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #bbb;
+  margin: 0;
+  transition: color 0.3s ease, font-weight 0.1s;
+  user-select: none;
+}
+
+.psc-tab--active .psc-tab-name {
+  color: var(--psc-dark);
+  font-weight: 700;
+}
+
+/* Animated accordion body */
+.psc-tab-body {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.35s ease;
+}
+
+.psc-tab--active .psc-tab-body {
+  max-height: 200px;
+  opacity: 1;
+}
+
+.psc-tab-desc {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--psc-gold);
+  margin: 10px 0 18px;
+}
+
+.psc-tab-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Philosopher', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--psc-dark);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: color 0.3s ease, gap 0.3s ease;
+}
+
+.psc-tab-cta:hover {
+  color: var(--psc-gold);
+  gap: 15px;
+}
+
+/* ════════════════════════════
+   RESPONSIVE
+════════════════════════════ */
+
+/* Tablet 700–990px: stack vertically, shelf on top */
+@media (max-width: 990px) {
+  .psc-layout {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+  .psc-right-inner {
+    max-width: 100%;
+  }
+  .psc-heading {
+    margin-bottom: 30px;
+  }
+}
+
+/* Mobile ≤ 699px */
+@media (max-width: 699px) {
+  .psc-section {
+    padding: 50px 0;
+  }
+  .psc-container {
+    padding: 0 16px;
+  }
+  .psc-cabinet {
+    border-width: 10px;
+  }
+  .psc-tier-products {
+    padding: 18px 14px 8px;
+    min-height: 110px;
+    gap: 6px;
+  }
+  .psc-slot img {
+    height: 88px;
+  }
+  .psc-tab-name {
+    font-size: 20px;
+  }
+}
+
+{% endstyle %}
+
+<script>
+(function () {
+  const section = document.getElementById('PerfumeShelfCollections-{{ section.id }}');
+  if (!section) return;
+
+  const tabs    = section.querySelectorAll('.psc-tab');
+  const shelves = section.querySelectorAll('.psc-shelf-set');
+
+  function activate(tab) {
+    const id = tab.dataset.tab;
+
+    tabs.forEach(function (t) {
+      t.classList.remove('psc-tab--active');
+      t.setAttribute('aria-selected', 'false');
+      t.setAttribute('tabindex', '-1');
+      /* prevent CTA inside inactive tabs from being tabbable */
+      const cta = t.querySelector('.psc-tab-cta');
+      if (cta) cta.setAttribute('tabindex', '-1');
+    });
+
+    tab.classList.add('psc-tab--active');
+    tab.setAttribute('aria-selected', 'true');
+    tab.setAttribute('tabindex', '0');
+    const activeCta = tab.querySelector('.psc-tab-cta');
+    if (activeCta) activeCta.removeAttribute('tabindex');
+
+    shelves.forEach(function (s) {
+      s.classList.remove('psc-shelf-set--active');
+    });
+    const target = section.querySelector('.psc-shelf-set[data-shelf="' + id + '"]');
+    if (target) target.classList.add('psc-shelf-set--active');
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activate(tab); });
+    tab.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activate(tab);
+      }
+      /* Arrow key navigation between tabs */
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const all  = Array.from(tabs);
+        const idx  = all.indexOf(tab);
+        const next = e.key === 'ArrowDown'
+          ? all[(idx + 1) % all.length]
+          : all[(idx - 1 + all.length) % all.length];
+        next.focus();
+        activate(next);
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Perfume Shelf Collections",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Discover The Beauty Of Our Fragrance Collection"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Products from this collection appear on the shelf (up to 9 shown)."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tab title override",
+          "info": "Leave blank to use the collection title."
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Tab description override",
+          "info": "Leave blank to use the collection description."
+        },
+        {
+          "type": "url",
+          "id": "collection_url",
+          "label": "Link URL override",
+          "info": "Leave blank to use the collection URL."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Perfume Shelf Collections",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Men",
+            "description": "Explore our exquisite men's collection, crafted to elevate any presence with commanding and bold fragrances.",
+            "collection_url": "/collections/men"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Women",
+            "description": "Discover delicate, sophisticated scents designed to celebrate femininity and timeless elegance.",
+            "collection_url": "/collections/women"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Unisex",
+            "description": "Boundary-free fragrances designed for every soul — bold, tender, and beautifully undefinable.",
+            "collection_url": "/collections/unisex"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
