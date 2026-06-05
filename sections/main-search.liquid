@@ -105,7 +105,8 @@
                       >
                     {%- endif -%}
                   {%- else -%}
-                    {{- 'product-1' | placeholder_svg_tag: 'tcard-img' -}}
+                    {%- assign ph_idx = forloop.index0 | modulo: 6 | plus: 1 -%}
+                    {{- 'product-' | append: ph_idx | placeholder_svg_tag: 'tcard-img' -}}
                   {%- endif -%}
                 </a>
 
@@ -120,9 +121,6 @@
                   </svg>
                 </button>
 
-                {%- unless item.available -%}
-                  <span class="tcard-soldout">Sold Out</span>
-                {%- endunless -%}
               </div>
 
               <div class="tcard-body">
