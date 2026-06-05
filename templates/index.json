@@ -97,28 +97,25 @@
         "category_YHfhmE": {
           "type": "category",
           "settings": {
-            "collection": "men",
+            "product": "acsess",
             "title": "Men",
-            "description": "Explore our exquisite men's collection, crafted to elevate any presence with commanding and bold fragrances.",
-            "collection_url": "/collections/men"
+            "description": "Explore our exquisite men's collection, crafted to elevate any presence with commanding and bold fragrances."
           }
         },
         "category_4VQC9D": {
           "type": "category",
           "settings": {
-            "collection": "women",
+            "product": "black-gold",
             "title": "Women",
-            "description": "Discover delicate, sophisticated scents designed to celebrate femininity and timeless elegance.",
-            "collection_url": "/collections/women"
+            "description": "Discover delicate, sophisticated scents designed to celebrate femininity and timeless elegance."
           }
         },
         "category_UVtV3m": {
           "type": "category",
           "settings": {
-            "collection": "unisex",
+            "product": "kobra-copy",
             "title": "Unisex",
-            "description": "Boundary-free fragrances designed for every soul — bold, tender, and beautifully undefinable.",
-            "collection_url": "/collections/unisex"
+            "description": "Boundary-free fragrances designed for every soul — bold, tender, and beautifully undefinable."
           }
         }
       },
