@@ -23,8 +23,14 @@
                 <!-- Top frame LED strip -->
                 <div class="psc-frame-top"></div>
 
-                <!-- Hero single-bottle tier -->
-                <div class="psc-tier psc-tier--hero">
+                <!-- Tier 1 — empty, ambient glow only -->
+                <div class="psc-tier">
+                  <div class="psc-tier-products psc-tier-products--empty"></div>
+                  <div class="psc-plank"></div>
+                </div>
+
+                <!-- Tier 2 — featured bottle -->
+                <div class="psc-tier">
                   <div class="psc-tier-products psc-tier-products--hero">
                     <div class="psc-slot psc-slot--hero">
                       {%- if p != blank and p.featured_image != blank -%}
@@ -41,6 +47,12 @@
                       {%- endif -%}
                     </div>
                   </div>
+                  <div class="psc-plank"></div>
+                </div>
+
+                <!-- Tier 3 — empty, ambient glow only -->
+                <div class="psc-tier">
+                  <div class="psc-tier-products psc-tier-products--empty"></div>
                   <div class="psc-plank psc-plank--last"></div>
                 </div>
 
@@ -199,17 +211,30 @@
     0 0 20px 8px rgba(var(--psc-led-color), 0.25);
 }
 
-/* ── Hero single-bottle tier ── */
-.psc-tier--hero {
+/* ── Tiers ── */
+.psc-tier {
   position: relative;
 }
 
+/* Empty tier — ambient glow, no product */
+.psc-tier-products--empty {
+  min-height: 80px;
+  position: relative;
+  z-index: 2;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 110%,
+    rgba(var(--psc-led-color), 0.05),
+    transparent 70%
+  );
+}
+
+/* Hero tier — single featured bottle */
 .psc-tier-products--hero {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 48px 24px 16px;
-  min-height: 340px;
+  padding: 36px 24px 16px;
+  min-height: 240px;
   position: relative;
   z-index: 2;
   background: radial-gradient(
@@ -285,6 +310,23 @@
   box-shadow:
     0 0 6px 2px  rgba(var(--psc-led-color), 0.7),
     0 0 16px 6px rgba(var(--psc-led-color), 0.3);
+}
+
+/* Warm glow spreading downward from each LED plank */
+.psc-plank::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: -2%; right: -2%;
+  height: 65px;
+  background: radial-gradient(
+    ellipse 90% 100% at 50% 0%,
+    rgba(var(--psc-led-color), 0.32) 0%,
+    rgba(var(--psc-led-color), 0.10) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 .psc-plank--last::after {
@@ -419,13 +461,15 @@
   .psc-heading {
     margin-bottom: 30px;
   }
-  /* Shelf is above tabs on mobile — tighten the bottle */
+  .psc-tier-products--empty {
+    min-height: 55px;
+  }
   .psc-tier-products--hero {
-    min-height: 260px;
-    padding: 36px 24px 14px;
+    min-height: 190px;
+    padding: 28px 24px 12px;
   }
   .psc-slot--hero img {
-    height: 200px;
+    height: 170px;
   }
 }
 
@@ -439,12 +483,15 @@
   .psc-cabinet {
     border-width: 10px;
   }
+  .psc-tier-products--empty {
+    min-height: 44px;
+  }
   .psc-tier-products--hero {
-    min-height: 210px;
-    padding: 28px 16px 10px;
+    min-height: 155px;
+    padding: 20px 16px 10px;
   }
   .psc-slot--hero img {
-    height: 160px;
+    height: 130px;
   }
   .psc-tab-name {
     font-size: 20px;
