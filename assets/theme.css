@@ -2363,7 +2363,7 @@ svg {
 }
 
 .tcard-name {
-  font-size: 0.85rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #000;
   text-decoration: none;
@@ -7051,3 +7051,4 @@ body {
     height: clamp(180px, 40vw, 280px);
   }
 }
+
