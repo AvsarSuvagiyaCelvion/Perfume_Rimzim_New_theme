@@ -99,7 +99,7 @@
         "title": "Trending Now",
         "subtitle": "What everyone's buying this week",
         "collection": "best-seller",
-        "product_limit": 8,
+        "product_limit": 4,
         "show_view_all": true
       }
     },
