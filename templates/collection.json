@@ -22,6 +22,7 @@
     },
     "collection_products": {
       "type": "main-collection",
+      "disabled": true,
       "settings": {
         "products_per_page": 12
       }
