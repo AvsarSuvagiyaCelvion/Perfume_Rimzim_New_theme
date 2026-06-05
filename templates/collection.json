@@ -25,10 +25,56 @@
       "settings": {
         "products_per_page": 12
       }
+    },
+    "collection_sub_nav_ambk6j": {
+      "type": "collection-sub-nav",
+      "blocks": {
+        "subcollection_NPrgMJ": {
+          "type": "subcollection",
+          "settings": {
+            "collection": "men",
+            "title": "",
+            "description": "",
+            "fallback_url": ""
+          }
+        },
+        "subcollection_F48LeG": {
+          "type": "subcollection",
+          "settings": {
+            "collection": "women",
+            "title": "",
+            "description": "",
+            "fallback_url": ""
+          }
+        },
+        "subcollection_TnR8JT": {
+          "type": "subcollection",
+          "settings": {
+            "collection": "unisex",
+            "title": "",
+            "description": "",
+            "fallback_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "subcollection_NPrgMJ",
+        "subcollection_F48LeG",
+        "subcollection_TnR8JT"
+      ],
+      "name": "Sub-Collection Cards",
+      "settings": {
+        "eyebrow": "GENDER",
+        "heading": "Shop by Gender",
+        "subheading": "",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
     "collection_header",
-    "collection_products"
+    "collection_products",
+    "collection_sub_nav_ambk6j"
   ]
 }
