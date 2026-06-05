@@ -91,10 +91,10 @@
         "subtitle": "Fragrances crafted for every expression"
       }
     },
-    "perfume_shelf_collections_ahqUAk": {
+    "perfume_shelf_collections_wyjByj": {
       "type": "perfume-shelf-collections",
       "blocks": {
-        "category_4xDUHT": {
+        "category_6twyHj": {
           "type": "category",
           "settings": {
             "collection": "men",
@@ -103,19 +103,19 @@
             "collection_url": "/collections/men"
           }
         },
-        "category_M9krMQ": {
+        "category_KxfkWA": {
           "type": "category",
           "settings": {
-            "collection": "women",
+            "collection": "",
             "title": "Women",
             "description": "Discover delicate, sophisticated scents designed to celebrate femininity and timeless elegance.",
             "collection_url": "/collections/women"
           }
         },
-        "category_4Nf9qA": {
+        "category_wN8Mg6": {
           "type": "category",
           "settings": {
-            "collection": "unisex",
+            "collection": "",
             "title": "Unisex",
             "description": "Boundary-free fragrances designed for every soul — bold, tender, and beautifully undefinable.",
             "collection_url": "/collections/unisex"
@@ -123,9 +123,9 @@
         }
       },
       "block_order": [
-        "category_4xDUHT",
-        "category_M9krMQ",
-        "category_4Nf9qA"
+        "category_6twyHj",
+        "category_KxfkWA",
+        "category_wN8Mg6"
       ],
       "name": "Perfume Shelf Collections",
       "settings": {
@@ -488,7 +488,7 @@
     "hero",
     "trust_bar",
     "gender_collections",
-    "perfume_shelf_collections_ahqUAk",
+    "perfume_shelf_collections_wyjByj",
     "trending_now_zBMCDg",
     "new_arrivals",
     "vibe_slider",
