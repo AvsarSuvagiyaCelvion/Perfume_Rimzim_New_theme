@@ -23,11 +23,10 @@
                 <!-- Top cabinet frame glow -->
                 <div class="psc-frame-top"></div>
 
-                <!-- ── Tier 1: products 0–2 ── -->
+                <!-- ── Tier 1: products 1–3 ── -->
                 <div class="psc-tier">
                   <div class="psc-tier-products">
-                    {%- for i in (0..2) -%}
-                      {%- assign product = gc.products[i] -%}
+                    {%- for product in gc.products limit: 3 -%}
                       <div class="psc-slot">
                         {%- if product.featured_image != blank -%}
                           <img
@@ -37,7 +36,7 @@
                             width="120" height="160"
                           >
                         {%- else -%}
-                          <div class="psc-slot-bottle" aria-hidden="true"></div>
+                          <div class="psc-slot-empty"></div>
                         {%- endif -%}
                       </div>
                     {%- endfor -%}
@@ -45,11 +44,10 @@
                   <div class="psc-plank"></div>
                 </div>
 
-                <!-- ── Tier 2: products 3–5 ── -->
+                <!-- ── Tier 2: products 4–6 ── -->
                 <div class="psc-tier">
                   <div class="psc-tier-products">
-                    {%- for i in (3..5) -%}
-                      {%- assign product = gc.products[i] -%}
+                    {%- for product in gc.products limit: 3 offset: 3 -%}
                       <div class="psc-slot">
                         {%- if product.featured_image != blank -%}
                           <img
@@ -59,7 +57,7 @@
                             width="120" height="160"
                           >
                         {%- else -%}
-                          <div class="psc-slot-bottle" aria-hidden="true"></div>
+                          <div class="psc-slot-empty"></div>
                         {%- endif -%}
                       </div>
                     {%- endfor -%}
@@ -67,11 +65,10 @@
                   <div class="psc-plank"></div>
                 </div>
 
-                <!-- ── Tier 3: products 6–8 ── -->
+                <!-- ── Tier 3: products 7–9 ── -->
                 <div class="psc-tier">
                   <div class="psc-tier-products">
-                    {%- for i in (6..8) -%}
-                      {%- assign product = gc.products[i] -%}
+                    {%- for product in gc.products limit: 3 offset: 6 -%}
                       <div class="psc-slot">
                         {%- if product.featured_image != blank -%}
                           <img
@@ -81,7 +78,7 @@
                             width="120" height="160"
                           >
                         {%- else -%}
-                          <div class="psc-slot-bottle" aria-hidden="true"></div>
+                          <div class="psc-slot-empty"></div>
                         {%- endif -%}
                       </div>
                     {%- endfor -%}
@@ -287,46 +284,11 @@
   filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.5));
 }
 
-/* Placeholder bottle — shown when no product image exists */
-.psc-slot-bottle {
-  width: 52px;
-  height: 118px;
-  position: relative;
-  opacity: 0.18;
-  flex-shrink: 0;
-}
-
-/* Cap */
-.psc-slot-bottle::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 16px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 3px 3px 0 0;
-  box-shadow: 0 0 6px rgba(255, 200, 80, 0.3);
-}
-
-/* Body */
-.psc-slot-bottle::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 88px;
-  background: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.5),
-    rgba(200, 200, 200, 0.3)
-  );
-  border-radius: 5px 5px 10px 10px;
-  box-shadow:
-    inset 4px 0 10px rgba(255, 255, 255, 0.2),
-    inset -2px 0 6px rgba(0, 0, 0, 0.15);
+.psc-slot-empty {
+  width: 55px;
+  height: 110px;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
 }
 
 /* ── Shelf plank ── */
