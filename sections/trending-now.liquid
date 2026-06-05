@@ -3,9 +3,10 @@
   if trending_col == empty or trending_col.products_count == 0
     assign trending_col = collections.all
   endif
-  assign product_limit = section.settings.product_limit | default: 8
+  assign product_limit = section.settings.product_limit | default: 4
 
   assign badge_labels = 'Trending,Hot Pick,Best Seller,Fan Fave,Top Rated,New Hit,Must Have,Editor Pick' | split: ','
+  assign tn_sorted_products = trending_col.products | sort: 'created_at' | reverse
 -%}
 
 <section class="trending-now-section" id="TrendingNow">
@@ -20,13 +21,11 @@
     </div>
 
     <div class="trending-grid">
-      {%- for product in trending_col.products limit: product_limit -%}
+      {%- for product in tn_sorted_products limit: product_limit -%}
         {%- liquid
-          assign first_variant   = product.selected_or_first_available_variant
-          assign rating_value    = product.metafields.judgeme.rating
-          assign rating_count    = product.metafields.judgeme.reviews_count
-          assign badge_index = forloop.index0 | modulo: 8
-          assign badge_label = badge_labels[badge_index]
+          assign first_variant = product.selected_or_first_available_variant
+          assign badge_index   = forloop.index0 | modulo: 8
+          assign badge_label   = badge_labels[badge_index]
         -%}
 
         <div class="tcard animate-on-scroll" data-delay="{{ forloop.index0 | times: 60 }}">
@@ -196,7 +195,7 @@
       "min": 4,
       "max": 8,
       "step": 2,
-      "default": 8
+      "default": 4
     },
     {
       "type": "checkbox",
