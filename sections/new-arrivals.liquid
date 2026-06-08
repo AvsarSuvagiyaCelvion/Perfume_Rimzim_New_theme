@@ -35,7 +35,7 @@
             <a href="{{ product.url }}" class="tcard-img-link" tabindex="-1" aria-hidden="true">
               {%- liquid
                 if product.images.size > 1
-                  assign primary_img = product.images[1]
+                  assign primary_img = product.images[2]
                   assign hover_img   = product.featured_image
                 else
                   assign primary_img = product.featured_image
