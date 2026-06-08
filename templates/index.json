@@ -92,46 +92,6 @@
         "subtitle": "Fragrances crafted for every expression"
       }
     },
-    "perfume_shelf_collections_LRAzGJ": {
-      "type": "perfume-shelf-collections",
-      "blocks": {
-        "category_YHfhmE": {
-          "type": "category",
-          "settings": {
-            "product": "acsess",
-            "title": "Men",
-            "description": "Explore our exquisite men's collection, crafted to elevate any presence with commanding and bold fragrances."
-          }
-        },
-        "category_4VQC9D": {
-          "type": "category",
-          "settings": {
-            "product": "black-gold",
-            "title": "Women",
-            "description": "Discover delicate, sophisticated scents designed to celebrate femininity and timeless elegance."
-          }
-        },
-        "category_UVtV3m": {
-          "type": "category",
-          "settings": {
-            "product": "hony-moon",
-            "title": "Unisex",
-            "description": "Boundary-free fragrances designed for every soul — bold, tender, and beautifully undefinable."
-          }
-        }
-      },
-      "block_order": [
-        "category_YHfhmE",
-        "category_4VQC9D",
-        "category_UVtV3m"
-      ],
-      "disabled": true,
-      "name": "Perfume Shelf Collections",
-      "settings": {
-        "eyebrow": "COLLECTION",
-        "title": "Discover The Beauty Of Our Fragrance Collection"
-      }
-    },
     "trending_now_zBMCDg": {
       "type": "trending-now",
       "name": "Trending Now",
@@ -487,7 +447,6 @@
     "hero",
     "trust_bar",
     "gender_collections",
-    "perfume_shelf_collections_LRAzGJ",
     "trending_now_zBMCDg",
     "new_arrivals",
     "vibe_slider",
