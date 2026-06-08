@@ -35,22 +35,31 @@
           {%- comment -%} -- Image -- {%- endcomment -%}
           <div class="tcard-media">
             <a href="{{ product.url }}" class="tcard-img-link" tabindex="-1" aria-hidden="true">
-              {%- if product.featured_image != blank -%}
+              {%- liquid
+                if product.images.size > 1
+                  assign primary_img = product.images[1]
+                  assign hover_img   = product.featured_image
+                else
+                  assign primary_img = product.featured_image
+                  assign hover_img   = nil
+                endif
+              -%}
+              {%- if primary_img != blank -%}
                 <img
                   class="tcard-img"
-                  src="{{ product.featured_image | image_url: width: 480, format: 'webp' }}"
-                  srcset="{{ product.featured_image | image_url: width: 320, format: 'webp' }} 320w,
-                          {{ product.featured_image | image_url: width: 480, format: 'webp' }} 480w"
+                  src="{{ primary_img | image_url: width: 480, format: 'webp' }}"
+                  srcset="{{ primary_img | image_url: width: 320, format: 'webp' }} 320w,
+                          {{ primary_img | image_url: width: 480, format: 'webp' }} 480w"
                   sizes="(max-width: 600px) 50vw, 25vw"
-                  alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                  alt="{{ primary_img.alt | default: product.title | escape }}"
                   width="480" height="480"
                   loading="lazy"
                 >
-                {%- if product.images.size > 1 -%}
+                {%- if hover_img != blank -%}
                   <img
                     class="tcard-img tcard-img--hover"
-                    src="{{ product.images[1] | image_url: width: 480, format: 'webp' }}"
-                    alt="{{ product.images[1].alt | default: product.title | escape }}"
+                    src="{{ hover_img | image_url: width: 480, format: 'webp' }}"
+                    alt="{{ hover_img.alt | default: product.title | escape }}"
                     width="480" height="480"
                     loading="lazy"
                     aria-hidden="true"
