@@ -1,5 +1,5 @@
 {%- liquid
-  assign search_terms = search.terms | escape
+  assign search_terms = search.terms | remove: '*' | escape
   assign total        = search.results_count
 -%}
 {%- paginate search.results by 24 -%}
@@ -417,24 +417,44 @@
 
 <script>
 (function () {
+  var form  = document.querySelector('.search-page-form');
+  var input = form && form.querySelector('.search-page-input');
+
+  /* ── 1. On submit: append * wildcard for prefix matching ── */
+  if (form && input) {
+    form.addEventListener('submit', function () {
+      var val = input.value.trim();
+      if (val && !val.endsWith('*')) {
+        input.value = val + '*';
+      }
+    });
+  }
+
+  /* ── 2. On results page: strip * from the input display ── */
+  if (input && input.value.endsWith('*')) {
+    input.value = input.value.slice(0, -1);
+  }
+
+  /* ── 3. JS safety filter: hide cards whose title doesn't contain the term ── */
   var q = new URLSearchParams(window.location.search).get('q');
   if (!q || q.trim() === '') return;
-  var term = q.trim().toLowerCase();
+  var term = q.replace(/\*/g, '').trim().toLowerCase();
+  if (!term) return;
 
   document.querySelectorAll('.trending-grid .tcard').forEach(function (card) {
     var titleEl = card.querySelector('.tcard-name');
     if (!titleEl) return;
-    var title = titleEl.textContent.trim().toLowerCase();
-    if (title.indexOf(term) === -1) {
+    if (titleEl.textContent.trim().toLowerCase().indexOf(term) === -1) {
       card.style.display = 'none';
     }
   });
 
-  /* Update result count to match visible cards */
+  /* ── 4. Update result count to match visible cards ── */
   var visible = document.querySelectorAll('.trending-grid .tcard:not([style*="display: none"])').length;
   var meta = document.querySelector('.search-page-meta');
-  if (meta && visible !== undefined) {
-    meta.innerHTML = '<span>' + visible + ' result' + (visible !== 1 ? 's' : '') + ' for</span> <strong>"' + q + '"</strong>';
+  if (meta) {
+    var displayTerm = q.replace(/\*/g, '');
+    meta.innerHTML = '<span>' + visible + ' result' + (visible !== 1 ? 's' : '') + ' for</span> <strong>"' + displayTerm + '"</strong>';
   }
 })();
 </script>
