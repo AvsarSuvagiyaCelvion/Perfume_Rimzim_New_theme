@@ -250,11 +250,13 @@
 
 .psc-niche--center {
   flex: 1;
-  min-height: 280px;
+  height: 280px;       /* fixed — same for every tab */
+  min-height: unset;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding-bottom: 20px;
+  overflow: hidden;
 }
 
 /* Bottom row */
@@ -338,9 +340,8 @@
 }
 
 .psc-niche--center img {
-  width: auto;
-  height: 210px;
-  max-width: 200px;
+  width: 120px;         /* fixed width — same bounding box every time */
+  height: 210px;        /* fixed height — same bounding box every time */
   object-fit: contain;
   object-position: bottom center;
   filter:
@@ -349,6 +350,7 @@
   transition: transform 0.4s ease, filter 0.4s ease;
   position: relative;
   z-index: 2;
+  flex-shrink: 0;
 }
 
 .psc-niche--center img:hover {
