@@ -11,6 +11,8 @@
     <div class="container">
       <form action="{{ routes.search_url }}" method="get" class="search-page-form" role="search">
         <input type="hidden" name="type" value="product">
+        <input type="hidden" name="options[prefix]" value="last">
+        <input type="hidden" name="options[fields]" value="title,variants.title,product_type,tag,body_html">
         <div class="search-page-field">
           <svg class="search-page-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
@@ -269,6 +271,12 @@
 /* Body */
 .search-page-body {
   padding: 56px 0 80px;
+}
+
+@media (min-width: 990px) {
+  .search-page-body .trending-grid {
+    padding-left: 48px;
+  }
 }
 
 /* Empty / no results */
