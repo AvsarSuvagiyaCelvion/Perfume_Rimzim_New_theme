@@ -64,6 +64,7 @@
           "type": "gender_card",
           "settings": {
             "collection": "women",
+            "image": "shopify://shop_images/Luxury_women_s_fragrance_collection_hero_202605082211.webp",
             "title": "Women",
             "mood_text": "FLORAL & ELEGANT",
             "description": "Delicate, sophisticated scents that celebrate femininity.",
