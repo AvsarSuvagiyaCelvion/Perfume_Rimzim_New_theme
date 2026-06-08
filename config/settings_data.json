@@ -54,10 +54,11 @@
   },
   "platform_customizations": {
     "custom_css": [
-      "/* 1. \"Write a Review\" Button ko Yellow karne ke liye */.jm-button.jm-button--primary.jm-action-buttons__button {background-color: #FFCC00 !important; /* Bright Yellow */ color: #000000 !important; /* Text color Black (Yellow par black achha dikhta hai) */ border: 1px solid #FFCC00 !important; text-transform: uppercase !important; font-weight: 600 !important; transition: all 0.3s ease !important;}",
-      "/* 2. Button par mouse le jaane (Hover) par color thoda dark hoga */.jm-button.jm-button--primary.jm-action-buttons__button:hover {background-color: #e6b800 !important; /* Slightly Darker Yellow */ color: #000000 !important; border-color: #e6b800 !important;}",
-      "/* 3. Review Stars ko bhi Yellow karne ke liye */.jdgm-star {color: #FFCC00 !important;}",
-      "/* 4. \"Be the first to write a review\" text ka style (Optional) */.jdgm-rev-mgr__summary-text {color: #1a1a1a !important; font-weight: 500;}"
+      "/* 1. \"Write a Review\" Button ko Yellow karne ke liye */.jm-button.jm-button--primary.jm-action-buttons__button {background-color: #ffcc00 !important; /* Bright Yellow */ color: #000000 !important; /* Text color Black (Yellow par black achha dikhta hai) */ border: 1px solid #ffcc00 !important; text-transform: uppercase !important; font-weight: 600 !important; transition: all 0.3s ease !important;}",
+      " /* 2. Button par mouse le jaane (Hover) par color thoda dark hoga */.jm-button.jm-button--primary.jm-action-buttons__button:hover {background-color: #e6b800 !important; /* Slightly Darker Yellow */ color: #000000 !important; border-color: #e6b800 !important;}",
+      " /* 3. Review Stars ko bhi Yellow karne ke liye */.jdgm-star {color: #ffcc00 !important;}",
+      " /* 4. \"Be the first to write a review\" text ka style (Optional) */.jdgm-rev-mgr__summary-text {color: #1a1a1a !important; font-weight: 500;}",
+      ".jm-star-rating__font-icon {color: #f5ff00;}"
     ]
   }
 }
