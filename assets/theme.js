@@ -1416,7 +1416,7 @@
         var expanded = btn.getAttribute('aria-expanded') === 'true';
         btn.setAttribute('aria-expanded', String(!expanded));
         body.classList.toggle('is-open', !expanded);
-      });
+      }); 
     });
   }
 
