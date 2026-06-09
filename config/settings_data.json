@@ -49,6 +49,11 @@
         "type": "shopify://apps/trustwill-trustoo/blocks/trustoo-review-switch/c8f15077-6475-4e86-ad06-b66038d5ba2c",
         "disabled": true,
         "settings": {}
+      },
+      "7385302900728337613": {
+        "type": "shopify://apps/depo/blocks/app-embed/fa2b6a7a-29ea-4193-bcc4-3ecc583efe2e",
+        "disabled": false,
+        "settings": {}
       }
     }
   },
