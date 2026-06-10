@@ -107,7 +107,6 @@
           "type": "gender_card",
           "settings": {
             "collection": "women",
-            "image": "shopify://shop_images/Luxury_women_s_fragrance_collection_hero_202605082211.webp",
             "title": "Women",
             "mood_text": "FLORAL & ELEGANT",
             "description": "Delicate, sophisticated scents that celebrate femininity.",
@@ -240,48 +239,6 @@
     },
     "17804657172db3c34c": {
       "type": "apps",
-      "blocks": {
-        "judge_me_reviews_cards_carousel_wARJT8": {
-          "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-          "settings": {
-            "show_sample_reviews": false,
-            "reviews_selection": "all",
-            "products": [],
-            "star_rating": "all",
-            "show_review_media": true,
-            "display_order": "media_first",
-            "no_image_fallback": "review_text_only",
-            "max_reviews": 20,
-            "review_length": "medium",
-            "text_size": "medium",
-            "image_ratio": "1",
-            "reviews_shown": 3,
-            "show_reviewer_name": true,
-            "show_product_name": true,
-            "hide_arrows_mobile": true,
-            "arrows_position": "bottom",
-            "max_width": 1100,
-            "corner_styling": "round",
-            "header_text_color": "#000000",
-            "text_color": "#ffffff",
-            "card_color": "#000000",
-            "stars_color": "#fffc00",
-            "arrows_color": "#121111",
-            "transition_speed": 4,
-            "header_text": "Customers are saying",
-            "show_average_rating": true
-          }
-        },
-        "trustwill_trustoo_text_carousel_qJgkNf": {
-          "type": "shopify://apps/trustwill-trustoo/blocks/text-carousel/c8f15077-6475-4e86-ad06-b66038d5ba2c",
-          "disabled": true,
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "judge_me_reviews_cards_carousel_wARJT8",
-        "trustwill_trustoo_text_carousel_qJgkNf"
-      ],
       "settings": {}
     },
     "testimonials": {
@@ -450,29 +407,6 @@
     },
     "1780391773a8446b24": {
       "type": "apps",
-      "blocks": {
-        "instafeed_app_block_NhtD7K": {
-          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
-          "settings": {
-            "title": "",
-            "title_color": "",
-            "title_size_v2": 0,
-            "alignment": "center",
-            "instafeed_margin_top": 0,
-            "instafeed_margin_bottom": 0,
-            "instafeed_margin_sides": 0,
-            "show_instagram_link": false,
-            "link_alignment": "left",
-            "link_color": "#000000",
-            "background_color": "",
-            "feed_id": "",
-            "html_area": ""
-          }
-        }
-      },
-      "block_order": [
-        "instafeed_app_block_NhtD7K"
-      ],
       "settings": {}
     },
     "instagram_header_teghTX": {
