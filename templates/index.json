@@ -34,6 +34,19 @@
         "badge_subtitle": "100% Authentic"
       }
     },
+    "trust_bar": {
+      "type": "trust-bar",
+      "settings": {
+        "trust1_title": "Free Shipping",
+        "trust1_sub": "On orders above ₹999",
+        "trust2_title": "100% Authentic",
+        "trust2_sub": "Genuine products guaranteed",
+        "trust3_title": "Easy Returns",
+        "trust3_sub": "7-day hassle-free returns",
+        "trust4_title": "Secure Payments",
+        "trust4_sub": "SSL encrypted checkout"
+      }
+    },
     "text_marquee_kr4txM": {
       "type": "text-marquee",
       "blocks": {
@@ -75,19 +88,6 @@
         "pause_on_hover": true,
         "separator": "✦",
         "speed": 30
-      }
-    },
-    "trust_bar": {
-      "type": "trust-bar",
-      "settings": {
-        "trust1_title": "Free Shipping",
-        "trust1_sub": "On orders above ₹999",
-        "trust2_title": "100% Authentic",
-        "trust2_sub": "Genuine products guaranteed",
-        "trust3_title": "Easy Returns",
-        "trust3_sub": "7-day hassle-free returns",
-        "trust4_title": "Secure Payments",
-        "trust4_sub": "SSL encrypted checkout"
       }
     },
     "gender_collections": {
@@ -488,8 +488,8 @@
   },
   "order": [
     "hero",
-    "text_marquee_kr4txM",
     "trust_bar",
+    "text_marquee_kr4txM",
     "gender_collections",
     "trending_now_zBMCDg",
     "new_arrivals",
