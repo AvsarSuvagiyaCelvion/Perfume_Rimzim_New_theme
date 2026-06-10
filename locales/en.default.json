@@ -1,9 +1,4 @@
 {
-  "sections": {
-    "product_marquee": {
-      "heading_default": "Our Fragrances"
-    }
-  },
   "general": {
     "currency": {
       "add_to_cart": "Add to Cart",
