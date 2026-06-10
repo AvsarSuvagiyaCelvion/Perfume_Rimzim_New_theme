@@ -1136,8 +1136,6 @@ svg {
   align-items: center;
   overflow: hidden;
   background: var(--color-bg-cream);
-  margin-top: calc(-1 * var(--header-h));
-  padding-top: var(--header-h);
 }
 
 /* ── Full-bleed background image ── */
@@ -2689,10 +2687,6 @@ svg {
       rgba(0, 0, 0, 0.92) 0%,
       rgba(0, 0, 0, 0.50) 55%,
       rgba(0, 0, 0, 0.08) 100%);
-}
-
-
-
 }
 
 
