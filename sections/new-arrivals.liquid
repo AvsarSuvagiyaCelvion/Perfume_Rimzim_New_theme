@@ -70,7 +70,7 @@
               {%- endif -%}
             </a>
 
-            {% comment %} <span class="tcard-badge">{{ badge_label }}</span> {% endcomment %}
+            <span class="tcard-badge">{{ badge_label }}</span>
 
             <button
               class="tcard-wishlist product-card-wishlist"
@@ -98,7 +98,7 @@
                   else
                     assign show_real_badge = true
                   endif
-                endif
+                endif 
               -%}
               {%- if show_real_badge -%}
                 {{ jdgm_badge }}

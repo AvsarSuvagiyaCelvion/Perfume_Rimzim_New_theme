@@ -2436,7 +2436,7 @@ svg {
   font-size: 0.72rem;
   color: #000;
 }
-
+  
 .tcard-review-count {
   font-size: 1rem;
   color: black;
@@ -6828,6 +6828,8 @@ body {
     animation: none;
   }
 }
+
+
 
 /* ============================================================
    POLICY PAGES
