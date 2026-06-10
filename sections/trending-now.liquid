@@ -126,6 +126,10 @@
               {%- endif -%}
             </div>
 
+            {%- if first_variant.inventory_management == 'shopify' and first_variant.inventory_quantity > 0 and first_variant.inventory_quantity <= 5 -%}
+              <p class="tcard-stock">Only {{ first_variant.inventory_quantity }} left!</p>
+            {%- endif -%}
+
             {%- if product.available -%}
               <button
                 class="tcard-quick-add product-quick-add-btn"

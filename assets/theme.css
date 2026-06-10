@@ -2442,6 +2442,14 @@ svg {
   color: black;
 }
 
+.tcard-stock {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #c0392b;
+  margin: 2px 0 4px;
+  letter-spacing: 0.02em;
+}
+
 .tcard-price {
   display: flex;
   align-items: baseline;
