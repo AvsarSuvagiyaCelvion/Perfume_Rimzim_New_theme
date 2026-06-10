@@ -38,24 +38,7 @@
         }
       }
     },
-    "content_for_index": [],
-    "blocks": {
-      "14060646107696862457": {
-        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
-        "disabled": false,
-        "settings": {}
-      },
-      "1143683040400472741": {
-        "type": "shopify://apps/trustwill-trustoo/blocks/trustoo-review-switch/c8f15077-6475-4e86-ad06-b66038d5ba2c",
-        "disabled": true,
-        "settings": {}
-      },
-      "7385302900728337613": {
-        "type": "shopify://apps/depo/blocks/app-embed/fa2b6a7a-29ea-4193-bcc4-3ecc583efe2e",
-        "disabled": false,
-        "settings": {}
-      }
-    }
+    "content_for_index": []
   },
   "platform_customizations": {
     "custom_css": [
@@ -63,7 +46,7 @@
       " /* 2. Button par mouse le jaane (Hover) par color thoda dark hoga */.jm-button.jm-button--primary.jm-action-buttons__button:hover {background-color: #e6b800 !important; /* Slightly Darker Yellow */ color: #000000 !important; border-color: #e6b800 !important;}",
       " /* 3. Review Stars ko bhi Yellow karne ke liye */.jdgm-star {color: #ffcc00 !important;}",
       " /* 4. \"Be the first to write a review\" text ka style (Optional) */.jdgm-rev-mgr__summary-text {color: #1a1a1a !important; font-weight: 500;}",
-      ".jm-star-rating__font-icon {color: #FFD700 !important; /* Gold Yellow */}"
+      ".jm-star-rating__font-icon {color: #ffd700 !important; /* Gold Yellow */}"
     ]
   }
 }
