@@ -34,6 +34,49 @@
         "badge_subtitle": "100% Authentic"
       }
     },
+    "text_marquee_kr4txM": {
+      "type": "text-marquee",
+      "blocks": {
+        "text_item_D9GjxH": {
+          "type": "text_item",
+          "settings": {
+            "text": "Luxury Fragrances"
+          }
+        },
+        "text_item_EVBtEV": {
+          "type": "text_item",
+          "settings": {
+            "text": "Free Shipping Over $100"
+          }
+        },
+        "text_item_C38bXG": {
+          "type": "text_item",
+          "settings": {
+            "text": "New Arrivals"
+          }
+        },
+        "text_item_ygRPWb": {
+          "type": "text_item",
+          "settings": {
+            "text": "Crafted with Passion"
+          }
+        }
+      },
+      "block_order": [
+        "text_item_D9GjxH",
+        "text_item_EVBtEV",
+        "text_item_C38bXG",
+        "text_item_ygRPWb"
+      ],
+      "name": "Text Marquee",
+      "settings": {
+        "dark_background": false,
+        "font_size": 14,
+        "pause_on_hover": true,
+        "separator": "✦",
+        "speed": 30
+      }
+    },
     "trust_bar": {
       "type": "trust-bar",
       "settings": {
@@ -445,6 +488,7 @@
   },
   "order": [
     "hero",
+    "text_marquee_kr4txM",
     "trust_bar",
     "gender_collections",
     "trending_now_zBMCDg",
