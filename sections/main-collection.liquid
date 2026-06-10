@@ -114,9 +114,11 @@
                   assign jdgm_badge = product.metafields.judgeme.badge
                   assign show_real_badge = false
                   if jdgm_badge != blank
-                    unless jdgm_badge contains 'data-number-of-reviews="0'
+                    if jdgm_badge contains "data-number-of-reviews='0" or jdgm_badge contains 'data-number-of-reviews="0'
+                      assign show_real_badge = false
+                    else
                       assign show_real_badge = true
-                    endunless
+                    endif
                   endif
                 -%}
                 {%- if show_real_badge -%}
