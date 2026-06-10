@@ -2412,9 +2412,17 @@ svg {
     align-items: flex-start;
     gap: 2px;
   }
+  .tcard-reviews .jdgm-prev-badge {
+    display: block !important;
+  }
   .tcard-reviews .jdgm-prev-badge .jdgm-starrating,
   .tcard-reviews .jdgm-prev-badge .jdgm-star-rating {
-    display: block;
+    display: block !important;
+    margin-bottom: 2px;
+  }
+  .tcard-reviews .jdgm-prev-badge > b,
+  .tcard-reviews .jdgm-prev-badge > span:not(.jdgm-starrating):not(.jdgm-star-rating) {
+    display: inline !important;
   }
 }
 
