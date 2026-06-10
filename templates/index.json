@@ -9,44 +9,6 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {
-        "eyebrow": "New Collection",
-        "heading_before": "Discover Your",
-        "heading_italic": "Signature",
-        "heading_after": "Scent",
-        "description": "Luxury fragrances crafted for every mood and season. Elevate your presence with our exclusive perfume collections.",
-        "button_text": "Shop Now",
-        "button_url": "shopify://collections/all",
-        "secondary_button_text": "Explore All",
-        "secondary_button_url": "shopify://collections",
-        "stat1_value": "500+",
-        "stat1_label": "Fragrances",
-        "stat2_value": "50K+",
-        "stat2_label": "Happy Clients",
-        "stat3_value": "15+",
-        "stat3_label": "Collections",
-        "hero_image": "shopify://shop_images/hero_banner.jpg",
-        "image_position": "center center",
-        "image_position_mobile": "center center",
-        "badge_title": "Premium Quality",
-        "badge_subtitle": "100% Authentic"
-      }
-    },
-    "trust_bar": {
-      "type": "trust-bar",
-      "settings": {
-        "trust1_title": "Free Shipping",
-        "trust1_sub": "On orders above ₹999",
-        "trust2_title": "100% Authentic",
-        "trust2_sub": "Genuine products guaranteed",
-        "trust3_title": "Easy Returns",
-        "trust3_sub": "7-day hassle-free returns",
-        "trust4_title": "Secure Payments",
-        "trust4_sub": "SSL encrypted checkout"
-      }
-    },
     "text_marquee_kr4txM": {
       "type": "text-marquee",
       "blocks": {
@@ -83,11 +45,49 @@
       ],
       "name": "Text Marquee",
       "settings": {
-        "dark_background": false,
+        "dark_background": true,
         "font_size": 14,
         "pause_on_hover": true,
         "separator": "✦",
         "speed": 30
+      }
+    },
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "New Collection",
+        "heading_before": "Discover Your",
+        "heading_italic": "Signature",
+        "heading_after": "Scent",
+        "description": "Luxury fragrances crafted for every mood and season. Elevate your presence with our exclusive perfume collections.",
+        "button_text": "Shop Now",
+        "button_url": "shopify://collections/all",
+        "secondary_button_text": "Explore All",
+        "secondary_button_url": "shopify://collections",
+        "stat1_value": "500+",
+        "stat1_label": "Fragrances",
+        "stat2_value": "50K+",
+        "stat2_label": "Happy Clients",
+        "stat3_value": "15+",
+        "stat3_label": "Collections",
+        "hero_image": "shopify://shop_images/hero_banner.jpg",
+        "image_position": "center center",
+        "image_position_mobile": "center center",
+        "badge_title": "Premium Quality",
+        "badge_subtitle": "100% Authentic"
+      }
+    },
+    "trust_bar": {
+      "type": "trust-bar",
+      "settings": {
+        "trust1_title": "Free Shipping",
+        "trust1_sub": "On orders above ₹999",
+        "trust2_title": "100% Authentic",
+        "trust2_sub": "Genuine products guaranteed",
+        "trust3_title": "Easy Returns",
+        "trust3_sub": "7-day hassle-free returns",
+        "trust4_title": "Secure Payments",
+        "trust4_sub": "SSL encrypted checkout"
       }
     },
     "gender_collections": {
