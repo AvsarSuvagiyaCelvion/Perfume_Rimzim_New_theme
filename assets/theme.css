@@ -2412,6 +2412,10 @@ svg {
     align-items: flex-start;
     gap: 2px;
   }
+  .tcard-reviews .jdgm-prev-badge .jdgm-starrating,
+  .tcard-reviews .jdgm-prev-badge .jdgm-star-rating {
+    display: block;
+  }
 }
 
 .tcard-rating-value {
