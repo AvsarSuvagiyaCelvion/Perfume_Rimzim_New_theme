@@ -648,7 +648,7 @@
       var title       = btn.dataset.title || 'Product';
       if (!variantId) return;
 
-      if (hasVariants > 0 && handle) {
+      if (handle) {
         var cardEl = btn.closest('[class*="card"]');
         var imgSrc = cardEl ? ((cardEl.querySelector('.tcard-img, .product-card-img') || {}).src || '') : '';
         openVariantPicker(handle, title, imgSrc, '');
@@ -1112,6 +1112,11 @@
       if (atcBtn && !atcBtn.disabled) {
         var variantId = atcBtn.dataset.variantId;
         var title     = atcBtn.dataset.title || 'Product';
+        var handle    = atcBtn.dataset.handle;
+        if (handle) {
+          openVariantPicker(handle, title, '', '');
+          return;
+        }
         var origHtml  = atcBtn.innerHTML;
         atcBtn.disabled = true;
         atcBtn.textContent = 'Adding…';
