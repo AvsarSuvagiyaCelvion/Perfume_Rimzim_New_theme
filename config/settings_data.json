@@ -73,6 +73,11 @@
         "type": "shopify://apps/spin-studio-360-product-spin/blocks/spinstudio_embed/caf4b6a9-7642-4e66-bcf7-11d11c83cff2",
         "disabled": false,
         "settings": {}
+      },
+      "16041595021437623014": {
+        "type": "shopify://apps/magic-360/blocks/magic360/7a270f2a-4fa4-43bc-94fa-20b5338c66b9",
+        "disabled": false,
+        "settings": {}
       }
     }
   },
