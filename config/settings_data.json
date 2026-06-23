@@ -45,37 +45,8 @@
         "disabled": false,
         "settings": {}
       },
-      "4657359924761290239": {
-        "type": "shopify://apps/spinlook-360-3d-viewer/blocks/spinlook-embed/019d5358-5e60-7506-8dab-248b2c294764",
-        "disabled": false,
-        "settings": {
-          "button_label": "",
-          "button_style": "filled",
-          "button_color": "#111111",
-          "button_border_width": 2,
-          "button_border_color": "",
-          "button_border_opacity": 100,
-          "button_shadow": true,
-          "icon_color": "#ffffff",
-          "button_hover_color": "",
-          "button_hover_text_color": "",
-          "button_radius": 50,
-          "button_height": 0,
-          "show_icon": true,
-          "built_in_icon": "default",
-          "icon_size": 20,
-          "background": "",
-          "controls_color": "",
-          "popup_backdrop": "dark"
-        }
-      },
       "7019349584227683354": {
         "type": "shopify://apps/spin-studio-360-product-spin/blocks/spinstudio_embed/caf4b6a9-7642-4e66-bcf7-11d11c83cff2",
-        "disabled": false,
-        "settings": {}
-      },
-      "16041595021437623014": {
-        "type": "shopify://apps/magic-360/blocks/magic360/7a270f2a-4fa4-43bc-94fa-20b5338c66b9",
         "disabled": false,
         "settings": {}
       }
@@ -87,7 +58,8 @@
       " /* 2. Button par mouse le jaane (Hover) par color thoda dark hoga */.jm-button.jm-button--primary.jm-action-buttons__button:hover {background-color: #e6b800 !important; /* Slightly Darker Yellow */ color: #000000 !important; border-color: #e6b800 !important;}",
       " /* 3. Review Stars ko bhi Yellow karne ke liye */.jdgm-star {color: #ffcc00 !important;}",
       " /* 4. \"Be the first to write a review\" text ka style (Optional) */.jdgm-rev-mgr__summary-text {color: #1a1a1a !important; font-weight: 500;}",
-      ".jm-star-rating__font-icon {color: #ffd700 !important; /* Gold Yellow */}"
+      ".jm-star-rating__font-icon {color: #ffd700 !important; /* Gold Yellow */}",
+      "@media (max-width: 768px) {.spin-studio-container {width: 100% !important; height: auto !important; }}"
     ]
   }
 }
