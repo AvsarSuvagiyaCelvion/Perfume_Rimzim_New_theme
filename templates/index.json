@@ -90,6 +90,21 @@
         "trust4_sub": "SSL encrypted checkout"
       }
     },
+    "1782187946820d349d": {
+      "type": "apps",
+      "blocks": {
+        "spin_studio_360_product_spin_spinstudio_wLVjhp": {
+          "type": "shopify://apps/spin-studio-360-product-spin/blocks/spinstudio/caf4b6a9-7642-4e66-bcf7-11d11c83cff2",
+          "settings": {
+            "product": "chocolet"
+          }
+        }
+      },
+      "block_order": [
+        "spin_studio_360_product_spin_spinstudio_wLVjhp"
+      ],
+      "settings": {}
+    },
     "gender_collections": {
       "type": "gender-collections",
       "blocks": {
@@ -137,14 +152,7 @@
     "trending_now_zBMCDg": {
       "type": "trending-now",
       "name": "Trending Now",
-      "settings": {
-        "label": "Hot Right Now",
-        "title": "Trending Now",
-        "subtitle": "What everyone's buying this week",
-        "collection": "best-seller",
-        "product_limit": 4,
-        "show_view_all": true
-      }
+      "settings": {}
     },
     "new_arrivals": {
       "type": "new-arrivals",
@@ -318,7 +326,8 @@
             "arrows_color": "#ffffff",
             "transition_speed": 5,
             "header_text": "Customers are saying",
-            "show_average_rating": true
+            "show_average_rating": true,
+            "rating_display": "default"
           }
         }
       },
@@ -468,6 +477,7 @@
     "text_marquee_kr4txM",
     "hero",
     "trust_bar",
+    "1782187946820d349d",
     "gender_collections",
     "trending_now_zBMCDg",
     "new_arrivals",
